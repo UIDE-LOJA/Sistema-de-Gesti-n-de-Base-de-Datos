@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario Académico · Loja Octubre 2025 – Marzo 2026</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.css" id="theme">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/monokai.css">
+    <link rel="stylesheet" href="../../assets/css/uide-theme.css">
+
+    <style>
+        :root {
+            color-scheme: only light;
+        }
+
+        body {
+            background: var(--uide-light);
+        }
+
+        .reveal section {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 1.8rem;
+            box-shadow: 0 18px 36px -26px rgba(35, 53, 110, 0.45);
+            border: 1px solid rgba(35, 53, 110, 0.12);
+        }
+
+        .reveal section[data-background-color] {
+            box-shadow: none;
+            border: none;
+            background: transparent;
+        }
+
+        .reveal h1 {
+            color: var(--uide-primary) !important;
+        }
+
+        .reveal h2 {
+            margin-bottom: 0.4em;
+        }
+
+        .hero-card {
+            background: #ffffff;
+            border-radius: 18px;
+            border: 1px solid rgba(35, 53, 110, 0.15);
+            padding: 2rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .hero-card .badge {
+            justify-self: start;
+            padding: 0.4rem 1.1rem;
+            border-radius: 999px;
+            background: rgba(35, 53, 110, 0.1);
+            color: var(--uide-secondary);
+            font-weight: 600;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .hero-card p {
+            margin: 0;
+            color: rgba(35, 53, 110, 0.9);
+            font-size: 1rem;
+            line-height: 1.7;
+            text-align: left;
+        } 
+       .info-grid {
+            display: grid;
+            gap: 1.2rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+
+        .info-card {
+            border-radius: 16px;
+            border: 1px solid rgba(35, 53, 110, 0.1);
+            padding: 1.2rem 1.4rem;
+            display: grid;
+            gap: .45rem;
+        }
+
+        .info-card h3 {
+            margin: 0;
+            font-size: 1.05rem;
+            color: var(--uide-primary);
+        }
+
+        .info-card p {
+            margin: 0;
+            font-size: .95rem;
+            text-align: left;
+        }
+
+        .info-card.sessions {
+            border-left: 4px solid var(--uide-primary);
+        }
+
+        .info-card.tutoring {
+            border-left: 4px solid var(--uide-accent);
+        }
+
+        .info-card.contact {
+            border-left: 4px solid var(--uide-secondary);
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .75rem 1.6rem;
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid rgba(35, 53, 110, 0.12);
+            padding: 1rem 1.4rem;
+        }
+
+        .legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .9rem;
+        }
+
+        .legend .marker {
+            width: 15px;
+            height: 15px;
+            border-radius: 6px;
+        }
+
+        .marker.class-session {
+            background: rgba(145, 0, 72, 0.22);
+            border: 1px solid rgba(145, 0, 72, 0.4);
+        }
+
+        .marker.tutoring-slot {
+            background: rgba(233, 171, 33, 0.28);
+            border: 1px solid rgba(233, 171, 33, 0.45);
+        }        tab
+le.academic-calendar {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: .4rem;
+            font-size: .9rem;
+        }
+
+        table.academic-calendar th,
+        table.academic-calendar td {
+            text-align: center;
+            padding: .65rem .5rem;
+            border-radius: 10px;
+            background: rgba(35, 53, 110, 0.05);
+            color: #1f1f1f;
+        }
+
+        table.academic-calendar th .subtitle {
+            display: block;
+            font-size: .7rem;
+            font-weight: 500;
+            letter-spacing: .04em;
+            color: rgba(35, 53, 110, 0.7);
+            margin-top: .25rem;
+        }
+
+        table.academic-calendar td .note {
+            display: block;
+            margin-top: .35rem;
+            font-size: .68rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+        }
+
+        .note.holiday {
+            color: var(--uide-primary);
+        }
+
+        .note.recess {
+            color: var(--uide-secondary);
+        }
+
+        .note.alert {
+            color: #b25d00;
+        }
+
+        .note.event {
+            color: rgba(35, 53, 110, 0.85);
+        }
+
+        table.academic-calendar th {
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: .08em;
+            background: rgba(35, 53, 110, 0.12);
+            color: var(--uide-secondary);
+        }
+
+        table.academic-calendar th.week-col,
+        table.academic-calendar td.week-col {
+            text-align: left;
+            font-weight: 600;
+            padding-left: .85rem;
+            background: rgba(233, 171, 33, 0.18);
+            color: var(--uide-secondary);
+        }       
+ /* AHORA: clases el JUEVES 08h00-10h00 y tutorías el VIERNES 10h00-11h00 (según sílabo SGBD) */
+        table.academic-calendar th.class-session,
+        table.academic-calendar td.class-session {
+            background: rgba(145, 0, 72, 0.16);
+            color: var(--uide-secondary);
+            font-weight: 600;
+        }
+
+        table.academic-calendar th.tutoring-slot,
+        table.academic-calendar td.tutoring-slot {
+            background: rgba(233, 171, 33, 0.24);
+            color: #5a4300;
+            font-weight: 600;
+        }
+
+        table.academic-calendar td.other-month {
+            color: rgba(31, 31, 31, 0.45);
+            background: rgba(35, 53, 110, 0.04);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <section data-background-color="#f8f8f8">
+                <div class="hero-card">
+                    <span class="badge">Semana 0 · LTI_05A_300</span>
+                    <h1>Calendario Académico · Loja</h1>
+                    <h2>Octubre 2025 – Marzo 2026</h2>
+                    <p>
+                        Visualiza las semanas académicas, actividades clave, periodos administrativos y feriados
+                        oficiales del
+                        período Octubre 2025 – Marzo 2026 para la sede Loja. Este recurso está alineado con el
+                        calendario
+                        institucional y diseñado para consultas rápidas durante el curso.
+                    </p>
+                    <p style="font-size: 0.95rem;">
+                        <strong>Asignatura:</strong> Sistemas de Gestión de Base de Datos (LTI_05A_300) · Nivel 3 · 16 horas<br>
+                        <strong>Período del sílabo:</strong> octubre 2025 – marzo 2026<br>
+                        <strong>Docente:</strong> Prof. Charlie A. Cárdenas Toledo, M.Sc. · <a
+                            href="mailto:chcardenasto@uide.edu.ec">chcardenasto@uide.edu.ec</a>
+                    </p>
+                </div>
+            </section>
+
+            <section>
+                <h2>Horarios y Contacto</h2>
+                <div class="info-grid">
+                    <div class="info-card sessions">
+                        <h3>Clases</h3>
+                        <p><strong>Jueves · 08h00 – 10h00</strong></p>
+                        <p>Sesiones presenciales orientadas a administración avanzada de bases de datos y optimización.
+                        </p>
+                    </div>
+                    <div class="info-card tutoring">
+                        <h3>Tutorías</h3>
+                        <p><strong>Viernes · 10h00 – 11h00</strong></p>
+                        <p>Consultas, seguimiento de proyecto y retroalimentación personalizada.</p>
+                    </div>
+                    <div class="info-card contact">
+                        <h3>Contacto</h3>
+                        <p><strong>Correo:</strong> <a
+                                href="mailto:chcardenasto@uide.edu.ec">chcardenasto@uide.edu.ec</a></p>
+                        <p><strong>Sede:</strong> C. Agustín Carrión Palacios, Loja</p>
+                    </div>
+                </div>
+                <div class="legend" style="margin-top: 1.6rem;">
+                    <span><span class="marker class-session" aria-hidden="true"></span> Clases (jueves · 08h00 –
+                        10h00)</span>
+                    <span><span class="marker tutoring-slot" aria-hidden="true"></span> Tutorías (viernes · 10h00 –
+                        11h00)</span>
+                </div>
+            </section>    
+        <!-- OCTUBRE: clases el JUEVES -->
+            <section>
+                <h2>Octubre 2025 · Semanas 6 – 9</h2>
+                <table class="academic-calendar" aria-label="Calendario de octubre 2025">
+                    <thead>
+                        <tr>
+                            <th class="week-col">Semana</th>
+                            <th>L</th>
+                            <th>M</th>
+                            <th>X</th>
+                            <th class="class-session">J<span class="subtitle">08h00 – 10h00</span></th>
+                            <th class="tutoring-slot">V<span class="subtitle">10h00 – 11h00</span></th>
+                            <th>S</th>
+                            <th>D</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="week-col">6</td>
+                            <td>6</td>
+                            <td>7<span class="note event">Cierre evaluación NPS</span></td>
+                            <td>8</td>
+                            <td>9</td>
+                            <td class="tutoring-slot">10<span class="note holiday">Feriado Independencia de
+                                    Guayaquil</span></td>
+                            <td>11</td>
+                            <td>12</td>
+                        </tr>
+                        <tr>
+                            <td class="week-col">7</td>
+                            <td>13</td>
+                            <td>14</td>
+                            <td>15</td>
+                            <td>16</td>
+                            <td class="tutoring-slot">17</td>
+                            <td>18</td>
+                            <td>19</td>
+                        </tr>
+                        <tr>
+                            <td class="week-col">8</td>
+                            <td>20<span class="note event">20-24 Matrículas extraordinarias</span></td>
+                            <td>21</td>
+                            <td>22</td>
+                            <td>23</td>
+                            <td class="tutoring-slot">24</td>
+                            <td>25<span class="note holiday">Navidad</span></td>
+                            <td>26</td>
+                        </tr>
+                        <tr>
+                            <td class="week-col">9</td>
+                            <td>27<span class="note event">Inicio clases período Oct 2025 – Mar 2026</span><span
+                                    class="note event">27-31 Matrículas especiales</span><span
+                                    class="note event">27/10-01/11 Socialización de sílabos</span></td>
+                            <td>28<span class="note event">Cierre evaluación sumativa</span></td>
+                            <td>29</td>
+                            <td>30</td>
+                            <td class="tutoring-slot">31<span class="note event">Cierre matrículas especiales</span>
+                            </td>
+                            <td class="other-month">1<span class="note holiday">Inicio feriado Difuntos</span><span
+                                    class="note event">Cierre socialización de sílabos</span></td>
+                            <td class="other-month">2<span class="note holiday">Día de los Difuntos</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/zoom/zoom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/search/search.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealZoom, RevealSearch]
+        });
+    </script>
+</body>
+
+</html>
