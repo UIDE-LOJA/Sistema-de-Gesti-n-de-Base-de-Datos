@@ -1,0 +1,863 @@
+/*
+ * UIDE Theme - Consolidated CSS for HCI Course
+ * Universidad Internacional del Ecuador
+ * Curso: HCI - Human Computer Interaction
+ * Prof. Charlie Cárdenas Toledo, M.Sc.
+ */
+
+/* CSS Variables - UIDE Brand Colors */
+:root {
+    --uide-primary: #910048;      /* UIDE Burgundy */
+    --uide-secondary: #23356E;    /* UIDE Navy */
+    --uide-accent: #E9AB21;       /* UIDE Gold */
+    --uide-light: #f8f8f8;        /* Light background for contrast */
+    --university-primary: #910048;    /* Backward compatibility */
+    --university-secondary: #23356E;  /* Backward compatibility */
+    --university-accent: #E9AB21;     /* Backward compatibility */
+    --university-light: #f8f8f8;      /* Backward compatibility */
+}
+
+/* =============================================================================
+   REVEAL.JS CUSTOMIZATIONS - Presentation Styles
+   ============================================================================= */
+
+/* Book-like typography - Responsive */
+.reveal {
+    font-family: 'Times New Roman', serif;
+    font-size: min(2.5vw, 22px);
+    line-height: 1.6;
+}
+
+.reveal h1, .reveal h2, .reveal h3 {
+    font-family: 'Georgia', serif;
+    font-weight: normal;
+    text-align: center;
+    color: var(--uide-primary) !important;
+    margin-bottom: 1em;
+}
+
+.reveal h1 {
+    font-size: min(4vw, 3em);
+}
+
+.reveal h2 {
+    font-size: min(3vw, 2.5em);
+}
+
+.reveal h3 {
+    font-size: min(2.5vw, 2em);
+}
+
+.reveal p, .reveal li {
+    text-align: justify;
+    color: #333;
+    margin-bottom: 1em;
+    font-size: min(2.2vw, 1.1em);
+}
+
+.reveal ul, .reveal ol {
+    text-align: left;
+}
+
+/* Clean slide format */
+.reveal .slides section {
+    background: var(--uide-light);
+}
+
+/* UIDE color scheme */
+.reveal .slide-background {
+    background: var(--uide-light);
+}
+
+mark {
+    background-color: var(--uide-accent);
+    color: var(--uide-secondary);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+/* =============================================================================
+   LAYOUT HELPERS
+   ============================================================================= */
+
+.r-hstack {
+    display: flex;
+    gap: 2em;
+    align-items: flex-start;
+}
+
+.r-vstack {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.r-stack {
+    position: relative;
+}
+
+.r-stack > * {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Two column layout */
+.column {
+    flex: 1;
+    min-width: 0;
+}
+
+.column h4 {
+    color: var(--uide-primary);
+    border-bottom: 2px solid var(--uide-accent);
+    padding-bottom: 0.3em;
+    margin-bottom: 0.8em;
+}
+
+/* =============================================================================
+   LOGO AND BRANDING
+   ============================================================================= */
+
+.logo-container {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    z-index: 100;
+}
+
+.logo-container img {
+    width: min(10vw, 80px);
+    height: auto;
+    opacity: 0.9;
+}
+
+/* =============================================================================
+   CONTENT BLOCKS AND COMPONENTS
+   ============================================================================= */
+
+/* Blockquotes */
+.reveal blockquote {
+    background: rgba(255,255,255,0.8);
+    border-left: 4px solid var(--uide-primary);
+    margin: 1em 0;
+    padding: 1em 2em;
+    font-style: italic;
+    color: var(--uide-secondary);
+    border-radius: 0 8px 8px 0;
+}
+
+/* Title slide styling */
+.title-slide {
+    background: rgba(255,255,255,0.95);
+    padding: 2em;
+    border-radius: 15px;
+    border: 3px double var(--uide-primary);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.title-slide h1 {
+    color: var(--uide-primary);
+    margin-bottom: 0.5em;
+}
+
+.title-slide h2 {
+    color: var(--uide-secondary);
+    font-size: min(3vw, 2em);
+    margin-bottom: 1em;
+}
+
+.course-info {
+    background: rgba(255,255,255,0.9);
+    border-radius: 10px;
+    padding: 1em;
+    margin: 1em 0;
+    border: 2px solid var(--uide-accent);
+    font-size: min(2vw, 1em);
+}
+
+/* Cross-references */
+.cross-reference {
+    background: rgba(233, 171, 33, 0.1);
+    border: 1px solid var(--uide-accent);
+    border-radius: 8px;
+    padding: 1em;
+    margin: 1em 0;
+    font-style: italic;
+    color: var(--uide-secondary);
+}
+
+/* Media placeholders */
+.media-placeholder {
+    background: rgba(145, 0, 72, 0.1);
+    border: 2px dashed var(--uide-primary);
+    border-radius: 10px;
+    padding: 3vh 2vw;
+    text-align: center;
+    color: var(--uide-primary);
+    margin: 1em 0;
+    font-style: italic;
+}
+
+/* Speed perception lab components */
+.speed-overview {
+    display: grid;
+    gap: 1em;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.speed-overview__item {
+    background: rgba(233, 171, 33, 0.14);
+    border-radius: 12px;
+    padding: 0.9em;
+    border: 1px solid rgba(233, 171, 33, 0.25);
+    box-shadow: 0 14px 25px -22px rgba(35, 53, 110, 0.6);
+    display: grid;
+    gap: 0.3em;
+}
+
+.speed-overview__item:nth-child(even) {
+    background: rgba(13, 110, 253, 0.12);
+    border-color: rgba(13, 110, 253, 0.2);
+}
+
+.speed-overview__item strong {
+    font-size: 1.05em;
+    color: #1f2347;
+}
+
+.speed-overview__item small {
+    color: rgba(31, 35, 71, 0.75);
+}
+
+.speed-example {
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid rgba(31, 35, 71, 0.08);
+    padding: 0.9em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.skeleton-card {
+    width: 100%;
+    max-width: 220px;
+    display: grid;
+    gap: 0.6em;
+}
+
+.skeleton-card__header,
+.skeleton-card__line {
+    height: 12px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(240, 242, 247, 0.9) 0%, rgba(220, 224, 235, 0.9) 50%, rgba(240, 242, 247, 0.9) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-card__header {
+    height: 36px;
+    border-radius: 12px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.preload-device {
+    width: 140px;
+    height: 140px;
+    border-radius: 24px;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(13, 110, 253, 0.25));
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.preload-device::after {
+    content: '';
+    width: 70px;
+    height: 70px;
+    border: 6px solid rgba(13, 110, 253, 0.15);
+    border-top-color: #0d6efd;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.preload-device__pill {
+    position: absolute;
+    bottom: 16px;
+    padding: 0.3em 0.9em;
+    border-radius: 999px;
+    background: rgba(13, 110, 253, 0.18);
+    color: #1f2347;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.instant-button {
+    border: none;
+    border-radius: 12px;
+    padding: 0.85em 1.4em;
+    font-weight: 700;
+    font-size: 1em;
+    color: white;
+    background: linear-gradient(120deg, #28a745, #20c997);
+    box-shadow: 0 16px 24px -16px rgba(32, 201, 151, 0.65);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.instant-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 10px 18px -16px rgba(32, 201, 151, 0.65);
+}
+
+.instant-button::after {
+    content: '¡Acción registrada!';
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 0.85em;
+    background: rgba(255, 255, 255, 0.12);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.instant-button:active::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.progress-slate {
+    width: 100%;
+    max-width: 240px;
+    display: grid;
+    gap: 0.5em;
+}
+
+.progress-slate__bar {
+    height: 12px;
+    border-radius: 999px;
+    background: rgba(31, 35, 71, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-slate__bar span {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: linear-gradient(120deg, #fd7e14, #ffa94d);
+    animation: fill 4.2s ease forwards;
+}
+
+@keyframes fill {
+    0% {
+        transform: translateX(-100%);
+    }
+    12% {
+        transform: translateX(-60%);
+    }
+    35% {
+        transform: translateX(-40%);
+    }
+    65% {
+        transform: translateX(-15%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+.progress-slate__time {
+    font-size: 0.85em;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    color: rgba(31, 35, 71, 0.78);
+}
+
+.speed-intro {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.2em;
+    margin-top: 1em;
+}
+
+.speed-intro__item {
+    display: grid;
+    place-items: center;
+    gap: 0.4em;
+    padding: 0.9em;
+    border-radius: 14px;
+    background: rgba(233, 171, 33, 0.15);
+    border: 1px solid rgba(233, 171, 33, 0.25);
+    box-shadow: 0 14px 28px -22px rgba(35, 53, 110, 0.6);
+}
+
+.speed-intro__item:nth-child(even) {
+    background: rgba(13, 110, 253, 0.14);
+    border-color: rgba(13, 110, 253, 0.22);
+}
+
+.speed-intro__icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.85);
+    color: #1f2347;
+    font-size: 1.3em;
+}
+
+.speed-overview {
+    position: relative;
+}
+
+/* Special styling for concept boxes */
+.concept-box {
+    background: rgba(145, 0, 72, 0.1);
+    border: 2px solid var(--uide-primary);
+    border-radius: 10px;
+    padding: 1em;
+    margin: 0.5em 0;
+    text-align: center;
+}
+
+.concept-box.timeline {
+    text-align: left;
+}
+
+.timeline-item {
+    background: rgba(255,255,255,0.9);
+    border-left: 4px solid var(--uide-accent);
+    padding: 1em;
+    margin: 0.5em 0;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Metrics styling */
+.metric-card {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid var(--uide-accent);
+    border-radius: 8px;
+    padding: 1em;
+    margin: 0.5em 0;
+    text-align: center;
+}
+
+.metric-number {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--uide-primary);
+}
+
+/* Flashcards Grid Container */
+.flashcards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10rem;
+}
+
+/* Interactive Flashcards - 3D Flip Animation */
+.flashcard {
+    background-color: transparent;
+    width: 100%;
+    height: 220px;
+    perspective: 1000px;
+    cursor: pointer;
+    margin: 0;
+    position: relative;
+    overflow: visible;
+}
+
+.flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 2px solid var(--uide-primary);
+}
+
+.flashcard-front {
+    background: #ffffff;
+    color: var(--uide-primary);
+}
+
+.flashcard-back {
+    background: var(--uide-light);
+    color: var(--uide-secondary);
+    transform: rotateY(180deg);
+    border-color: var(--uide-secondary);
+}
+
+.flashcard-front h4, .flashcard-back h4 {
+    margin-bottom: 1rem;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: inherit;
+}
+
+.flashcard-front p, .flashcard-back p {
+    font-size: 0.95em;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    color: inherit;
+}
+
+.flashcard-back small {
+    font-size: 0.8em;
+    opacity: 0.9;
+    font-style: italic;
+    margin-top: 0.5rem;
+    color: inherit;
+}
+
+.flashcard strong {
+    color: inherit;
+    font-weight: 600;
+}
+
+
+/* Hover effects - subtle without scaling */
+.flashcard:hover .flashcard-front,
+.flashcard:hover .flashcard-back {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.flashcard .flashcard-inner {
+    transition: transform 0.6s ease;
+}
+
+/* References section - optimized for readability */
+.references-container {
+    column-count: 2;
+    column-gap: 2em;
+    column-rule: 1px solid #ddd;
+    text-align: left;
+}
+
+.references-container p {
+    break-inside: avoid;
+    margin-bottom: 0.8em;
+    text-align: left;
+}
+
+/* =============================================================================
+   INDEX PAGE STYLES (for main course page)
+   ============================================================================= */
+
+body {
+    font-family: 'Times New Roman', serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background: var(--university-light);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    color: var(--university-primary);
+    margin-bottom: 40px;
+    background: rgba(255,255,255,0.95);
+    padding: 2em;
+    border-radius: 15px;
+    border: 3px double var(--university-primary);
+}
+
+.header h1 {
+    font-family: 'Georgia', serif;
+    font-size: 3em;
+    font-weight: normal;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.header p {
+    font-size: 1.2em;
+    color: var(--university-secondary);
+    font-style: italic;
+}
+
+.weeks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.week-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    padding: 25px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+    border-left: 4px solid var(--university-primary);
+}
+
+.week-card:hover {
+    border-color: var(--university-secondary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.week-number {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--university-primary);
+    margin-bottom: 10px;
+}
+
+.week-title {
+    font-family: 'Georgia', serif;
+    font-size: 1.3em;
+    font-weight: normal;
+    color: var(--university-secondary);
+    margin-bottom: 10px;
+}
+
+.week-description {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.week-links {
+    display: flex;
+    gap: 10px;
+}
+
+.link-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.link-html {
+    background: var(--university-primary);
+    color: white;
+}
+
+.link-html:hover {
+    background: var(--university-accent);
+    color: var(--university-secondary);
+}
+
+.link-md {
+    background: #f8f9fa;
+    color: #333;
+    border: 1px solid #dee2e6;
+}
+
+.link-md:hover {
+    background: #e9ecef;
+}
+
+.footer {
+    text-align: center;
+    color: var(--university-secondary);
+    margin-top: 50px;
+    background: rgba(255,255,255,0.9);
+    padding: 1em;
+    border-radius: 10px;
+    border-top: 2px solid var(--university-primary);
+}
+
+/* Table of Contents */
+.toc-section {
+    text-align: center;
+    margin: 40px 0;
+    padding: 30px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.toc-section h2 {
+    font-family: 'Georgia', serif;
+    font-size: 2.2em;
+    color: var(--university-primary);
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+
+.toc-subtitle {
+    color: var(--university-secondary);
+    font-style: italic;
+    margin: 0;
+    font-size: 1.1em;
+}
+
+/* =============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================= */
+
+@media (max-width: 768px) {
+    .reveal {
+        font-size: min(4vw, 18px);
+    }
+
+    .r-hstack {
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    .logo-container img {
+        width: 12vw;
+        max-width: 60px;
+    }
+
+    /* Title slide adjustments */
+    .title-slide h1 {
+        font-size: min(10vw, 3em);
+    }
+
+    .title-slide h2 {
+        font-size: min(7vw, 2em);
+    }
+
+    /* References section */
+    .references-container {
+        column-count: 1 !important;
+        font-size: min(3.5vw, 0.7em);
+    }
+    
+    /* Flashcards responsive */
+    .flashcards-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+    }
+    
+    .flashcard {
+        height: 200px;
+        margin: 0;
+    }
+    
+    .flashcard-front, .flashcard-back {
+        padding: 1rem;
+    }
+    
+    .flashcard-front h4, .flashcard-back h4 {
+        font-size: 1.1em;
+    }
+    
+    .flashcard-front p, .flashcard-back p {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .reveal {
+        font-size: min(5vw, 16px);
+    }
+
+    .reveal section {
+        padding: 3vh 3vw;
+    }
+
+    .logo-container img {
+        width: 15vw;
+        max-width: 60px;
+    }
+
+    .title-slide h1 {
+        font-size: min(12vw, 2.5em);
+    }
+
+    .title-slide h2 {
+        font-size: min(8vw, 1.8em);
+    }
+}
+
+/* Touch-friendly interactions for mobile */
+@media (max-width: 768px) and (pointer: coarse) {
+    .reveal .controls {
+        font-size: 1.5em;
+    }
+
+    .fragment {
+        transition-duration: 0.6s;
+    }
+}
+
+/* Vertical slide indicators */
+.reveal .controls .navigate-up, .reveal .controls .navigate-down {
+    opacity: 0.8;
+}
+
+.reveal .controls .navigate-up:hover, .reveal .controls .navigate-down:hover {
+    opacity: 1;
+}
+
+/* Print styles */
+@media print {
+    .reveal .controls,
+    .logo-container {
+        display: none !important;
+    }
+    
+    .reveal {
+        font-size: 12pt;
+    }
+    
+    .reveal h1, .reveal h2, .reveal h3 {
+        page-break-after: avoid;
+    }
+    
+    .reveal section {
+        page-break-inside: avoid;
+    }
+}

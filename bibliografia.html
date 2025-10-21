@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Bibliografía - LTI_05A_300 Sistemas de Gestión de Base de Datos</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.css" id="theme">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/monokai.css">
+
+    <!-- UIDE Theme CSS -->
+    <link rel="stylesheet" href="assets/css/uide-theme.css">
+
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <style>
+        /* Enhanced concept-box styling */
+        .concept-box {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .concept-box h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--uide-primary);
+        }
+
+        .concept-box.asu {
+            border-left: 4px solid var(--uide-accent);
+            background: rgba(233, 171, 33, 0.05);
+        }
+
+        /* Reference styling */
+        .reference-item {
+            background: rgba(248, 248, 248, 0.8);
+            border-left: 4px solid var(--uide-accent);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .reference-link {
+            color: var(--uide-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85em;
+        }
+
+        .reference-link:hover {
+            color: var(--uide-primary);
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .concept-box {
+                padding: 1rem;
+                font-size: 0.9em;
+            }
+
+            .reference-item {
+                padding: 0.8rem;
+                font-size: 0.85em;
+            }
+        }
+
+        /* Highlight styling */
+        mark {
+            background: rgba(233, 171, 33, 0.3);
+            padding: 0.1em 0.3em;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Bibliografía Básica -->
+            <section data-background-color="#f8f8f8" data-transition="convex">
+                <h2><i class="fas fa-book"></i> Bibliografía Básica</h2>
+                <p style="font-size: 0.9em; color: var(--uide-secondary); margin-bottom: 2rem;">
+                    Fuentes principales requeridas para el desarrollo del curso
+                </p>
+
+                <div class="reference-item">
+                    <p>
+                        <strong>Núñez, R.</strong> (2023).
+                        <em>Gestión de bases de datos</em> (1ª ed.). 
+                        RA-MA Editorial.
+                    </p>
+                    <p style="margin-top: 0.5rem;">
+                        <a href="https://0310s0g1g-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/235056"
+                            class="reference-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Acceder al recurso digital UIDE
+                        </a>
+                    </p>
+                </div>
+
+                <div class="reference-item">
+                    <p>
+                        <strong>López Fandiño, V.</strong> (2023).
+                        <em>Sistemas de Big Data</em> (1ª ed.). 
+                        RA-MA Editorial.
+                    </p>
+                    <p style="margin-top: 0.5rem;">
+                        <a href="https://0310s0g1g-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/235054"
+                            class="reference-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Acceder al recurso digital UIDE
+                        </a>
+                    </p>
+                </div>
+
+                <div class="reference-item">
+                    <p>
+                        <strong>López Querol, J., Campos Monge, E. M. & Campos Monge, M.</strong> (2023).
+                        <em>Algoritmia y bases de datos</em> (1ª ed.). 
+                        RA-MA Editorial.
+                    </p>
+                    <p style="margin-top: 0.5rem;">
+                        <a href="https://0310s0g1a-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/230563"
+                            class="reference-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Acceder al recurso digital UIDE
+                        </a>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Bibliografía Complementaria -->
+            <section data-background-color="#f8f8f8" data-transition="convex">
+                <h2><i class="fas fa-file-alt"></i> Bibliografía Complementaria</h2>
+                <p style="font-size: 0.9em; color: var(--uide-secondary); margin-bottom: 2rem;">
+                    Fuentes adicionales para ampliar y profundizar los conceptos del curso
+                </p>
+
+                <div class="reference-item">
+                    <p>
+                        <strong>Coronel, C. & Morris, S.</strong> (2022).
+                        <em>Database systems: Design, implementation, & management</em> (13th ed.).
+                        Cengage Learning.
+                    </p>
+                </div>
+
+                <div class="reference-item">
+                    <p>
+                        <strong>Petrov, A.</strong> (2019).
+                        <em>Database internals: A deep dive into how distributed data systems work</em>.
+                        O'Reilly Media.
+                    </p>
+                </div>
+
+                <div class="reference-item">
+                    <p>
+                        <strong>Sadalage, P. J. & Fowler, M.</strong> (2022).
+                        <em>NoSQL distilled: A brief guide to the emerging world of polyglot persistence</em> (Updated ed.).
+                        Addison-Wesley Professional.
+                    </p>
+                </div>
+
+                <div class="reference-item">
+                    <p>
+                        <strong>Kleppmann, M.</strong> (2023).
+                        <em>Designing data-intensive applications</em> (Updated ed.).
+                        O'Reilly Media.
+                    </p>
+                </div>
+
+                <div class="reference-item">
+                    <p>
+                        <strong>Amazon Web Services.</strong> (2023).
+                        <em>Amazon Relational Database Service (RDS) – Servicio de bases de datos relacionales gestionado en la nube</em>.
+                        AWS.
+                    </p>
+                    <p style="margin-top: 0.5rem;">
+                        <a href="https://aws.amazon.com/es/rds/"
+                            class="reference-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i> Acceder a la documentación AWS
+                        </a>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Fuente ASU -->
+            <section data-background-color="#f8f8f8" data-transition="convex">
+                <section>
+                    <h2><i class="fas fa-graduation-cap"></i> Fuente ASU</h2>
+                    <p style="font-size: 0.9em; color: var(--uide-secondary); margin-bottom: 2rem;">
+                        Material académico de Arizona State University integrado al currículo
+                    </p>
+
+                    <div class="concept-box asu">
+                        <h4><i class="fas fa-star"></i> Contenido de Clase Mundial</h4>
+                        <p>Material académico de <mark>clase mundial</mark> proporcionado por Arizona State University, que enriquece el contenido del curso con perspectivas internacionales y casos de estudio avanzados en Sistemas de Gestión de Base de Datos.</p>
+                    </div>
+                </section>
+
+                <section data-background-color="#f8f8f8" data-transition="convex">
+                    <h2><i class="fas fa-graduation-cap"></i> Fuente ASU</h2>
+                    <p style="font-size: 0.9em; color: var(--uide-secondary); margin-bottom: 2rem;">
+                        Material académico de Arizona State University integrado al currículo
+                    </p>
+
+                    <div class="reference-item">
+                        <p>
+                            <strong>Arizona State University.</strong> (2025).
+                            <em>Understanding Data Source</em>.
+                            Information Technology Program. Online.
+                        </p>
+                        <p style="margin-top: 0.5rem;">
+                            <a href="https://uide.instructure.com/courses/30463"
+                                class="reference-link" target="_blank">
+                                <i class="fas fa-external-link-alt"></i> Acceder al curso en Canvas UIDE
+                            </a>
+                        </p>
+                        <p style="margin-top: 0.5rem; color: var(--uide-accent); font-weight: 500;">
+                            <i class="fas fa-star"></i> Programa académico ASU integrado al currículo UIDE
+                        </p>
+                    </div>
+                </section>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
+
+    <script>
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+            
+            // Navigation
+            controls: true,
+            progress: true,
+            center: true,
+            touch: true,
+            loop: false,
+            
+            // Presentation size
+            width: 1024,
+            height: 768,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+
+</body>
+
+</html>
