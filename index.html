@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LTI_05A_300-SGBD Sistemas de Gestión de Bases de Datos - Compendios Semanales</title>
+    <!-- UIDE Theme CSS -->
+    <link rel="stylesheet" href="assets/css/uide-theme.css">
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .header img {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: var(--uide-primary);
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            color: var(--uide-secondary);
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            font-weight: 300;
+        }
+
+        .course-info {
+            background: rgba(233, 171, 33, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--uide-accent);
+        }
+
+        .weeks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .week-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--uide-primary);
+        }
+
+        .week-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .week-card.available {
+            border-left-color: var(--uide-accent);
+        }
+
+        .week-card.coming-soon {
+            border-left-color: #ccc;
+            opacity: 0.7;
+        }
+
+        .week-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .week-number {
+            background: var(--uide-primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .week-card.available .week-number {
+            background: var(--uide-accent);
+        }
+
+        .week-card.coming-soon .week-number {
+            background: #ccc;
+        }
+
+        .week-title {
+            flex: 1;
+        }
+
+        .week-title h3 {
+            margin: 0;
+            color: var(--uide-primary);
+            font-size: 1.3rem;
+        }
+
+        .week-title .week-subtitle {
+            color: var(--uide-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+        }
+
+        .week-content {
+            margin-bottom: 1rem;
+        }
+
+        .week-topics {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0;
+        }
+
+        .week-topics li {
+            padding: 0.3rem 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .week-topics li:before {
+            content: "▸ ";
+            color: var(--uide-accent);
+            font-weight: bold;
+        }
+
+        .week-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--uide-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1a365d;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--uide-accent);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #d69e2e;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .status-available {
+            background: rgba(72, 187, 120, 0.1);
+            color: #2f855a;
+        }
+
+        .status-coming-soon {
+            background: rgba(160, 174, 192, 0.1);
+            color: #4a5568;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer p {
+            color: var(--uide-secondary);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .weeks-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .week-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="assets/images/Logo UIDE.png" alt="Logo UIDE" />
+            <h1>Sistemas de Gestión de Bases de Datos</h1>
+            <p class="subtitle">Compendios Semanales - Quinto Nivel</p>
+
+            <div class="course-info">
+                <strong>LTI_05A_300-SGBD-ASC</strong> • Prof. Charlie Cárdenas Toledo, M.Sc.<br>
+                <em>Universidad Internacional del Ecuador • Octubre 2025</em>
+            </div>
+        </div>
+
+        <div class="weeks-grid">
+            <!-- Semana 1 -->
+            <div class="week-card available">
+                <div class="week-header">
+                    <div class="week-number">1</div>
+                    <div class="week-title">
+                        <h3>Fundamentos de SGBD</h3>
+                        <div class="week-subtitle">Arquitectura, Componentes y Modelos</div>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <ul class="week-topics">
+                        <li>Arquitectura ANSI-SPARC (3 niveles)</li>
+                        <li>Componentes: Cliente/Servidor, Procesos, Buffers</li>
+                        <li>Modelo Relacional vs Documental</li>
+                        <li>Propiedades ACID y BASE</li>
+                    </ul>
+                    <span class="status-badge status-available">
+                        <i class="fas fa-check-circle"></i> Disponible
+                    </span>
+                </div>
+                <div class="week-actions">
+                    <a href="semanas/semana-01/compendio-sgbd-semana1.html" class="btn btn-primary">
+                        <i class="fas fa-play"></i> Ver Compendio
+                    </a>
+                    <a href="semanas/semana-01/semana1.md" class="btn btn-secondary">
+                        <i class="fas fa-file-alt"></i> Material Base
+                    </a>
+                </div>
+            </div>
+
+            <!-- Semana 2 -->
+            <div class="week-card coming-soon">
+                <div class="week-header">
+                    <div class="week-number">2</div>
+                    <div class="week-title">
+                        <h3>Modelo Relacional</h3>
+                        <div class="week-subtitle">SQL y Operaciones Básicas</div>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <ul class="week-topics">
+                        <li>Álgebra relacional</li>
+                        <li>Lenguaje SQL: DDL, DML, DQL</li>
+                        <li>Consultas básicas y avanzadas</li>
+                        <li>Joins y subconsultas</li>
+                    </ul>
+                    <span class="status-badge status-coming-soon">
+                        <i class="fas fa-clock"></i> Próximamente
+                    </span>
+                </div>
+                <div class="week-actions">
+                    <button class="btn btn-primary" disabled>
+                        <i class="fas fa-lock"></i> Próximamente
+                    </button>
+                </div>
+            </div>
+
+            <!-- Semana 3 -->
+            <div class="week-card coming-soon">
+                <div class="week-header">
+                    <div class="week-number">3</div>
+                    <div class="week-title">
+                        <h3>Diseño de Bases de Datos</h3>
+                        <div class="week-subtitle">Normalización y Modelado</div>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <ul class="week-topics">
+                        <li>Modelo Entidad-Relación</li>
+                        <li>Formas normales (1FN, 2FN, 3FN)</li>
+                        <li>Dependencias funcionales</li>
+                        <li>Diseño lógico y físico</li>
+                    </ul>
+                    <span class="status-badge status-coming-soon">
+                        <i class="fas fa-clock"></i> Próximamente
+                    </span>
+                </div>
+                <div class="week-actions">
+                    <button class="btn btn-primary" disabled>
+                        <i class="fas fa-lock"></i> Próximamente
+                    </button>
+                </div>
+            </div>
+
+            <!-- Semana 4 -->
+            <div class="week-card coming-soon">
+                <div class="week-header">
+                    <div class="week-number">4</div>
+                    <div class="week-title">
+                        <h3>Transacciones y Concurrencia</h3>
+                        <div class="week-subtitle">Control de Concurrencia y Recuperación</div>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <ul class="week-topics">
+                        <li>Propiedades ACID en detalle</li>
+                        <li>Control de concurrencia</li>
+                        <li>Bloqueos y deadlocks</li>
+                        <li>Recuperación ante fallos</li>
+                    </ul>
+                    <span class="status-badge status-coming-soon">
+                        <i class="fas fa-clock"></i> Próximamente
+                    </span>
+                </div>
+                <div class="week-actions">
+                    <button class="btn btn-primary" disabled>
+                        <i class="fas fa-lock"></i> Próximamente
+                    </button>
+                </div>
+            </div>
+
+            <!-- Semana 5 -->
+            <div class="week-card coming-soon">
+                <div class="week-header">
+                    <div class="week-number">5</div>
+                    <div class="week-title">
+                        <h3>Optimización de Consultas</h3>
+                        <div class="week-subtitle">Índices y Rendimiento</div>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <ul class="week-topics">
+                        <li>Planes de ejecución</li>
+                        <li>Índices: B-tree, Hash, Bitmap</li>
+                        <li>Optimización de consultas</li>
+                        <li>Análisis de rendimiento</li>
+                    </ul>
+                    <span class="status-badge status-coming-soon">
+                        <i class="fas fa-clock"></i> Próximamente
+                    </span>
+                </div>
+                <div class="week-actions">
+                    <button class="btn btn-primary" disabled>
+                        <i class="fas fa-lock"></i> Próximamente
+                    </button>
+                </div>
+            </div>
+
+            <!-- Semana 6 -->
+            <div class="week-card coming-soon">
+                <div class="week-header">
+                    <div class="week-number">6</div>
+                    <div class="week-title">
+                        <h3>Bases de Datos NoSQL</h3>
+                        <div class="week-subtitle">MongoDB y Sistemas Distribuidos</div>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <ul class="week-topics">
+                        <li>Tipos de NoSQL: Documento, Clave-Valor</li>
+                        <li>MongoDB: Colecciones y documentos</li>
+                        <li>Consultas en MongoDB</li>
+                        <li>Comparación SQL vs NoSQL</li>
+                    </ul>
+                    <span class="status-badge status-coming-soon">
+                        <i class="fas fa-clock"></i> Próximamente
+                    </span>
+                </div>
+                <div class="week-actions">
+                    <button class="btn btn-primary" disabled>
+                        <i class="fas fa-lock"></i> Próximamente
+                    </button>
+                </div>
+            </div>
+
+            <!-- Semana 7 -->
+            <div class="week-card coming-soon">
+                <div class="week-header">
+                    <div class="week-number">7</div>
+                    <div class="week-title">
+                        <h3>Seguridad en SGBD</h3>
+                        <div class="week-subtitle">Autenticación, Autorización y Auditoría</div>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <ul class="week-topics">
+                        <li>Modelos de seguridad</li>
+                        <li>Autenticación y autorización</li>
+                        <li>Roles y privilegios</li>
+                        <li>Auditoría y logging</li>
+                    </ul>
+                    <span class="status-badge status-coming-soon">
+                        <i class="fas fa-clock"></i> Próximamente
+                    </span>
+                </div>
+                <div class="week-actions">
+                    <button class="btn btn-primary" disabled>
+                        <i class="fas fa-lock"></i> Próximamente
+                    </button>
+                </div>
+            </div>
+
+            <!-- Semana 8 -->
+            <div class="week-card coming-soon">
+                <div class="week-header">
+                    <div class="week-number">8</div>
+                    <div class="week-title">
+                        <h3>Evaluación Parcial</h3>
+                        <div class="week-subtitle">Consolidación de Conocimientos</div>
+                    </div>
+                </div>
+                <div class="week-content">
+                    <ul class="week-topics">
+                        <li>Repaso de conceptos fundamentales</li>
+                        <li>Casos prácticos integradores</li>
+                        <li>Evaluación teórico-práctica</li>
+                        <li>Retroalimentación y mejora</li>
+                    </ul>
+                    <span class="status-badge status-coming-soon">
+                        <i class="fas fa-clock"></i> Próximamente
+                    </span>
+                </div>
+                <div class="week-actions">
+                    <button class="btn btn-primary" disabled>
+                        <i class="fas fa-lock"></i> Próximamente
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>
+                <strong>Universidad Internacional del Ecuador</strong><br>
+                Sistemas de Gestión de Bases de Datos • LTI_05A_300-SGBD-ASC<br>
+                <em>Prof. Charlie Cárdenas Toledo, M.Sc. • Octubre 2025</em>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
