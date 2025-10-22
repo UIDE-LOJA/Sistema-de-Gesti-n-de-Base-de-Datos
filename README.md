@@ -32,9 +32,9 @@ Los cursos indicados con el logotipo de ASU indican cursos que se complementan c
 
 **Número de créditos de asignatura:** 1
 
-**Nivel al que pertenece la asignatura:** Tercero
+**Nivel al que pertenece la asignatura:** 3
 
-**Periodo académico ordinario:** octubre 2025 – marzo 2026
+**Periodo académico ordinario:** octubre 2025 – febrero 2026
 
 **Estructura curricular:**
 
@@ -47,11 +47,11 @@ Los cursos indicados con el logotipo de ASU indican cursos que se complementan c
 
 **Correquisito(s):** Ninguno
 
-**Número de sesiones:** 16
+**Número de sesiones:** 16 horas / 16 semanas
 
 **Horario de clases:** jueves, 08:00 – 10:00
 
-**Horario de tutorías:** viernes, 10:00 – 11:00
+**Horario de tutorías:** lunes, 10:00 – 11:00
 
 ---
 
@@ -89,11 +89,11 @@ Al finalizar la asignatura, el estudiante estará en capacidad de:
 
 ## LUGAR DONDE SE EMITE EL DOCUMENTO
 
-**Nombre del Coordinador/a Académico:** Mgs. Lorena Conde Zhingre
+**Nombre del Coordinador/a Académico:** Mgs. Darío Javier Valarezo León
 
-**Ubicación / Dirección del establecimiento educativo:** C. Agustín Carrión Palacios, Loja
+**Ubicación / Dirección del establecimiento educativo:** Calle Agustín Carrión Palacios entre Av. Salvador Bustamante Celi y Beethoven. Sector Jipiro
 
-**Teléfono del establecimiento educativo:** (07) 258-4567
+**Teléfono del establecimiento educativo:** +593 22985600 Ext. 6008
 
 ---
 
