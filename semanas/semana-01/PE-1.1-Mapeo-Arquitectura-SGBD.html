@@ -1,0 +1,114 @@
+<p>Esta actividad práctica te permitirá aplicar los <strong>conceptos fundamentales de arquitectura de SGBD</strong> mediante la creación de diagramas técnicos detallados. Te enfocarás en <em>mapear componentes cliente/servidor</em>, <em>identificar procesos de fondo</em>, y <em>representar estructuras de memoria</em> usando diagramas arquitectónicos precisos.</p>
+
+<p><strong>¿Qué realizarás?</strong></p>
+
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 99.9997%; height: 289.556px;" border="1">
+            <thead>
+                <tr style="height: 26.5875px;">
+                    <th style="width: 23.5306%; height: 26.5875px;" data-col-size="sm">Actividad</th>
+                    <th style="width: 47.0612%; height: 26.5875px;" data-col-size="xl">Instrucciones específicas</th>
+                    <th style="width: 29.3864%; height: 26.5875px;" data-col-size="md">Entregable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="height: 52.5937px;">
+                    <td style="height: 52.5937px; width: 23.5306%;" data-col-size="sm">Preparación individual</td>
+                    <td style="height: 52.5937px; width: 47.0612%;" data-col-size="xl">Revisa Compendio Semana 1: Arquitectura ANSI-SPARC y componentes de SGBD. Prepara herramientas de diagramación (Draw.io, Lucidchart, Visio).</td>
+                    <td style="height: 52.5937px; width: 29.3864%;" data-col-size="md">Comprensión de arquitectura SGBD y herramientas preparadas.</td>
+                </tr>
+                <tr style="height: 52.5937px;">
+                    <td style="height: 52.5937px; width: 23.5306%;" data-col-size="sm">Análisis individual</td>
+                    <td style="height: 52.5937px; width: 47.0612%;" data-col-size="xl">Crea diagrama completo de arquitectura SGBD incluyendo: niveles ANSI-SPARC, componentes cliente/servidor, procesos de fondo, y estructuras de memoria (buffers).</td>
+                    <td style="height: 52.5937px; width: 29.3864%;" data-col-size="md">Diagrama técnico completo con todos los componentes arquitectónicos.</td>
+                </tr>
+                <tr style="height: 52.5937px;">
+                    <td style="height: 52.5937px; width: 23.5306%;" data-col-size="sm">Trabajo grupal</td>
+                    <td style="height: 52.5937px; width: 47.0612%;" data-col-size="xl">Grupos de 3-4 estudiantes comparan diagramas y preparan presentación de 4 minutos sobre flujo de una consulta SQL a través de la arquitectura.</td>
+                    <td style="height: 52.5937px; width: 29.3864%;" data-col-size="md">Consenso grupal y presentación del flujo de consulta preparada.</td>
+                </tr>
+                <tr style="height: 52.5937px;">
+                    <td style="height: 52.5937px; width: 23.5306%;" data-col-size="sm">Presentación plenaria</td>
+                    <td style="height: 52.5937px; width: 47.0612%;" data-col-size="xl">Cada grupo presenta el flujo de consulta (4 min) explicando cómo interactúan los componentes desde cliente hasta almacenamiento físico.</td>
+                    <td style="height: 52.5937px; width: 29.3864%;" data-col-size="md">Participación activa en debate técnico sobre arquitectura SGBD.</td>
+                </tr>
+                <tr style="height: 52.5937px;">
+                    <td style="height: 52.5937px; width: 23.5306%;" data-col-size="sm">Entrega final</td>
+                    <td style="height: 52.5937px; width: 47.0612%;" data-col-size="xl">Refina diagrama individual e incluye leyenda técnica con descripción de cada componente y sus responsabilidades.</td>
+                    <td style="height: 52.5937px; width: 29.3864%;" data-col-size="md">Diagrama final con leyenda técnica completa.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Componentes requeridos en el diagrama</strong></p>
+
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 25%;" data-col-size="md">Categoría</th>
+                    <th style="width: 35%;" data-col-size="lg">Componentes Obligatorios</th>
+                    <th style="width: 40%;" data-col-size="xl">Descripción Técnica Requerida</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-col-size="md"><strong>Niveles ANSI-SPARC</strong></td>
+                    <td data-col-size="lg">• Nivel Externo (Vistas)<br>• Nivel Conceptual (Lógico)<br>• Nivel Interno (Físico)</td>
+                    <td data-col-size="xl">Representar los 3 niveles con sus respectivas responsabilidades y transformaciones entre niveles.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md"><strong>Arquitectura Cliente/Servidor</strong></td>
+                    <td data-col-size="lg">• Aplicaciones Cliente<br>• Servidor de BD<br>• Red de comunicación</td>
+                    <td data-col-size="xl">Mostrar separación física entre cliente y servidor, incluyendo protocolos de comunicación.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md"><strong>Componentes del Motor</strong></td>
+                    <td data-col-size="lg">• Motor de BD<br>• Procesador de Lenguaje<br>• Optimizador de Consultas<br>• Motor de Transacciones</td>
+                    <td data-col-size="xl">Incluir flujo de procesamiento desde consulta SQL hasta ejecución física.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md"><strong>Estructuras de Memoria</strong></td>
+                    <td data-col-size="lg">• Buffer Cache de BD<br>• Redo Log Buffer<br>• Shared Pool<br>• PGA (Process Global Area)</td>
+                    <td data-col-size="xl">Representar buffers con sus tamaños relativos y propósitos específicos.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md"><strong>Procesos de Fondo</strong></td>
+                    <td data-col-size="lg">• DBWR (Database Writer)<br>• LGWR (Log Writer)<br>• SMON (System Monitor)<br>• PMON (Process Monitor)</td>
+                    <td data-col-size="xl">Mostrar interacción entre procesos y estructuras de memoria/almacenamiento.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Especificaciones técnicas del diagrama:</strong></p>
+<ul>
+    <li><strong>Herramientas recomendadas:</strong> Draw.io, Lucidchart, Visio, Diagrams.net</li>
+    <li><strong>Formato de entrega:</strong> PNG o PDF de alta resolución</li>
+    <li><strong>Elementos visuales:</strong> Usar colores diferenciados por categoría, flechas para flujos, cajas para componentes</li>
+    <li><strong>Leyenda técnica:</strong> Incluir descripción de cada símbolo y componente usado</li>
+    <li><strong>Flujo de consulta:</strong> Marcar con números el recorrido de una consulta SELECT desde cliente hasta datos</li>
+</ul>
+
+<p><strong>Caso de estudio para el flujo:</strong></p>
+<div style="background: rgba(233, 171, 33, 0.1); padding: 1em; border-radius: 8px; margin: 1em 0;">
+    <strong>Consulta SQL:</strong> <code>SELECT nombre, salario FROM empleados WHERE departamento = 'IT' ORDER BY salario DESC;</code><br>
+    <strong>Objetivo:</strong> Trazar el recorrido completo desde la aplicación cliente hasta la recuperación de datos físicos y retorno de resultados.
+</div>
+
+<p><strong>Materiales:</strong> Compendio Semana 1 - Arquitectura SGBD, documentación técnica de Oracle/PostgreSQL, herramientas de diagramación.</p>
+
+<p><strong>Información importante</strong></p>
+<ul>
+    <li><p><strong>Modalidad:</strong> Taller presencial — <strong>2.25 pts</strong>.</p></li>
+    <li><p><strong>Duración:</strong> 90 minutos.</p></li>
+    <li><p><strong>Entrega:</strong> Diagrama completado al final de la clase.</p></li>
+    <li><p><strong>Formato:</strong> Digital (PNG/PDF) con resolución mínima 1920x1080.</p></li>
+</ul>
+
+<p>Si tienes dudas durante la actividad, levanta la mano o utiliza el <strong>horario de tutorías (lunes 10:00-11:00)</strong>.</p>
