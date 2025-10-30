@@ -792,7 +792,7 @@
                                     style="background: rgba(40, 167, 69, 0.1); padding: 2rem; border-radius: 8px; text-align: center;">
                                     <h4><i class="fas fa-table"></i> Relacional</h4>
                                     <p><strong>Estructura Tabular</strong></p>
-                                    <small>SQL, ACID, Esquema Fijo</small>
+                                    <small>SQL, Transaccional, Esquema Fijo</small>
                                 </div>
                             </div>
                             <div class="column fragment">
@@ -842,35 +842,27 @@
                 </section>
 
                 <section data-auto-animate>
-                    <h3>Propiedades ACID</h3>
+                    <h3>Características Transaccionales</h3>
                     <div class="concept-box">
-                        <p>Las bases de datos relacionales manejan un conjunto de propiedades definidas por el acrónimo
-                            <mark>ACID</mark>, cruciales para garantizar la confiabilidad.
-                        </p>
+                        <p>Las bases de datos relacionales manejan <mark>transacciones</mark> que garantizan la integridad y confiabilidad de los datos.</p>
 
                         <div class="r-hstack" style="margin-top: 1rem;">
                             <div class="column fragment">
                                 <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
-                                    <h5><i class="fas fa-atom"></i> Atomicidad</h5>
-                                    <p>Todo o nada</p>
-                                </div>
-                                <div
-                                    style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
-                                    <h5><i class="fas fa-check-circle"></i> Consistencia</h5>
-                                    <p>Estado válido</p>
+                                    <h5><i class="fas fa-shield-alt"></i> Integridad</h5>
+                                    <p>Garantiza datos válidos</p>
                                 </div>
                             </div>
                             <div class="column fragment">
-                                <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
-                                    <h5><i class="fas fa-user-secret"></i> Aislamiento</h5>
-                                    <p>Transacciones independientes</p>
-                                </div>
-                                <div
-                                    style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
-                                    <h5><i class="fas fa-save"></i> Durabilidad</h5>
-                                    <p>Persistencia garantizada</p>
+                                <div style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h5><i class="fas fa-lock"></i> Confiabilidad</h5>
+                                    <p>Operaciones seguras</p>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="fragment" style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <p><strong>Nota:</strong> Los conceptos detallados de transacciones y propiedades ACID se estudiarán en profundidad en la Semana 2.</p>
                         </div>
                     </div>
                 </section>
@@ -910,54 +902,32 @@
                 </section>
 
                 <section data-auto-animate>
-                    <h3>Propiedades BASE</h3>
+                    <h3>Características de Consistencia</h3>
                     <div class="concept-box">
-                        <p>Los sistemas NoSQL siguen las propiedades <mark>BASE</mark> en lugar de ACID, priorizando
-                            disponibilidad y tolerancia de partición.</p>
-
-                        <div class="mermaid-container fragment">
-                            <div class="mermaid">
-                                graph LR
-                                A1["⚛️ Atomicity<br />Todo o Nada"] --> BA["🌐 Basically Available<br />Alta
-                                Disponibilidad"]
-                                C1["✅ Consistency<br />Estado Válido"] --> EC["⏰ Eventual Consistency<br />Consistencia
-                                Eventual"]
-                                I1["🔒 Isolation<br />Independencia"] --> SS["🔄 Soft State<br />Estado Flexible"]
-                                D1["💾 Durability<br />Persistencia"] --> BA
-
-                                style A1 fill:#e8f5e8
-                                style C1 fill:#e8f5e8
-                                style I1 fill:#e8f5e8
-                                style D1 fill:#e8f5e8
-                                style BA fill:#d1ecf1
-                                style SS fill:#d1ecf1
-                                style EC fill:#d1ecf1
-                            </div>
-                            <div
-                                style="text-align: center; margin-top: 1rem; font-size: 0.9em; color: var(--uide-secondary);">
-                                <span style="color: #28a745;">🏛️ ACID (Relacional)</span> →
-                                <span style="color: #007bff;">☁️ BASE (NoSQL)</span>
-                            </div>
-                        </div>
+                        <p>Los sistemas NoSQL manejan la <mark>consistencia de datos</mark> de manera diferente a los sistemas relacionales, priorizando disponibilidad y escalabilidad.</p>
 
                         <div class="r-vstack" style="margin-top: 1rem;">
                             <div class="fragment"
                                 style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
-                                <h5><i class="fas fa-check"></i> Basically Available</h5>
-                                <p>El sistema está <strong>básicamente disponible</strong> la mayor parte del tiempo</p>
+                                <h5><i class="fas fa-check"></i> Alta Disponibilidad</h5>
+                                <p>El sistema está <strong>disponible</strong> la mayor parte del tiempo</p>
                             </div>
 
                             <div class="fragment"
                                 style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
-                                <h5><i class="fas fa-exchange-alt"></i> Soft State</h5>
-                                <p>El estado del sistema puede <strong>cambiar con el tiempo</strong></p>
+                                <h5><i class="fas fa-expand-arrows-alt"></i> Flexibilidad</h5>
+                                <p>El estado del sistema puede <strong>adaptarse dinámicamente</strong></p>
                             </div>
 
                             <div class="fragment"
                                 style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
-                                <h5><i class="fas fa-clock"></i> Eventual Consistency</h5>
-                                <p>Los datos serán <strong>consistentes eventualmente</strong>, no inmediatamente</p>
+                                <h5><i class="fas fa-clock"></i> Consistencia Gradual</h5>
+                                <p>Los datos alcanzan <strong>consistencia con el tiempo</strong></p>
                             </div>
+                        </div>
+                        
+                        <div class="fragment" style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <p><strong>Nota:</strong> Los modelos de consistencia detallados (ACID vs BASE) se analizarán en profundidad en la Semana 2.</p>
                         </div>
                     </div>
                 </section>
@@ -994,8 +964,8 @@
                                 </tr>
                                 <tr class="fragment">
                                     <td><strong>Consistencia</strong></td>
-                                    <td>ACID - Inmediata</td>
-                                    <td>BASE - Eventual</td>
+                                    <td>Inmediata y estricta</td>
+                                    <td>Gradual y flexible</td>
                                 </tr>
                                 <tr class="fragment">
                                     <td><strong>Casos de Uso</strong></td>
@@ -1103,15 +1073,15 @@
                         <div class="flashcard" onclick="flipCard(this)">
                             <div class="flashcard-inner">
                                 <div class="flashcard-front">
-                                    <h4>ACID vs BASE</h4>
-                                    <p>¿Cuál es la diferencia entre propiedades ACID y BASE?</p>
+                                    <h4>Modelos de Consistencia</h4>
+                                    <p>¿Cuál es la diferencia entre consistencia relacional y documental?</p>
                                 </div>
                                 <div class="flashcard-back">
-                                    <h4>Consistencia vs Disponibilidad</h4>
-                                    <p><strong>ACID:</strong> consistencia inmediata, transacciones confiables.
-                                        <strong>BASE:</strong> disponibilidad alta, consistencia eventual.
+                                    <h4>Inmediata vs Gradual</h4>
+                                    <p><strong>Relacional:</strong> consistencia inmediata, transacciones estrictas.
+                                        <strong>Documental:</strong> disponibilidad alta, consistencia gradual.
                                     </p>
-                                    <small>Relacional vs NoSQL</small>
+                                    <small>SQL vs NoSQL</small>
                                 </div>
                             </div>
                         </div>
@@ -1295,8 +1265,8 @@
                             <div class="column fragment">
                                 <h5>Modelos y Aplicaciones</h5>
                                 <ul style="text-align: left; font-size: 0.9em;">
-                                    <li><mark>Modelo relacional</mark>: ACID, estructura rígida</li>
-                                    <li><mark>Modelo documental</mark>: BASE, flexibilidad</li>
+                                    <li><mark>Modelo relacional</mark>: Transaccional, estructura rígida</li>
+                                    <li><mark>Modelo documental</mark>: Flexible, escalabilidad</li>
                                     <li>Cada modelo tiene <strong>casos de uso específicos</strong></li>
                                 </ul>
                             </div>

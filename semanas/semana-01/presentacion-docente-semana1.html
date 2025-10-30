@@ -2166,7 +2166,7 @@
                             <h4><i class="fas fa-table"></i> Modelo Relacional</h4>
                             <ul>
                                 <li><strong>Estructura:</strong> Tabular</li>
-                                <li><strong>Características:</strong> SQL, ACID</li>
+                                <li><strong>Características:</strong> SQL, Transaccional</li>
                                 <li><strong>Esquema:</strong> Fijo y predefinido</li>
                             </ul>
                         </div>
@@ -2207,290 +2207,13 @@
                 </div>
 
                 <div class="highlight-box fragment">
-                    <h3>Propiedades ACID</h3>
-                    <p>Las transacciones son operaciones fundamentales que nos permiten modificar y recuperar datos.
-                        Para garantizar la <mark>integridad de la base de datos</mark>, es importante que estas
-                        transacciones se ejecuten manteniendo consistencia, corrección y confiabilidad incluso en caso
-                        de fallos.</p>
-                    <p><strong>ACID</strong> significa: <mark>Atomicity, Consistency, Isolation, Durability</mark></p>
+                    <h3>Características Transaccionales</h3>
+                    <p>Las transacciones son operaciones fundamentales que permiten modificar y recuperar datos de manera <mark>segura y confiable</mark>.</p>
+                    <p><strong>Nota:</strong> Los conceptos detallados de transacciones y propiedades ACID se estudiarán en profundidad en la <mark>Semana 2</mark>.</p>
                 </div>
             </section>
 
-            <!-- Slide 12.1: Atomicidad Detallada -->
-            <section>
-                <h2><i class="fas fa-atom"></i> ACID: Atomicidad (Atomicity)</h2>
 
-                <div class="definition-box">
-                    <h3>Principio de "Todo o Nada"</h3>
-                    <p><strong>Atomicidad</strong> significa que una transacción es <mark>todo-o-nada</mark>: o todas
-                        sus operaciones tienen éxito, o ninguna se aplica. Si alguna parte falla, toda la transacción se
-                        revierte para mantener la base de datos consistente.</p>
-                </div>
-
-                <div class="r-hstack">
-                    <div class="column">
-                        <div class="concept-box">
-                            <h4><i class="fas fa-check-circle"></i> Commit (Confirmar)</h4>
-                            <p>Si la transacción es exitosa, los cambios se aplican permanentemente.</p>
-
-                            <h4><i class="fas fa-undo"></i> Abort/Rollback (Abortar/Revertir)</h4>
-                            <p>Si la transacción falla, cualquier cambio realizado durante la transacción se descarta.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="column">
-                        <div class="highlight-box">
-                            <h4>Ejemplo Práctico: Transferencia Bancaria</h4>
-                            <p><strong>Transacción T:</strong> Transferir $100 de cuenta X a cuenta Y</p>
-                            <ul>
-                                <li><strong>T1:</strong> Restar $100 de cuenta X</li>
-                                <li><strong>T2:</strong> Sumar $100 a cuenta Y</li>
-                            </ul>
-                            <div class="mermaid-container">
-                                <div class="mermaid">
-                                    graph LR
-                                    A[Cuenta X: $500] -->|T1: -$100| B[Cuenta X: $400]
-                                    C[Cuenta Y: $200] -->|T2: +$100| D[Cuenta Y: $300]
-
-                                    style A fill:#f8d7da
-                                    style B fill:#d4edda
-                                    style C fill:#f8d7da
-                                    style D fill:#d4edda
-                                </div>
-                            </div>
-                            <p><strong>Sin Atomicidad:</strong> Si T1 se completa pero T2 falla, X pierde $100 pero Y no
-                                los recibe - ¡inconsistencia!</p>
-                            <p><strong>Con Atomicidad:</strong> Si cualquier parte falla, todo el proceso se revierte al
-                                estado original.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Slide 12.2: Consistencia Detallada -->
-            <section>
-                <section>
-                    <h2><i class="fas fa-balance-scale"></i> ACID: Consistencia (Consistency)</h2>
-
-                    <div class="definition-box">
-                        <h3>Mantenimiento de Estados Válidos</h3>
-                        <p><strong>Consistencia</strong> en transacciones significa que la base de datos debe
-                            <mark>permanecer en un estado válido</mark> antes y después de una transacción.
-                        </p>
-                    </div>
-
-                    <div class="concept-box">
-                        <h4>Características de un Estado Válido</h4>
-                        <ul>
-                            <li>Sigue todas las reglas, restricciones y relaciones definidas (claves primarias,
-                                foráneas,
-                                etc.)</li>
-                            <li>Si una transacción viola cualquiera de estas reglas, se revierte para prevenir datos
-                                corruptos</li>
-                            <li>Ejemplo de violación: deducir dinero de una cuenta pero no agregarlo a otra en una
-                                transferencia</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section>
-                    <h2><i class="fas fa-university"></i> Ejemplo: Sistema Bancario - Conservación del Balance Total
-                    </h2>
-
-                    <div class="highlight-box">
-                        <h3>Regla de Consistencia</h3>
-                        <p><strong>La suma de todos los balances debe permanecer constante</strong></p>
-                    </div>
-
-                    <div class="mermaid-container banking-diagram">
-                        <div class="mermaid" id="banking-system-diagram">
-                            graph TD
-                            A["Estado Inicial<br />Cuenta X: $500<br />Cuenta Y: $200<br />Total: $700"]
-                            A -->|Transferencia $100| B["Estado Final<br />Cuenta X: $400<br />Cuenta Y:
-                            $300<br />Total: $700"]
-                            A -->|Fallo Parcial| C["Estado Inconsistente<br />Cuenta X: $400<br />Cuenta Y:
-                            $200<br />Total: $600 ❌"]
-                            C -->|Rollback por Consistencia| A
-
-                            style A fill:#e8f5e8,stroke:#28a745,stroke-width:2px
-                            style B fill:#d4edda,stroke:#28a745,stroke-width:2px
-                            style C fill:#f8d7da,stroke:#dc3545,stroke-width:2px
-                        </div>
-                    </div>
-
-                    <div class="r-hstack fragment">
-                        <div class="column">
-                            <div class="concept-box">
-                                <h4>Verificación de Consistencia</h4>
-                                <p><strong>Total antes de T:</strong> 500 + 200 = 700</p>
-                                <p><strong>Total después de T:</strong> 400 + 300 = 700 ✅</p>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="highlight-box">
-                                <h4>Mecanismo de Protección</h4>
-                                <p>Si la transacción falla en el medio, el sistema mantiene consistencia mediante
-                                    <strong>rollback</strong>.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- Slide 12.3: Aislamiento Detallado -->
-            <section>
-                <section>
-                    <h2><i class="fas fa-lock"></i> ACID: Aislamiento (Isolation)</h2>
-
-                    <div class="definition-box">
-                        <h3>Transacciones Independientes</h3>
-                        <p><strong>Aislamiento</strong> asegura que las transacciones se ejecuten
-                            <mark>independientemente
-                                sin afectarse entre sí</mark>. Los cambios realizados por una transacción no son
-                            visibles
-                            para otras hasta que se confirmen.
-                        </p>
-                    </div>
-
-                    <div class="concept-box">
-                        <h4>Problemas que Previene el Aislamiento</h4>
-                        <ul>
-                            <li><strong>Dirty Reads:</strong> Leer datos no confirmados</li>
-                            <li><strong>Non-repeatable Reads:</strong> Los datos cambian entre dos lecturas</li>
-                            <li><strong>Phantom Reads:</strong> Aparecen nuevas filas durante una transacción</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section>
-                    <h2><i class="fas fa-sync-alt"></i> Ejemplo: Transacciones Concurrentes</h2>
-
-                    <div class="highlight-box">
-                        <h3>Estado Inicial</h3>
-                        <p><strong>X = $500, Y = $500</strong></p>
-                    </div>
-
-                    <div class="r-hstack">
-                        <div class="column">
-                            <div class="concept-box"
-                                style="background: rgba(40, 167, 69, 0.1); border-left: 4px solid #28a745;">
-                                <h4><i class="fas fa-arrow-right"></i> Transacción T</h4>
-                                <ol>
-                                    <li>Lee Y (valor: 500)</li>
-                                    <li>Deduce $50 de X (nuevo X = 450)</li>
-                                    <li>Suma $50 a Y (nuevo Y = 550)</li>
-                                </ol>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="concept-box"
-                                style="background: rgba(35, 53, 110, 0.1); border-left: 4px solid #23356E;">
-                                <h4><i class="fas fa-arrow-right"></i> Transacción T''</h4>
-                                <ol>
-                                    <li>Lee X (500) y Y (500)</li>
-                                    <li>Calcula suma: 500 + 500 = 1000</li>
-                                    <li>Mientras tanto, valores cambian a X=450, Y=550</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="r-hstack fragment">
-                        <div class="column">
-                            <div class="highlight-box">
-                                <h4><i class="fas fa-shield-alt"></i> Con Aislamiento</h4>
-                                <p>T'' no lee valores desactualizados mientras T está en progreso. Las transacciones son
-                                    independientes, y T'' accede a los valores finales solo después de que T confirme.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="concept-box" style="background: rgba(40, 167, 69, 0.1);">
-                                <h4><i class="fas fa-check-circle"></i> Resultado Correcto</h4>
-                                <p><strong>Suma final = 450 + 550 = 1000 ✅</strong></p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- Slide 12.4: Durabilidad e Impacto -->
-            <section>
-                <h2><i class="fas fa-save"></i> ACID: Durabilidad y Gestión del SGBD</h2>
-
-                <!-- Primera fila: Solo Durabilidad -->
-                <div class="definition-box">
-                    <h3><i class="fas fa-shield-alt"></i> Durabilidad (Durability)</h3>
-                    <p><strong>Durabilidad</strong> asegura que una vez que una transacción se confirma,
-                        <mark>sus cambios se guardan permanentemente</mark>, incluso si el sistema falla.
-                    </p>
-                    <ul class="r-hstack"
-                        style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; list-style: none; padding: 0;">
-                        <li><i class="fas fa-memory"></i> Los datos se almacenan en memoria no volátil</li>
-                        <li><i class="fas fa-undo"></i> La base de datos puede recuperarse al último estado confirmado
-                        </li>
-                        <li><i class="fas fa-check-circle"></i> No se pierden datos confirmados</li>
-                    </ul>
-
-                    <div class="highlight-box fragment" style="margin-top: 1rem;">
-                        <h4><i class="fas fa-university"></i> Ejemplo Bancario</h4>
-                        <p>Después de transferir dinero exitosamente de Cuenta A a Cuenta B, los cambios se
-                            almacenan en disco. Incluso si hay un crash inmediatamente después del commit, los
-                            detalles de la transferencia permanecen intactos cuando el sistema se recupera.</p>
-                    </div>
-                </div>
-
-                <!-- Segunda fila: Responsabilidades + Casos de Uso -->
-                <div class="r-hstack fragment">
-                    <div class="column">
-                        <div class="concept-box">
-                            <h4><i class="fas fa-cogs"></i> Responsabilidades en el SGBD</h4>
-                            <table class="comparison-table">
-                                <thead>
-                                    <tr>
-                                        <th>Propiedad</th>
-                                        <th>Responsable</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Atomicity</strong></td>
-                                        <td>Transaction Manager</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Consistency</strong></td>
-                                        <td>Application Programmer</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Isolation</strong></td>
-                                        <td>Concurrency Control Manager</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Durability</strong></td>
-                                        <td>Recovery Manager</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="column">
-                        <div class="highlight-box">
-                            <h4><i class="fas fa-industry"></i> Casos de Uso Críticos</h4>
-                            <ul>
-                                <li><i class="fas fa-university"></i> <strong>Banca:</strong> Transferencias, depósitos,
-                                    retiros</li>
-                                <li><i class="fas fa-shopping-cart"></i> <strong>E-commerce:</strong> Inventarios,
-                                    pedidos, detalles de clientes</li>
-                                <li><i class="fas fa-heartbeat"></i> <strong>Salud:</strong> Registros de pacientes,
-                                    resultados de pruebas</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
             </section>
 
             <!-- Slide 13: Modelo Documental (NoSQL) -->
@@ -2514,13 +2237,14 @@
                 </div>
 
                 <div class="highlight-box fragment">
-                    <h3>Propiedades BASE</h3>
-                    <p>Priorizan <mark>disponibilidad y tolerancia de partición</mark>:</p>
+                    <h3>Enfoque de Consistencia</h3>
+                    <p>Priorizan <mark>disponibilidad y escalabilidad</mark> sobre consistencia inmediata:</p>
                     <ul>
-                        <li><strong>Basically Available:</strong> Sistema básicamente disponible</li>
-                        <li><strong>Soft State:</strong> Estado del sistema puede cambiar</li>
-                        <li><strong>Eventual Consistency:</strong> Consistencia eventual, no inmediata</li>
+                        <li><strong>Alta Disponibilidad:</strong> Sistema disponible la mayor parte del tiempo</li>
+                        <li><strong>Flexibilidad:</strong> Estructura adaptable a cambios</li>
+                        <li><strong>Consistencia Gradual:</strong> Los datos se sincronizan progresivamente</li>
                     </ul>
+                    <p><strong>Nota:</strong> Los modelos de consistencia detallados se estudiarán en la Semana 2.</p>
                 </div>
             </section>
             <!-- Slide 14: Comparación de Modelos -->
@@ -2559,8 +2283,8 @@
                         </tr>
                         <tr>
                             <td><strong>Consistencia</strong></td>
-                            <td>ACID - Inmediata</td>
-                            <td>BASE - Eventual</td>
+                            <td>Inmediata y estricta</td>
+                            <td>Gradual y flexible</td>
                         </tr>
                         <tr>
                             <td><strong>Casos de Uso</strong></td>
@@ -2577,8 +2301,8 @@
 
                 <div class="concept-box">
                     <h3>Contextos Ideales</h3>
-                    <p>El modelo relacional con propiedades ACID es <mark>perfecto para sistemas donde la integridad de
-                            datos es crítica</mark> y no negociable.</p>
+                    <p>El modelo relacional es <mark>perfecto para sistemas donde la integridad de
+                            datos es crítica</mark> y se requiere consistencia inmediata.</p>
                 </div>
 
                 <div class="r-hstack fragment">
@@ -2618,8 +2342,8 @@
 
                 <div class="concept-box">
                     <h3>Contextos Ideales</h3>
-                    <p>El modelo documental con propiedades BASE <mark>brilla en entornos que requieren flexibilidad y
-                            escalabilidad masiva</mark>.</p>
+                    <p>El modelo documental <mark>brilla en entornos que requieren flexibilidad y
+                            escalabilidad masiva</mark> con esquemas dinámicos.</p>
                 </div>
 
                 <div class="r-hstack fragment">
@@ -2701,8 +2425,8 @@
                         <div class="concept-box">
                             <h4>Modelos y Aplicaciones</h4>
                             <ul>
-                                <li><strong>Modelo relacional:</strong> ACID, estructura rígida</li>
-                                <li><strong>Modelo documental:</strong> BASE, flexibilidad</li>
+                                <li><strong>Modelo relacional:</strong> Transaccional, estructura rígida</li>
+                                <li><strong>Modelo documental:</strong> Flexible, escalabilidad</li>
                                 <li>Cada modelo tiene <mark>casos de uso específicos</mark></li>
                             </ul>
                         </div>
@@ -2746,14 +2470,12 @@
                     </div>
                     <div class="column">
                         <div class="concept-box">
-                            <h4><i class="fas fa-balance-scale"></i> TA-1.1: Análisis ACID vs BASE</h4>
-                            <p><strong>Objetivo:</strong> Comparación de propiedades transaccionales</p>
+                            <h4><i class="fas fa-balance-scale"></i> TA-1.1: Comparación de Modelos</h4>
+                            <p><strong>Objetivo:</strong> Análisis comparativo de modelos de datos</p>
                             <ul>
-                                <li><strong>Propiedades ACID:</strong> Atomicidad, Consistencia, Aislamiento,
-                                    Durabilidad</li>
-                                <li><strong>Propiedades BASE:</strong> Basically Available, Soft State, Eventual
-                                    Consistency</li>
-                                <li><strong>Casos de uso:</strong> Banca vs E-commerce vs Redes Sociales</li>
+                                <li><strong>Modelo Relacional:</strong> Estructura, esquema, casos de uso</li>
+                                <li><strong>Modelo Documental:</strong> Flexibilidad, escalabilidad, aplicaciones</li>
+                                <li><strong>Casos de uso:</strong> Sistemas financieros vs Big Data vs IoT</li>
                                 <li><strong>Recomendación:</strong> Justificación técnica por contexto</li>
                             </ul>
                             <p><strong>Entregable:</strong> Ficha comparativa de 1 página</p>
@@ -2784,10 +2506,10 @@
                             <li><i class="fas fa-check-circle" style="color: #28a745;"></i>
                                 <strong>Cliente/Servidor:</strong> Separación de responsabilidades comprendida
                             </li>
-                            <li><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>Propiedades
-                                    ACID:</strong> Transacciones y consistencia aplicadas</li>
-                            <li><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>ACID vs
-                                    BASE:</strong> Modelos relacionales y documentales comparados</li>
+                            <li><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>Características
+                                    Transaccionales:</strong> Integridad y confiabilidad aplicadas</li>
+                            <li><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>Modelos de
+                                    Consistencia:</strong> Relacionales y documentales comparados</li>
                         </ul>
                     </div>
 
