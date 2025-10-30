@@ -1,0 +1,114 @@
+<p data-start="0" data-end="349">Esta semana establece los <strong>cimientos conceptuales</strong> para todo el curso de SGBD. Estudiaremos los fundamentos de los Sistemas de Gestión de Bases de Datos, desde su definición como interfaz entre datos, usuarios y aplicaciones, hasta la comparación práctica entre modelos relacionales y NoSQL en contextos empresariales reales.</p>
+
+<p data-start="351" data-end="368"><strong>¿Qué veremos?</strong></p>
+
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse;" border="1" data-start="370" data-end="1868">
+            <thead data-start="370" data-end="407">
+                <tr data-start="370" data-end="407">
+                    <th data-start="370" data-end="377" data-col-size="sm">Tema</th>
+                    <th data-start="377" data-end="395" data-col-size="xl">Contenido clave</th>
+                    <th data-start="395" data-end="407" data-col-size="md">Aplicaciones prácticas</th>
+                </tr>
+            </thead>
+            <tbody data-start="422" data-end="1868">
+                <tr data-start="422" data-end="654">
+                    <td data-start="422" data-end="449" data-col-size="sm">Definición y Propósito</td>
+                    <td data-col-size="xl" data-start="449" data-end="574">SGBD como colección de datos relacionados y programas que los gestionan. Objetivo: fungir como interfaz entre base de datos, usuarios y aplicaciones para almacenamiento y recuperación flexible de información.</td>
+                    <td data-col-size="md" data-start="574" data-end="654">Evolución desde sistemas de archivos; gestión empresarial moderna; aplicaciones web y móviles.</td>
+                </tr>
+                <tr data-start="655" data-end="870">
+                    <td data-start="655" data-end="682" data-col-size="sm">Arquitectura ANSI-SPARC</td>
+                    <td data-col-size="xl" data-start="682" data-end="812">Arquitectura de tres niveles propuesta por ANSI-SPARC en 1975: Nivel Interno/Físico (almacenamiento real), Nivel Lógico/Conceptual (estructura completa), Nivel Externo/Vistas (acceso usuarios). Independencia de datos.</td>
+                    <td data-col-size="md" data-start="812" data-end="870">Separación programas de BD física; vistas personalizadas por departamento; flexibilidad arquitectónica.</td>
+                </tr>
+                <tr data-start="871" data-end="1046">
+                    <td data-start="871" data-end="911" data-col-size="sm">Componentes Principales</td>
+                    <td data-col-size="xl" data-start="911" data-end="972">SGBD como paquete de software complejo: Usuarios/Aplicaciones, Interfaz de Usuario, Procesador de Consultas, Motor de BD, Base de Datos, Administrador DBA, Herramientas de Administración trabajando coordinadamente.</td>
+                    <td data-col-size="md" data-start="972" data-end="1046">Diagramas de arquitectura empresarial; mapeo de componentes en sistemas reales; herramientas como phpMyAdmin.</td>
+                </tr>
+                <tr data-start="1047" data-end="1222">
+                    <td data-start="1047" data-end="1072" data-col-size="sm">Funciones Principales</td>
+                    <td data-col-size="xl" data-start="1072" data-end="1136">Funciones esenciales: Gestión de Datos (almacenamiento físico, archivos, índices), Procesamiento de Consultas (análisis SQL, optimización), Control y Seguridad (autenticación, integridad referencial), Administración (backup, monitoreo, mantenimiento).</td>
+                    <td data-col-size="md" data-start="1136" data-end="1222">Optimización automática de consultas; sistemas de respaldo empresariales; control de acceso por roles; auditoría.</td>
+                </tr>
+                <tr data-start="1223" data-end="1400">
+                    <td data-start="1223" data-end="1238" data-col-size="sm">Arquitectura Cliente/Servidor</td>
+                    <td data-col-size="xl" data-start="1238" data-end="1324">Modelo de distribución básico y detallado. Cliente (aplicaciones, herramientas, interfaces) conectándose a través de red a Servidor (motor SGBD, procesamiento, transacciones, concurrencia) que accede a Base de Datos.</td>
+                    <td data-col-size="md" data-start="1324" data-end="1400">Aplicaciones web/móviles conectándose a servidores BD; arquitecturas distribuidas; escalabilidad empresarial.</td>
+                </tr>
+                <tr data-start="1401" data-end="1576">
+                    <td data-start="1401" data-end="1438" data-col-size="sm">Modelo Relacional</td>
+                    <td data-col-size="xl" data-start="1438" data-end="1518">Postulado por Edgar Frank Codd (1970). Estructura tabular rígida con esquema fijo. Propiedades ACID: Atomicity (todo o nada), Consistency (estado válido), Isolation (independencia), Durability (persistencia). SQL estándar.</td>
+                    <td data-col-size="md" data-start="1518" data-end="1576">Oracle Database, PostgreSQL, MySQL; sistemas bancarios, ERP, CRM; transacciones financieras críticas.</td>
+                </tr>
+                <tr data-start="1577" data-end="1752">
+                    <td data-start="1577" data-end="1603" data-col-size="sm">Modelo Documental (NoSQL)</td>
+                    <td data-col-size="xl" data-start="1603" data-end="1682">Esquema dinámico y flexible. Propiedades BASE: Basically Available (alta disponibilidad), Soft State (estado flexible), Eventual Consistency (consistencia eventual). Escalabilidad horizontal. Documentos JSON/XML.</td>
+                    <td data-col-size="md" data-start="1682" data-end="1752">MongoDB, CouchDB, Amazon DynamoDB; Big Data, IoT, redes sociales; aplicaciones de alta disponibilidad.</td>
+                </tr>
+                <tr data-start="1753" data-end="1868">
+                    <td data-start="1753" data-end="1779" data-col-size="sm">Comparación de Modelos</td>
+                    <td data-col-size="xl" data-start="1779" data-end="1828">Análisis comparativo detallado: Estructura (tablas vs documentos), Esquema (fijo vs flexible), Escalabilidad (vertical vs horizontal), Consistencia (ACID vs BASE), Casos de uso específicos según contexto empresarial.</td>
+                    <td data-col-size="md" data-start="1828" data-end="1868">Tabla comparativa interactiva; evaluación cuándo usar SQL vs NoSQL; sistemas híbridos modernos; casos de estudio reales.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p data-start="1870" data-end="1898"><strong>Objetivos de aprendizaje</strong></p>
+
+<p data-start="1900" data-end="1930">Al finalizar la semana podrás:</p>
+
+<ul data-start="1932" data-end="2426">
+    <li data-start="1932" data-end="2044">
+        <p data-start="1934" data-end="2044">Explicar los conceptos fundamentales de SGBD y su importancia como interfaz entre datos, usuarios y aplicaciones en la gestión moderna de información.</p>
+    </li>
+    <li data-start="2045" data-end="2133">
+        <p data-start="2047" data-end="2133">Distinguir los <strong data-start="2058" data-end="2069">tres niveles</strong> de la arquitectura <strong data-start="2071" data-end="2081">ANSI-SPARC</strong> y sus <strong data-start="2084" data-end="2094">beneficios</strong> de independencia de datos física y lógica.</p>
+    </li>
+    <li data-start="2134" data-end="2249">Identificar y mapear los componentes principales de un SGBD en arquitecturas cliente/servidor, aplicando conceptos a diagramas técnicos reales.</li>
+    <li data-start="2250" data-end="2300">Comparar modelos relacionales y documentales, evaluando propiedades ACID vs BASE según el contexto empresarial específico.</li>
+    <li data-start="2301" data-end="2426">Analizar casos de uso específicos para determinar cuándo usar SQL vs NoSQL, considerando factores como consistencia, disponibilidad y escalabilidad.</li>
+</ul>
+
+<p data-start="2428" data-end="2442"><strong>Materiales</strong></p>
+
+<ul data-start="2444" data-end="2647">
+    <li data-start="2444" data-end="2515">
+        <p data-start="2446" data-end="2515"><strong data-start="2446" data-end="2463">Compendio:</strong> <a title="Compendio - Semana 1" href="https://uide.instructure.com/courses/30176/pages/compendio-semana-1" data-course-type="wikiPages" data-published="true" data-api-endpoint="https://uide.instructure.com/api/v1/courses/30176/pages/compendio-semana-1" data-api-returntype="Page">Semana 1 — Fundamentos de SGBD</a> con diagramas interactivos y flashcards.</p>
+    </li>
+    <li data-start="2516" data-end="2647">
+        <p data-start="2518" data-end="2647"><strong data-start="2518" data-end="2546">Bibliografía base:</strong> Elmasri & Navathe (2011); Silberschatz et al. (1998); Oppel (2011); Sadalage & Fowler (2013); Castro et al. (2012); Núñez Hervas (2023); IONOS Digitalguide (2022).</p>
+    </li>
+</ul>
+
+<p data-start="2649" data-end="2664"><strong>Actividades</strong></p>
+
+<ul data-start="2666" data-end="3004">
+    <li data-start="2666" data-end="2723">
+        <p data-start="2668" data-end="2723"><strong data-start="2668" data-end="2686">Lectura guiada</strong> del compendio interactivo con diagramas de Mermaid y visualizaciones D3.js.</p>
+    </li>
+    <li data-start="2724" data-end="2841">
+        <p data-start="2726" data-end="2841"><strong data-start="2726" data-end="2761">PE-1.1: Mapeo de Arquitectura SGBD</strong> - Representación visual de componentes arquitectónicos (cliente/servidor, procesos, buffers) en diagrama técnico con herramientas de modelado — <strong data-start="2826" data-end="2838">2.25 pts</strong>.</p>
+    </li>
+    <li data-start="2842" data-end="2941">
+        <p data-start="2844" data-end="2941"><strong data-start="2844" data-end="2890">TA-1.1: Comparación de Modelos</strong> - Ficha de 1 página comparando modelos relacional vs documental con caso de uso específico y recomendación justificada — <strong data-start="2926" data-end="2938">2.25 pts</strong>.</p>
+    </li>
+    <li data-start="2942" data-end="3004">
+        <p data-start="2944" data-end="3004"><strong data-start="2944" data-end="2967">Total de la semana:</strong> <strong data-start="2968" data-end="2978">4.5/30</strong> (Evaluación diagnóstica).</p>
+    </li>
+</ul>
+
+<p data-start="3006" data-end="3120"><strong>Conceptos clave para recordar:</strong></p>
+
+<ul data-start="3122" data-end="3260">
+    <li data-start="3122" data-end="3160"><strong>Arquitectura ANSI-SPARC:</strong> Tres niveles de abstracción (Interno, Lógico, Externo) con independencia de datos</li>
+    <li data-start="3161" data-end="3200"><strong>Componentes SGBD:</strong> Paquete de software complejo con subsistemas coordinados (cliente/servidor, motor, procesador)</li>
+    <li data-start="3201" data-end="3235"><strong>ACID vs BASE:</strong> Consistencia inmediata (relacional) vs disponibilidad eventual (documental)</li>
+    <li data-start="3236" data-end="3260"><strong>Modelos:</strong> Relacional (Edgar Codd, 1970, tabular rígido) vs Documental (NoSQL, esquema flexible)</li>
+</ul>
+
+<p data-start="3261" data-end="3358" data-is-last-node="" data-is-only-node="">Si tienes dudas, deja tu pregunta en el canal de <strong data-start="3310" data-end="3321">DISCORD</strong> o envíame un mensaje por <strong data-start="3347" data-end="3357">Canvas</strong>.</p>

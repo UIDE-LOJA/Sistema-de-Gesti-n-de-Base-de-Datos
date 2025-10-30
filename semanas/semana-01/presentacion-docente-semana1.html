@@ -1,0 +1,2959 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fundamentos de SGBD - Semana 1</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.css" id="theme">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/monokai.css">
+
+    <!-- UIDE Theme CSS -->
+    <link rel="stylesheet" href="../../assets/css/uide-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Mermaid for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+
+    <style>
+        .reveal .slides section {
+            text-align: left;
+            font-size: clamp(0.7rem, 2.5vw, 1rem);
+        }
+
+        .reveal h1,
+        .reveal h2,
+        .reveal h3 {
+            color: var(--uide-primary);
+            text-align: center;
+        }
+
+        .reveal h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            line-height: 1.2;
+        }
+
+        .reveal h2 {
+            font-size: clamp(1.2rem, 3.5vw, 2rem);
+            line-height: 1.3;
+        }
+
+        .reveal h3 {
+            font-size: clamp(1rem, 3vw, 1.6rem);
+            line-height: 1.3;
+        }
+
+        .reveal h4 {
+            font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+            line-height: 1.4;
+        }
+
+        .reveal p {
+            font-size: clamp(0.75rem, 2.2vw, 1rem);
+            line-height: 1.5;
+            margin-bottom: 0.8em;
+        }
+
+        .reveal ul li {
+            font-size: clamp(0.7rem, 2vw, 0.95rem);
+            line-height: 1.4;
+            margin-bottom: 0.4em;
+        }
+
+        .reveal strong {
+            font-weight: 600;
+        }
+
+        .reveal mark {
+            background-color: rgba(233, 171, 33, 0.3);
+            padding: 0.1em 0.2em;
+            border-radius: 3px;
+        }
+
+        .concept-box {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin: 0.8rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .concept-box h3 {
+            font-size: clamp(0.95rem, 2.8vw, 1.4rem);
+            margin-bottom: 0.5em;
+            line-height: 1.3;
+        }
+
+        .concept-box h4 {
+            font-size: clamp(0.85rem, 2.3vw, 1.2rem);
+            margin-bottom: 0.4em;
+            line-height: 1.3;
+        }
+
+        .concept-box p {
+            font-size: clamp(0.75rem, 2.1vw, 0.95rem);
+        }
+
+        .concept-box ul li {
+            font-size: clamp(0.7rem, 1.9vw, 0.9rem);
+        }
+
+        .highlight-box {
+            background: rgba(35, 53, 110, 0.1);
+            border-left: 4px solid var(--uide-primary);
+            padding: clamp(0.6rem, 2vw, 1rem);
+            margin: clamp(0.6rem, 1.5vw, 1rem) 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box h3 {
+            font-size: clamp(0.9rem, 2.6vw, 1.3rem);
+            margin-bottom: 0.4em;
+            line-height: 1.3;
+        }
+
+        .highlight-box p {
+            font-size: clamp(0.75rem, 2.1vw, 0.95rem);
+        }
+
+        .highlight-box ul li {
+            font-size: clamp(0.7rem, 1.9vw, 0.9rem);
+        }
+
+        .definition-box {
+            background: rgba(233, 171, 33, 0.1);
+            border-left: 4px solid var(--uide-accent);
+            padding: clamp(0.6rem, 2vw, 1rem);
+            margin: clamp(0.6rem, 1.5vw, 1rem) 0;
+            border-radius: 8px;
+        }
+
+        .definition-box h3 {
+            font-size: clamp(0.9rem, 2.6vw, 1.3rem);
+            line-height: 1.3;
+        }
+
+        .definition-box p {
+            font-size: clamp(0.75rem, 2.1vw, 0.95rem);
+        }
+
+        .definition-box ul li {
+            font-size: clamp(0.7rem, 1.9vw, 0.9rem);
+        }
+
+        .mermaid-container {
+            background: white;
+            border-radius: 12px;
+            padding: clamp(0.5rem, 2vw, 1.5rem);
+            margin: clamp(0.5rem, 2vw, 1.5rem) 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: clamp(0.65rem, 1.8vw, 0.85rem);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: clamp(0.4rem, 1.5vw, 0.8rem);
+            text-align: left;
+            line-height: 1.3;
+        }
+
+        .comparison-table th {
+            background-color: var(--uide-primary);
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Responsive adjustments for two-column layout */
+        .r-hstack {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .r-hstack .column {
+            flex: 1 1 50%;
+            min-width: 0;
+            margin: 0;
+        }
+
+        .r-hstack .column .concept-box,
+        .r-hstack .column .highlight-box {
+            font-size: clamp(0.75rem, 2vw, 0.9rem);
+        }
+
+        .r-hstack .column h3 {
+            font-size: clamp(0.85rem, 2.5vw, 1.2rem);
+        }
+
+        .r-hstack .column h4 {
+            font-size: clamp(0.8rem, 2.2vw, 1.1rem);
+        }
+
+        .r-hstack .column ul li {
+            font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+            line-height: 1.3;
+        }
+
+        .r-hstack .column p {
+            font-size: clamp(0.7rem, 1.9vw, 0.9rem);
+        }
+
+        /* Enhanced responsive design for optimal legibility */
+        @media screen and (max-width: 768px) {
+            .r-hstack {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .r-hstack .column {
+                min-width: auto;
+                margin: 0;
+                width: 100%;
+            }
+
+            /* Ensure diagram takes full width on mobile screens */
+            .r-hstack .column .mermaid-container {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+
+        /* Keep two columns on tablets and larger screens */
+        @media screen and (min-width: 769px) {
+            .r-hstack {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+            }
+
+            .r-hstack .column {
+                flex: 1;
+                min-width: 300px;
+                margin: 0 0.5rem;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .reveal .slides section {
+                padding: clamp(0.8rem, 3vw, 1.5rem);
+            }
+
+            .concept-box,
+            .highlight-box,
+            .definition-box {
+                margin: clamp(0.4rem, 1.2vw, 0.8rem) 0;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .reveal .slides section {
+                padding: clamp(0.6rem, 2.5vw, 1.2rem);
+            }
+
+            .reveal h1 {
+                font-size: 1.6em;
+            }
+
+            .reveal h2 {
+                font-size: 1.3em;
+            }
+
+            .concept-box,
+            .highlight-box,
+            .definition-box {
+                border-radius: 6px;
+            }
+
+            .mermaid-container {
+                border-radius: 8px;
+            }
+        }
+
+        /* Ensure minimum readable sizes for very small screens */
+        @media screen and (max-width: 320px) {
+            .reveal h1 {
+                font-size: 1.4rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .reveal h2 {
+                font-size: 1.2rem !important;
+                line-height: 1.3 !important;
+            }
+
+            .reveal h3 {
+                font-size: 1rem !important;
+                line-height: 1.3 !important;
+            }
+
+            .reveal p,
+            .reveal ul li {
+                font-size: 0.8rem !important;
+                line-height: 1.4 !important;
+            }
+
+            .concept-box,
+            .highlight-box,
+            .definition-box {
+                padding: 0.5rem !important;
+                margin: 0.3rem 0 !important;
+            }
+        }
+
+        /* Ensure text doesn't overflow */
+        .reveal .slides section * {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Responsive images and diagrams */
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+            width: 100%;
+            min-width: 300px;
+        }
+
+        /* Specific responsive styles for ANSI-SPARC diagram */
+        #ansi-sparc-diagram {
+            width: 100%;
+            min-height: 300px;
+        }
+
+        #ansi-sparc-diagram svg {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 100% !important;
+        }
+
+        /* Ensure diagram fits properly in its column */
+        .r-hstack .column .mermaid-container {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .r-hstack .column #ansi-sparc-diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Enhanced responsive behavior for mermaid diagrams */
+        .mermaid-container .mermaid {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Responsive adjustments for diagrams in columns */
+        @media screen and (min-width: 769px) and (max-width: 1200px) {
+            .mermaid svg {
+                font-size: 11px;
+            }
+
+            #ansi-sparc-diagram svg {
+                min-height: 280px;
+            }
+        }
+
+        /* Mobile-specific adjustments for diagrams */
+        @media screen and (max-width: 768px) {
+            .mermaid-container {
+                padding: clamp(0.3rem, 1.5vw, 1rem);
+                margin: clamp(0.3rem, 1.5vw, 1rem) 0;
+                border-radius: 8px;
+            }
+
+            .mermaid svg {
+                min-width: 280px;
+                font-size: 12px;
+            }
+
+            #ansi-sparc-diagram svg {
+                min-height: 250px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .mermaid-container {
+                padding: 0.5rem;
+                margin: 0.5rem 0;
+                border-radius: 6px;
+            }
+
+            .mermaid svg {
+                min-width: 260px;
+                font-size: 10px;
+            }
+
+            #ansi-sparc-diagram svg {
+                min-height: 200px;
+            }
+        }
+
+        @media screen and (max-width: 320px) {
+            .mermaid svg {
+                min-width: 240px;
+                font-size: 9px;
+            }
+
+            #ansi-sparc-diagram svg {
+                min-height: 180px;
+            }
+        }
+
+        /* Flexible grid for better mobile experience */
+        .r-hstack.responsive {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Specific improvements for ANSI-SPARC diagram section */
+        .r-hstack .column:first-child {
+            order: 1;
+        }
+
+        .r-hstack .column:last-child {
+            order: 2;
+        }
+
+        /* On mobile, show text content first, then diagram */
+        @media screen and (max-width: 768px) {
+            .r-hstack .column:first-child {
+                order: 2;
+            }
+
+            .r-hstack .column:last-child {
+                order: 1;
+            }
+        }
+
+        /* Ensure proper column behavior on larger screens */
+        @media screen and (min-width: 769px) {
+            .r-hstack .column:first-child {
+                order: 1;
+            }
+
+            .r-hstack .column:last-child {
+                order: 2;
+            }
+        }
+
+        /* CSS Diagram Styles for Three Levels Integration */
+        .css-diagram {
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 1rem 0;
+        }
+
+        .diagram-level {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .level-title {
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            font-weight: 600;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .level-title.external {
+            background: rgba(76, 175, 80, 0.1);
+            color: #2e7d32;
+            border: 2px solid #4CAF50;
+        }
+
+        .level-title.logical {
+            background: rgba(255, 193, 7, 0.1);
+            color: #f57c00;
+            border: 2px solid #ffc107;
+        }
+
+        .level-title.internal {
+            background: rgba(220, 53, 69, 0.1);
+            color: #c62828;
+            border: 2px solid #dc3545;
+        }
+
+        .level-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .diagram-item {
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid;
+            font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+            line-height: 1.3;
+            text-align: center;
+            min-width: 200px;
+            max-width: 300px;
+            flex: 1;
+        }
+
+        .diagram-item.external {
+            background: #e8f5e8;
+            border-color: #4CAF50;
+            border-radius: 50px;
+        }
+
+        .diagram-item.logical {
+            background: #fff3cd;
+            border-color: #ffc107;
+            border-radius: 8px;
+        }
+
+        .diagram-item.internal {
+            background: #f8d7da;
+            border-color: #dc3545;
+            border-radius: 8px;
+        }
+
+        .diagram-item strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1em;
+        }
+
+        .diagram-item .details {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        /* SQL Code styling for external level */
+        .sql-code {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+            margin-top: 0.5rem;
+            text-align: left;
+            overflow-x: auto;
+            word-break: break-word;
+        }
+
+        .sql-keyword {
+            color: #63b3ed;
+            font-weight: bold;
+        }
+
+        .sql-string {
+            color: #68d391;
+        }
+
+        .sql-table {
+            color: #fbb6ce;
+        }
+
+        .sql-column {
+            color: #faf089;
+        }
+
+        /* Table styling for logical level */
+        .logical-table {
+            background: #fffbeb;
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+        }
+
+        .table-name {
+            font-weight: bold;
+            color: #92400e;
+            font-size: 1.1em;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            border-bottom: 1px solid #f59e0b;
+            padding-bottom: 0.3rem;
+        }
+
+        .table-field {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.2rem 0;
+            border-bottom: 1px dotted #d97706;
+        }
+
+        .table-field:last-child {
+            border-bottom: none;
+        }
+
+        .field-name {
+            color: #1f2937;
+            font-weight: 500;
+        }
+
+        .field-type {
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        .primary-key {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .foreign-key {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        /* Physical storage styling for internal level */
+        .storage-details {
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            border-radius: 6px;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(0.65rem, 1.5vw, 0.8rem);
+            line-height: 1.3;
+        }
+
+        .storage-file {
+            color: #991b1b;
+            font-weight: bold;
+        }
+
+        .storage-blocks {
+            color: #7c2d12;
+        }
+
+        .storage-index {
+            color: #1e40af;
+            font-style: italic;
+        }
+
+        /* SGBD Components Diagram Styles */
+        .sgbd-components-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin: 0.8rem 0;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .component-layer {
+            background: white;
+            border-radius: 6px;
+            padding: 0.6rem;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+            border-left: 3px solid;
+            transition: transform 0.2s ease;
+        }
+
+        .component-layer:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .layer-title {
+            font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            padding: 0.3rem;
+            border-radius: 4px;
+        }
+
+        .component-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .component-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid;
+            min-width: 90px;
+            max-width: 120px;
+            flex: 1;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .component-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .component-item i {
+            font-size: 1.2em;
+            margin-bottom: 0.3rem;
+        }
+
+        .component-item strong {
+            font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+            margin-bottom: 0.1rem;
+            line-height: 1.1;
+        }
+
+        .component-item span {
+            font-size: clamp(0.6rem, 1.3vw, 0.65rem);
+            opacity: 0.8;
+            line-height: 1;
+        }
+
+        /* User Layer */
+        .user-layer {
+            border-left-color: #28a745;
+        }
+
+        .user-layer .layer-title {
+            background: rgba(40, 167, 69, 0.1);
+            color: #155724;
+        }
+
+        .component-item.user {
+            background: rgba(40, 167, 69, 0.05);
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .component-item.user i {
+            color: #28a745;
+        }
+
+        /* Interface Layer */
+        .interface-layer {
+            border-left-color: #ffc107;
+        }
+
+        .interface-layer .layer-title {
+            background: rgba(255, 193, 7, 0.1);
+            color: #856404;
+        }
+
+        .component-item.interface {
+            background: rgba(255, 193, 7, 0.05);
+            border-color: #ffc107;
+            color: #856404;
+        }
+
+        .component-item.interface i {
+            color: #ffc107;
+        }
+
+        /* Processing Layer */
+        .processing-layer {
+            border-left-color: #17a2b8;
+        }
+
+        .processing-layer .layer-title {
+            background: rgba(23, 162, 184, 0.1);
+            color: #0c5460;
+        }
+
+        .component-item.processing {
+            background: rgba(23, 162, 184, 0.05);
+            border-color: #17a2b8;
+            color: #0c5460;
+        }
+
+        .component-item.processing i {
+            color: #17a2b8;
+        }
+
+        /* Engine Layer */
+        .engine-layer {
+            border-left-color: #6f42c1;
+        }
+
+        .engine-layer .layer-title {
+            background: rgba(111, 66, 193, 0.1);
+            color: #3d1a78;
+        }
+
+        .component-item.engine {
+            background: rgba(111, 66, 193, 0.05);
+            border-color: #6f42c1;
+            color: #3d1a78;
+        }
+
+        .component-item.engine i {
+            color: #6f42c1;
+        }
+
+        /* Storage Layer */
+        .storage-layer {
+            border-left-color: #dc3545;
+        }
+
+        .storage-layer .layer-title {
+            background: rgba(220, 53, 69, 0.1);
+            color: #721c24;
+        }
+
+        .component-item.storage {
+            background: rgba(220, 53, 69, 0.05);
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .component-item.storage i {
+            color: #dc3545;
+        }
+
+        /* Responsive adjustments for SGBD components */
+        @media screen and (max-width: 768px) {
+            .sgbd-components-diagram {
+                padding: 0.8rem;
+                gap: 0.5rem;
+                max-height: 60vh;
+            }
+
+            .component-layer {
+                padding: 0.5rem;
+            }
+
+            .component-items {
+                gap: 0.4rem;
+            }
+
+            .component-item {
+                min-width: 80px;
+                max-width: 100px;
+                padding: 0.4rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .component-item {
+                min-width: 70px;
+                max-width: 90px;
+                padding: 0.3rem;
+            }
+
+            .component-item i {
+                font-size: 1em;
+            }
+
+            .sgbd-components-diagram {
+                max-height: 50vh;
+            }
+        }
+
+        /* Client-Server Diagram Styles */
+        .client-server-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .cs-component {
+            background: white;
+            border-radius: 10px;
+            padding: 1.2rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid;
+            min-width: 200px;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .cs-component:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .cs-header {
+            text-align: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid;
+        }
+
+        .cs-header i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .cs-header h4 {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .cs-items {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .cs-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.6rem;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .cs-item:hover {
+            background: rgba(0, 0, 0, 0.08);
+            transform: scale(1.05);
+        }
+
+        .cs-item i {
+            font-size: 1.2em;
+            margin-bottom: 0.3rem;
+        }
+
+        .cs-item span {
+            font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .cs-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 4px;
+            font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+        }
+
+        .detail-item i {
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+
+        /* Client Side Styling */
+        .client-side {
+            border-color: #28a745;
+        }
+
+        .client-side .cs-header {
+            color: #155724;
+            border-color: #28a745;
+        }
+
+        .client-side .cs-header i {
+            color: #28a745;
+        }
+
+        .client-side .cs-item i {
+            color: #28a745;
+        }
+
+        /* Server Side Styling */
+        .server-side {
+            border-color: #17a2b8;
+        }
+
+        .server-side .cs-header {
+            color: #0c5460;
+            border-color: #17a2b8;
+        }
+
+        .server-side .cs-header i {
+            color: #17a2b8;
+        }
+
+        .server-side .cs-item i {
+            color: #17a2b8;
+        }
+
+        /* Database Side Styling */
+        .database-side {
+            border-color: #dc3545;
+        }
+
+        .database-side .cs-header {
+            color: #721c24;
+            border-color: #dc3545;
+        }
+
+        .database-side .cs-header i {
+            color: #dc3545;
+        }
+
+        .database-side .cs-item i {
+            color: #dc3545;
+        }
+
+        /* Connection Styling */
+        .cs-connection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 80px;
+        }
+
+        .connection-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 3px;
+            width: 60px;
+            background: linear-gradient(90deg, #6c757d 0%, #495057 100%);
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .connection-arrow {
+            position: absolute;
+            right: -8px;
+            font-size: 1.2rem;
+            color: #495057;
+            font-weight: bold;
+        }
+
+        .connection-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            align-items: center;
+        }
+
+        .connection-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: clamp(0.6rem, 1.3vw, 0.7rem);
+            color: #6c757d;
+            background: rgba(108, 117, 125, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+        }
+
+        .connection-item i {
+            font-size: 0.8em;
+        }
+
+        /* Responsive adjustments for Client-Server diagram */
+        @media screen and (max-width: 1200px) {
+            .client-server-diagram {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+
+            .cs-component {
+                min-width: auto;
+                max-width: 100%;
+            }
+
+            .cs-connection {
+                flex-direction: row;
+                justify-content: center;
+                min-width: auto;
+            }
+
+            .connection-line {
+                width: 80px;
+                height: 3px;
+            }
+
+            .connection-arrow {
+                transform: rotate(90deg);
+                right: -6px;
+                top: -8px;
+            }
+
+            .connection-details {
+                flex-direction: row;
+                gap: 0.5rem;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .client-server-diagram {
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .cs-component {
+                padding: 1rem;
+            }
+
+            .cs-items {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .cs-item {
+                padding: 0.5rem;
+            }
+
+            .connection-details {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .cs-component {
+                padding: 0.8rem;
+            }
+
+            .cs-header i {
+                font-size: 1.5rem;
+            }
+
+            .cs-item {
+                padding: 0.4rem;
+            }
+
+            .connection-line {
+                width: 60px;
+            }
+        }
+
+        /* Fully Responsive Banking Mermaid Diagram */
+        .banking-diagram {
+            background: white;
+            border-radius: clamp(6px, 1vw, 10px);
+            padding: clamp(0.5rem, 1.5vw, 1.2rem);
+            margin: clamp(0.5rem, 1.5vw, 1.2rem) 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #dee2e6;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        #banking-system-diagram {
+            width: 100%;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #banking-system-diagram svg {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 100% !important;
+            min-width: auto !important;
+            max-height: 70vh;
+        }
+
+        /* Text scaling for different screen sizes */
+        #banking-system-diagram svg text {
+            font-size: clamp(10px, 1.2vw, 14px) !important;
+        }
+
+        #banking-system-diagram svg .node rect,
+        #banking-system-diagram svg .node circle,
+        #banking-system-diagram svg .node ellipse,
+        #banking-system-diagram svg .node polygon {
+            stroke-width: clamp(1px, 0.2vw, 2px) !important;
+        }
+
+        /* Responsive adjustments for banking Mermaid diagram */
+        @media screen and (max-width: 1200px) {
+            #banking-system-diagram svg text {
+                font-size: clamp(9px, 1.1vw, 13px) !important;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .banking-diagram {
+                padding: clamp(0.4rem, 1.2vw, 0.8rem);
+                margin: clamp(0.4rem, 1.2vw, 0.8rem) 0;
+                border-radius: 6px;
+            }
+
+            #banking-system-diagram svg {
+                max-height: 60vh;
+            }
+
+            #banking-system-diagram svg text {
+                font-size: clamp(8px, 1vw, 11px) !important;
+            }
+
+            /* Adjust node sizes for mobile */
+            #banking-system-diagram svg .node rect {
+                rx: 3px !important;
+                ry: 3px !important;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .banking-diagram {
+                padding: 0.5rem;
+                margin: 0.5rem 0;
+                border-radius: 4px;
+            }
+
+            #banking-system-diagram svg {
+                max-height: 50vh;
+            }
+
+            #banking-system-diagram svg text {
+                font-size: clamp(7px, 0.9vw, 10px) !important;
+                line-height: 1.1 !important;
+            }
+
+            /* Compact nodes for small screens */
+            #banking-system-diagram svg .node rect {
+                rx: 2px !important;
+                ry: 2px !important;
+            }
+        }
+
+        @media screen and (max-width: 320px) {
+            .banking-diagram {
+                padding: 0.4rem;
+                margin: 0.4rem 0;
+            }
+
+            #banking-system-diagram svg {
+                max-height: 45vh;
+            }
+
+            #banking-system-diagram svg text {
+                font-size: clamp(6px, 0.8vw, 9px) !important;
+                line-height: 1 !important;
+            }
+        }
+
+        /* Force text wrapping and better spacing */
+        #banking-system-diagram svg .node text {
+            text-anchor: middle !important;
+            dominant-baseline: middle !important;
+        }
+
+        #banking-system-diagram svg .edgeLabel text {
+            font-size: clamp(8px, 1vw, 12px) !important;
+            fill: #495057 !important;
+        }
+
+        /* Connection spacing */
+        .level-connector {
+            height: 1rem;
+        }
+
+        /* Responsive adjustments for CSS diagram */
+        @media screen and (max-width: 1200px) {
+            .level-items {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .diagram-item {
+                min-width: 280px;
+                max-width: 350px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .css-diagram {
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .level-items {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .diagram-item {
+                min-width: 90%;
+                max-width: 100%;
+            }
+
+
+
+            .sql-code {
+                font-size: 0.7rem;
+                padding: 0.6rem;
+            }
+
+            .logical-table {
+                font-size: 0.75rem;
+                padding: 0.6rem;
+            }
+
+            .storage-details {
+                font-size: 0.7rem;
+                padding: 0.6rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .diagram-item {
+                min-width: 95%;
+                padding: 0.8rem;
+            }
+
+            .level-title {
+                font-size: 0.9rem;
+                padding: 0.4rem;
+            }
+
+            .sql-code {
+                font-size: 0.65rem;
+                padding: 0.5rem;
+            }
+
+            .logical-table {
+                font-size: 0.7rem;
+                padding: 0.5rem;
+            }
+
+            .table-field {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.2rem;
+            }
+
+            .storage-details {
+                font-size: 0.65rem;
+                padding: 0.5rem;
+            }
+        }
+
+        @media screen and (max-width: 320px) {
+            .css-diagram {
+                padding: 0.8rem;
+                gap: 1rem;
+            }
+
+            .level-title {
+                font-size: 0.8rem;
+            }
+
+            .diagram-item {
+                padding: 0.6rem;
+            }
+
+            .sql-code,
+            .storage-details {
+                font-size: 0.6rem;
+            }
+
+            .logical-table {
+                font-size: 0.65rem;
+            }
+        }
+
+        /* Ensure proper spacing and sizing for all screen sizes */
+        .r-hstack .column {
+            flex: 1 1 auto;
+            min-width: 0;
+            /* Allows flex items to shrink below their content size */
+        }
+
+        /* Improve text readability in columns */
+        .r-hstack .column .concept-box,
+        .r-hstack .column .highlight-box {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <!-- Slide 1: Portada -->
+            <section>
+                <div style="text-align: center; padding: 2em;">
+                    <h1 style="color: var(--uide-primary); font-size: 2.5em; margin-bottom: 0.5em;">
+                        <i class="fas fa-database"></i> Sistemas de Gestión de Bases de Datos
+                    </h1>
+                    <h2 style="color: var(--uide-secondary); margin-top: 30px;">Semana 1: Fundamentos de SGBD</h2>
+                    <div style="margin-top: 30px;">
+                        <p style="font-size: 1.2em; margin: 0; color: var(--uide-secondary);">
+                            <strong>LTI_05A_300 - Quinto Nivel</strong><br>
+                            Prof. Charlie Cárdenas Toledo, M.Sc.<br>
+                            Universidad Internacional del Ecuador
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 2: Contexto de la Problemática -->
+            <section>
+                <h2><i class="fas fa-exclamation-triangle"></i> Contexto de la Problemática</h2>
+
+                <div class="concept-box">
+                    <h3>El Desafío de la Gestión de Información</h3>
+                    <p>En el contexto digital actual, las organizaciones enfrentan un crecimiento exponencial en el
+                        volumen de datos generados por:</p>
+                    <ul class="fragment">
+                        <li>Aplicaciones de streaming y entretenimiento digital</li>
+                        <li>Plataformas de comercio electrónico</li>
+                        <li>Redes sociales y sistemas de comunicación</li>
+                        <li>Sistemas transaccionales empresariales</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box fragment">
+                    <p><strong>Pregunta fundamental:</strong> ¿Cómo gestionar eficientemente este universo masivo de
+                        información de manera rápida, segura y confiable?</p>
+                </div>
+            </section>
+
+            <!-- Slide 3: Definición de SGBD -->
+            <section>
+                <section>
+                    <h2><i class="fas fa-database"></i> Sistema Gestor de Bases de Datos</h2>
+
+                    <div class="definition-box">
+                        <h3>Definición Formal</h3>
+                        <p>Un <mark>Sistema Gestor de Bases de Datos (SGBD)</mark> es una colección de datos
+                            relacionados
+                            entre sí, estructurados y organizados, junto con un conjunto de programas que acceden y
+                            gestionan esos datos.</p>
+                    </div>
+
+                    <div class="concept-box fragment">
+                        <h3>Función Principal</h3>
+                        <p>Actúa como <strong>interfaz inteligente</strong> entre:</p>
+                        <ul>
+                            <li>La base de datos (almacenamiento físico)</li>
+                            <li>Los usuarios (personas y aplicaciones)</li>
+                            <li>Las aplicaciones (sistemas que requieren datos)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2><i class="fas fa-layer-group"></i> Función Técnica del SGBD</h2>
+
+                    <div class="highlight-box">
+                        <h3>Gestión de Complejidad</h3>
+                        <p><strong>Función técnica:</strong> Gestiona la complejidad del almacenamiento y recuperación
+                            de información, proporcionando una capa de abstracción entre las aplicaciones y el
+                            almacenamiento físico de datos.</p>
+                    </div>
+
+                    <div class="concept-box fragment">
+                        <h3>Beneficios de la Abstracción</h3>
+                        <ul>
+                            <li>Simplifica el acceso a datos para desarrolladores</li>
+                            <li>Oculta la complejidad del almacenamiento físico</li>
+                            <li>Proporciona interfaces estándar (SQL, APIs)</li>
+                            <li>Permite optimizaciones transparentes</li>
+                        </ul>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 4: Arquitectura ANSI-SPARC -->
+            <section>
+                <section>
+                    <h2><i class="fas fa-sitemap"></i> Arquitectura ANSI-SPARC de Tres Niveles</h2>
+
+                    <div class="concept-box">
+                        <h3>Fundamento Arquitectónico (1975)</h3>
+                        <p>En 1971, el <strong>DBTG (DataBase Task Group)</strong> reconoció la necesidad de un enfoque
+                            de dos niveles con vistas y esquemas. Posteriormente, en <mark>1975</mark>,
+                            <strong>ANSI-SPARC</strong> desarrolló un enfoque de tres niveles con niveles de
+                            abstracción: externo, conceptual e interno.
+                        </p>
+                        <p>El objetivo fundamental es <mark>separar la vista de cada usuario de la base de datos de la
+                                forma como está físicamente representada</mark>.</p>
+                    </div>
+
+                    <div class="r-hstack fragment">
+                        <div class="column">
+                            <div class="mermaid-container">
+                                <div class="mermaid" id="ansi-sparc-diagram">
+                                    graph TD
+                                    subgraph "Usuarios"
+                                    U1[User 1] --> V1[View 1]
+                                    U2[User 2] --> V2[View 2]
+                                    U3[User n] --> V3[View n]
+                                    end
+
+                                    V1 --> CS[Conceptual Schema]
+                                    V2 --> CS
+                                    V3 --> CS
+
+                                    CS --> IS[Internal Schema]
+                                    IS --> DB[(Database)]
+
+                                    style V1 fill:#e8f5e8,stroke:#4CAF50,stroke-width:2px
+                                    style V2 fill:#e8f5e8,stroke:#4CAF50,stroke-width:2px
+                                    style V3 fill:#e8f5e8,stroke:#4CAF50,stroke-width:2px
+                                    style CS fill:#fff3cd,stroke:#ffc107,stroke-width:2px
+                                    style IS fill:#f8d7da,stroke:#dc3545,stroke-width:2px
+                                    style DB fill:#e2e3e5,stroke:#6c757d,stroke-width:2px
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="column">
+                            <div class="highlight-box">
+                                <h3>Principio Clave</h3>
+                                <p><strong>Independencia de datos:</strong> Permite modificar la infraestructura física
+                                    sin afectar las aplicaciones que utilizan los datos.</p>
+                            </div>
+
+                            <div class="concept-box fragment">
+                                <h3>Beneficios Fundamentales</h3>
+                                <ul>
+                                    <li><strong>Independencia Lógica:</strong> Cambios en el esquema conceptual no
+                                        afectan programas de aplicación</li>
+                                    <li><strong>Independencia Física:</strong> Cambios en almacenamiento no impactan el
+                                        nivel conceptual</li>
+                                    <li><strong>Correspondencia:</strong> SGBD transforma peticiones entre niveles
+                                        automáticamente</li>
+                                    <li><strong>Flexibilidad:</strong> Modificaciones transparentes para usuarios</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2><i class="fas fa-layer-group"></i> Niveles de Abstracción Detallados</h2>
+
+                    <div class="r-hstack">
+                        <div class="column">
+                            <div class="concept-box"
+                                style="background: rgba(76, 175, 80, 0.1); border-left: 4px solid #4CAF50;">
+                                <h4><i class="fas fa-eye"></i> Nivel Externo</h4>
+                                <p><strong>Vista del usuario:</strong> Describe cómo cada usuario ve la base de datos.
+                                </p>
+                                <ul>
+                                    <li>Contiene solo entidades, atributos y relaciones relevantes para el usuario</li>
+                                    <li>Diferentes vistas pueden representar los mismos datos de maneras distintas</li>
+                                    <li><strong>Ejemplo:</strong> nombre como (apellido, nombre) vs (nombre, apellido)
+                                    </li>
+                                    <li>Múltiples vistas externas por base de datos</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="column">
+                            <div class="concept-box"
+                                style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107;">
+                                <h4><i class="fas fa-project-diagram"></i> Nivel Conceptual</h4>
+                                <p><strong>Vista de la comunidad:</strong> Describe qué datos se almacenan y sus
+                                    relaciones.</p>
+                                <ul>
+                                    <li>Contiene la estructura lógica completa de toda la base de datos</li>
+                                    <li>Representa entidades, atributos, relaciones, operaciones de usuario</li>
+                                    <li>Incluye información semántica, de seguridad e integridad</li>
+                                    <li>Independiente de consideraciones de almacenamiento</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="concept-box fragment"
+                        style="background: rgba(220, 53, 69, 0.1); border-left: 4px solid #dc3545;">
+                        <h4><i class="fas fa-hdd"></i> Nivel Interno</h4>
+                        <p><strong>Representación física:</strong> Cómo la base de datos se representa físicamente en el
+                            computador.</p>
+                        <ul class="r-hstack" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <li>Enfatiza la implementación física para optimización de espacio y rendimiento</li>
+                            <li>Utiliza estructuras de datos complejas para optimización</li>
+                            <li>Se interfaza con el sistema operativo para almacenamiento y recuperación</li>
+                            <li>Maneja técnicas de encriptación y compresión de datos</li>
+                        </ul>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 5: Integración de los Tres Niveles -->
+            <section>
+                <section>
+                    <h2><i class="fas fa-layer-group"></i> Integración de los Tres Niveles</h2>
+
+                    <div class="concept-box">
+                        <h3>Niveles Externo y Lógico</h3>
+                        <div class="css-diagram">
+                            <!-- Nivel Externo -->
+                            <div class="diagram-level">
+                                <div class="level-title external"><i class="fas fa-eye"></i> NIVEL EXTERNO - Vistas de
+                                    Usuario</div>
+                                <div class="level-items">
+                                    <div class="diagram-item external">
+                                        <strong><i class="fas fa-users"></i> Vista RRHH</strong>
+                                        <div class="sql-code">
+                                            <span class="sql-keyword">SELECT</span> <span
+                                                class="sql-column">nombre</span>, <span
+                                                class="sql-column">salario</span>
+                                            <span class="sql-keyword">FROM</span> <span
+                                                class="sql-table">empleados</span>
+                                            <span class="sql-keyword">WHERE</span> <span class="sql-column">dept</span>
+                                            = <span class="sql-string">'RRHH'</span>
+                                        </div>
+                                    </div>
+                                    <div class="diagram-item external">
+                                        <strong><i class="fas fa-shopping-cart"></i> Vista Ventas</strong>
+                                        <div class="sql-code">
+                                            <span class="sql-keyword">SELECT</span> <span
+                                                class="sql-column">cliente</span>, <span
+                                                class="sql-column">producto</span>, <span
+                                                class="sql-column">total</span>
+                                            <span class="sql-keyword">FROM</span> <span class="sql-table">ventas</span>
+                                            v, <span class="sql-table">clientes</span> c
+                                            <span class="sql-keyword">WHERE</span> v.<span
+                                                class="sql-column">cliente_id</span> = c.<span
+                                                class="sql-column">id</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="level-connector"></div>
+
+                            <!-- Nivel Lógico -->
+                            <div class="diagram-level">
+                                <div class="level-title logical"><i class="fas fa-project-diagram"></i> NIVEL LÓGICO -
+                                    Esquema Conceptual</div>
+                                <div class="level-items">
+                                    <div class="diagram-item logical">
+                                        <div class="logical-table">
+                                            <div class="table-name">EMPLEADO</div>
+                                            <div class="table-field">
+                                                <span class="field-name primary-key">emp_id</span>
+                                                <span class="field-type">INT (PK)</span>
+                                            </div>
+                                            <div class="table-field">
+                                                <span class="field-name">nombre</span>
+                                                <span class="field-type">VARCHAR(100)</span>
+                                            </div>
+                                            <div class="table-field">
+                                                <span class="field-name">salario</span>
+                                                <span class="field-type">DECIMAL(10,2)</span>
+                                            </div>
+                                            <div class="table-field">
+                                                <span class="field-name foreign-key">dept_id</span>
+                                                <span class="field-type">INT (FK)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="diagram-item logical">
+                                        <div class="logical-table">
+                                            <div class="table-name">CLIENTE</div>
+                                            <div class="table-field">
+                                                <span class="field-name primary-key">cliente_id</span>
+                                                <span class="field-type">INT (PK)</span>
+                                            </div>
+                                            <div class="table-field">
+                                                <span class="field-name">nombre_empresa</span>
+                                                <span class="field-type">VARCHAR(200)</span>
+                                            </div>
+                                            <div class="table-field">
+                                                <span class="field-name">contacto</span>
+                                                <span class="field-type">VARCHAR(150)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="diagram-item logical">
+                                        <div class="logical-table">
+                                            <div class="table-name">VENTA</div>
+                                            <div class="table-field">
+                                                <span class="field-name primary-key">venta_id</span>
+                                                <span class="field-type">INT (PK)</span>
+                                            </div>
+                                            <div class="table-field">
+                                                <span class="field-name">fecha</span>
+                                                <span class="field-type">DATE</span>
+                                            </div>
+                                            <div class="table-field">
+                                                <span class="field-name foreign-key">cliente_id</span>
+                                                <span class="field-type">INT (FK)</span>
+                                            </div>
+                                            <div class="table-field">
+                                                <span class="field-name">total</span>
+                                                <span class="field-type">DECIMAL(12,2)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2><i class="fas fa-hdd"></i> Nivel Interno: Almacenamiento Físico</h2>
+
+                    <div class="concept-box">
+                        <h3>Implementación Física de los Datos</h3>
+                        <div class="css-diagram">
+                            <!-- Nivel Interno -->
+                            <div class="diagram-level">
+                                <div class="level-title internal"><i class="fas fa-hdd"></i> NIVEL INTERNO -
+                                    Almacenamiento Físico</div>
+                                <div class="level-items">
+                                    <div class="diagram-item internal">
+                                        <strong><i class="fas fa-file-alt"></i> Archivo Empleado</strong>
+                                        <div class="storage-details">
+                                            <div class="storage-file">empleado.dat</div>
+                                            <div class="storage-blocks"><i class="fas fa-cube"></i> Bloques: 1-50 (4KB
+                                                c/u)</div>
+                                            <div class="storage-index"><i class="fas fa-list"></i> Índice B+ Tree:
+                                                emp_id</div>
+                                            <div class="storage-index"><i class="fas fa-hashtag"></i> Índice Hash:
+                                                dept_id</div>
+                                        </div>
+                                    </div>
+                                    <div class="diagram-item internal">
+                                        <strong><i class="fas fa-file-alt"></i> Archivo Cliente</strong>
+                                        <div class="storage-details">
+                                            <div class="storage-file">cliente.dat</div>
+                                            <div class="storage-blocks"><i class="fas fa-cube"></i> Bloques: 51-80 (4KB
+                                                c/u)</div>
+                                            <div class="storage-index"><i class="fas fa-hashtag"></i> Índice Hash:
+                                                cliente_id</div>
+                                        </div>
+                                    </div>
+                                    <div class="diagram-item internal">
+                                        <strong><i class="fas fa-file-alt"></i> Archivo Venta</strong>
+                                        <div class="storage-details">
+                                            <div class="storage-file">venta.dat</div>
+                                            <div class="storage-blocks"><i class="fas fa-cube"></i> Bloques: 81-150 (4KB
+                                                c/u)</div>
+                                            <div class="storage-index"><i class="fas fa-list"></i> Índice B+ Tree:
+                                                venta_id</div>
+                                            <div class="storage-index"><i class="fas fa-calendar"></i> Índice
+                                                Secundario: fecha</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="text-align: center; font-style: italic; margin-top: 1rem;">
+                            <strong>Almacenamiento físico real en disco con índices y estructuras de acceso</strong>
+                        </p>
+                    </div>
+
+                    <div class="r-hstack fragment">
+                        <div class="column">
+                            <div class="highlight-box">
+                                <h4><i class="fas fa-list"></i> Estructuras de Índices</h4>
+                                <ul>
+                                    <li><strong>B+ Tree:</strong> Para claves primarias y búsquedas ordenadas</li>
+                                    <li><strong>Hash:</strong> Para acceso directo por clave</li>
+                                    <li><strong>Secundarios:</strong> Para consultas por otros campos</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="highlight-box">
+                                <h4><i class="fas fa-hdd"></i> Gestión de Almacenamiento</h4>
+                                <ul>
+                                    <li><strong>Bloques:</strong> Unidad básica de E/O (4KB típico)</li>
+                                    <li><strong>Archivos:</strong> Organización lógica de bloques</li>
+                                    <li><strong>Optimización:</strong> Minimizar accesos a disco</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 8: Componentes del SGBD -->
+            <section>
+                <h2><i class="fas fa-cogs"></i> Componentes del SGBD</h2>
+
+                <div class="concept-box">
+                    <h3>Arquitectura de Software Complejo</h3>
+                    <p>Un SGBD es un <mark>paquete de software complejo</mark> compuesto por varios subsistemas
+                        especializados que trabajan coordinadamente.</p>
+                </div>
+
+                <div class="sgbd-components-diagram fragment">
+                    <!-- Capa de Usuario -->
+                    <div class="component-layer user-layer">
+                        <div class="layer-title"><i class="fas fa-users"></i> Capa de Usuario</div>
+                        <div class="component-items">
+                            <div class="component-item user">
+                                <i class="fas fa-desktop"></i>
+                                <strong>Aplicaciones</strong>
+                                <span>Sistemas cliente</span>
+                            </div>
+                            <div class="component-item user">
+                                <i class="fas fa-user-tie"></i>
+                                <strong>DBA</strong>
+                                <span>Administrador</span>
+                            </div>
+                            <div class="component-item user">
+                                <i class="fas fa-user"></i>
+                                <strong>Usuarios</strong>
+                                <span>Finales</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Capa de Interfaz -->
+                    <div class="component-layer interface-layer">
+                        <div class="layer-title"><i class="fas fa-window-maximize"></i> Capa de Interfaz</div>
+                        <div class="component-items">
+                            <div class="component-item interface">
+                                <i class="fas fa-code"></i>
+                                <strong>APIs</strong>
+                                <span>JDBC, ODBC</span>
+                            </div>
+                            <div class="component-item interface">
+                                <i class="fas fa-terminal"></i>
+                                <strong>CLI</strong>
+                                <span>Línea de comandos</span>
+                            </div>
+                            <div class="component-item interface">
+                                <i class="fas fa-tools"></i>
+                                <strong>Herramientas</strong>
+                                <span>Admin GUI</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Capa de Procesamiento -->
+                    <div class="component-layer processing-layer">
+                        <div class="layer-title"><i class="fas fa-cogs"></i> Capa de Procesamiento</div>
+                        <div class="component-items">
+                            <div class="component-item processing">
+                                <i class="fas fa-search"></i>
+                                <strong>Parser SQL</strong>
+                                <span>Análisis sintáctico</span>
+                            </div>
+                            <div class="component-item processing">
+                                <i class="fas fa-route"></i>
+                                <strong>Optimizador</strong>
+                                <span>Plan de ejecución</span>
+                            </div>
+                            <div class="component-item processing">
+                                <i class="fas fa-play"></i>
+                                <strong>Ejecutor</strong>
+                                <span>Procesamiento</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Capa de Motor -->
+                    <div class="component-layer engine-layer">
+                        <div class="layer-title"><i class="fas fa-engine"></i> Motor de Base de Datos</div>
+                        <div class="component-items">
+                            <div class="component-item engine">
+                                <i class="fas fa-lock"></i>
+                                <strong>Control Transacciones</strong>
+                                <span>ACID, Concurrencia</span>
+                            </div>
+                            <div class="component-item engine">
+                                <i class="fas fa-memory"></i>
+                                <strong>Buffer Manager</strong>
+                                <span>Gestión memoria</span>
+                            </div>
+                            <div class="component-item engine">
+                                <i class="fas fa-shield-alt"></i>
+                                <strong>Seguridad</strong>
+                                <span>Autenticación</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Capa de Almacenamiento -->
+                    <div class="component-layer storage-layer">
+                        <div class="layer-title"><i class="fas fa-hdd"></i> Capa de Almacenamiento</div>
+                        <div class="component-items">
+                            <div class="component-item storage">
+                                <i class="fas fa-database"></i>
+                                <strong>Datos</strong>
+                                <span>Tablas, registros</span>
+                            </div>
+                            <div class="component-item storage">
+                                <i class="fas fa-list"></i>
+                                <strong>Índices</strong>
+                                <span>B+Tree, Hash</span>
+                            </div>
+                            <div class="component-item storage">
+                                <i class="fas fa-file-alt"></i>
+                                <strong>Logs</strong>
+                                <span>Transacciones</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 9: Funciones Principales del SGBD -->
+            <section>
+                <h2><i class="fas fa-tasks"></i> Funciones Principales del SGBD</h2>
+
+                <div class="r-hstack">
+                    <div class="column">
+                        <div class="concept-box fragment">
+                            <h4><i class="fas fa-database"></i> Gestión de Datos</h4>
+                            <ul>
+                                <li>Almacenamiento físico eficiente</li>
+                                <li>Organización de archivos e índices</li>
+                                <li>Gestión de espacio en disco</li>
+                                <li>Compresión y optimización</li>
+                            </ul>
+                        </div>
+
+                        <div class="concept-box fragment">
+                            <h4><i class="fas fa-shield-alt"></i> Control y Seguridad</h4>
+                            <ul>
+                                <li>Autenticación y autorización</li>
+                                <li>Integridad referencial</li>
+                                <li>Control de concurrencia</li>
+                                <li>Auditoría y logging</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="concept-box fragment">
+                            <h4><i class="fas fa-search"></i> Procesamiento de Consultas</h4>
+                            <ul>
+                                <li>Análisis sintáctico de SQL</li>
+                                <li>Optimización de consultas</li>
+                                <li>Ejecución eficiente</li>
+                                <li>Gestión de resultados</li>
+                            </ul>
+                        </div>
+
+                        <div class="concept-box fragment">
+                            <h4><i class="fas fa-tools"></i> Administración</h4>
+                            <ul>
+                                <li>Backup y recovery</li>
+                                <li>Monitoreo de rendimiento</li>
+                                <li>Mantenimiento automático</li>
+                                <li>Gestión de usuarios</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 10: Arquitectura Cliente/Servidor -->
+            <section>
+                <h2><i class="fas fa-network-wired"></i> Arquitectura Cliente/Servidor</h2>
+
+                <div class="concept-box">
+                    <h3>Modelo de Distribución</h3>
+                    <p>La arquitectura cliente/servidor permite la <mark>separación de responsabilidades</mark> entre la
+                        presentación de datos y su procesamiento.</p>
+                </div>
+
+                <div class="client-server-diagram fragment">
+                    <!-- Cliente -->
+                    <div class="cs-component client-side">
+                        <div class="cs-header">
+                            <i class="fas fa-desktop"></i>
+                            <h4>CLIENTE</h4>
+                        </div>
+                        <div class="cs-items">
+                            <div class="cs-item">
+                                <i class="fas fa-window-maximize"></i>
+                                <span>Aplicaciones Web</span>
+                            </div>
+                            <div class="cs-item">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>Apps Móviles</span>
+                            </div>
+                            <div class="cs-item">
+                                <i class="fas fa-desktop"></i>
+                                <span>Software Desktop</span>
+                            </div>
+                            <div class="cs-item">
+                                <i class="fas fa-tools"></i>
+                                <span>Herramientas Admin</span>
+                            </div>
+                        </div>
+                        <div class="cs-details">
+                            <div class="detail-item">
+                                <i class="fas fa-user"></i>
+                                <span>Interfaz de Usuario</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-code"></i>
+                                <span>Lógica de Presentación</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conexión -->
+                    <div class="cs-connection">
+                        <div class="connection-line">
+                            <div class="connection-arrow">→</div>
+                        </div>
+                        <div class="connection-details">
+                            <div class="connection-item">
+                                <i class="fas fa-wifi"></i>
+                                <span>TCP/IP</span>
+                            </div>
+                            <div class="connection-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>SSL/TLS</span>
+                            </div>
+                            <div class="connection-item">
+                                <i class="fas fa-plug"></i>
+                                <span>JDBC/ODBC</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Servidor -->
+                    <div class="cs-component server-side">
+                        <div class="cs-header">
+                            <i class="fas fa-server"></i>
+                            <h4>SERVIDOR SGBD</h4>
+                        </div>
+                        <div class="cs-items">
+                            <div class="cs-item">
+                                <i class="fas fa-cogs"></i>
+                                <span>Motor BD</span>
+                            </div>
+                            <div class="cs-item">
+                                <i class="fas fa-search"></i>
+                                <span>Procesador SQL</span>
+                            </div>
+                            <div class="cs-item">
+                                <i class="fas fa-lock"></i>
+                                <span>Control Transacciones</span>
+                            </div>
+                            <div class="cs-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Seguridad</span>
+                            </div>
+                        </div>
+                        <div class="cs-details">
+                            <div class="detail-item">
+                                <i class="fas fa-memory"></i>
+                                <span>Buffer Pool</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-sync"></i>
+                                <span>Control Concurrencia</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conexión a BD -->
+                    <div class="cs-connection">
+                        <div class="connection-line">
+                            <div class="connection-arrow">→</div>
+                        </div>
+                        <div class="connection-details">
+                            <div class="connection-item">
+                                <i class="fas fa-hdd"></i>
+                                <span>I/O Disco</span>
+                            </div>
+                            <div class="connection-item">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Archivos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Base de Datos -->
+                    <div class="cs-component database-side">
+                        <div class="cs-header">
+                            <i class="fas fa-database"></i>
+                            <h4>BASE DE DATOS</h4>
+                        </div>
+                        <div class="cs-items">
+                            <div class="cs-item">
+                                <i class="fas fa-table"></i>
+                                <span>Tablas</span>
+                            </div>
+                            <div class="cs-item">
+                                <i class="fas fa-list"></i>
+                                <span>Índices</span>
+                            </div>
+                            <div class="cs-item">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Logs</span>
+                            </div>
+                            <div class="cs-item">
+                                <i class="fas fa-archive"></i>
+                                <span>Backups</span>
+                            </div>
+                        </div>
+                        <div class="cs-details">
+                            <div class="detail-item">
+                                <i class="fas fa-cube"></i>
+                                <span>Bloques de Datos</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-folder"></i>
+                                <span>Metadatos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 11: Modelos de Datos -->
+            <section>
+                <h2><i class="fas fa-sitemap"></i> Modelos de Datos</h2>
+
+                <div class="concept-box">
+                    <h3>Definición</h3>
+                    <p>Los modelos de datos definen <mark>cómo se estructuran, almacenan y manipulan los datos</mark> en
+                        un sistema de gestión de bases de datos.</p>
+                </div>
+
+                <div class="r-hstack fragment">
+                    <div class="column">
+                        <div class="concept-box" style="background: rgba(40, 167, 69, 0.1);">
+                            <h4><i class="fas fa-table"></i> Modelo Relacional</h4>
+                            <ul>
+                                <li><strong>Estructura:</strong> Tabular</li>
+                                <li><strong>Características:</strong> SQL, ACID</li>
+                                <li><strong>Esquema:</strong> Fijo y predefinido</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="concept-box" style="background: rgba(35, 53, 110, 0.1);">
+                            <h4><i class="fas fa-file-code"></i> Modelo Documental</h4>
+                            <ul>
+                                <li><strong>Estructura:</strong> Documentos JSON/XML</li>
+                                <li><strong>Características:</strong> NoSQL, BASE</li>
+                                <li><strong>Esquema:</strong> Flexible y dinámico</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 12: Modelo Relacional -->
+            <section>
+                <h2><i class="fas fa-table"></i> Modelo Relacional</h2>
+
+                <div class="definition-box">
+                    <h3>Fundamento Histórico</h3>
+                    <p>Postulado por <strong>Edgar Frank Codd en 1970</strong>, basado en la lógica de predicados y la
+                        teoría de conjuntos. Es el modelo más utilizado en la actualidad.</p>
+                </div>
+
+                <div class="concept-box fragment">
+                    <h3>Características Principales</h3>
+                    <ul>
+                        <li><strong>Estructura Tabular Rígida:</strong> Información organizada en relaciones (tablas)
+                            con filas y columnas</li>
+                        <li><strong>Esquema Fijo:</strong> Estructura predefinida y estricta para garantizar integridad
+                        </li>
+                        <li><strong>Lenguaje Estándar:</strong> SQL (Structured Query Language) para consultas y
+                            manipulación</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box fragment">
+                    <h3>Propiedades ACID</h3>
+                    <p>Las transacciones son operaciones fundamentales que nos permiten modificar y recuperar datos.
+                        Para garantizar la <mark>integridad de la base de datos</mark>, es importante que estas
+                        transacciones se ejecuten manteniendo consistencia, corrección y confiabilidad incluso en caso
+                        de fallos.</p>
+                    <p><strong>ACID</strong> significa: <mark>Atomicity, Consistency, Isolation, Durability</mark></p>
+                </div>
+            </section>
+
+            <!-- Slide 12.1: Atomicidad Detallada -->
+            <section>
+                <h2><i class="fas fa-atom"></i> ACID: Atomicidad (Atomicity)</h2>
+
+                <div class="definition-box">
+                    <h3>Principio de "Todo o Nada"</h3>
+                    <p><strong>Atomicidad</strong> significa que una transacción es <mark>todo-o-nada</mark>: o todas
+                        sus operaciones tienen éxito, o ninguna se aplica. Si alguna parte falla, toda la transacción se
+                        revierte para mantener la base de datos consistente.</p>
+                </div>
+
+                <div class="r-hstack">
+                    <div class="column">
+                        <div class="concept-box">
+                            <h4><i class="fas fa-check-circle"></i> Commit (Confirmar)</h4>
+                            <p>Si la transacción es exitosa, los cambios se aplican permanentemente.</p>
+
+                            <h4><i class="fas fa-undo"></i> Abort/Rollback (Abortar/Revertir)</h4>
+                            <p>Si la transacción falla, cualquier cambio realizado durante la transacción se descarta.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="highlight-box">
+                            <h4>Ejemplo Práctico: Transferencia Bancaria</h4>
+                            <p><strong>Transacción T:</strong> Transferir $100 de cuenta X a cuenta Y</p>
+                            <ul>
+                                <li><strong>T1:</strong> Restar $100 de cuenta X</li>
+                                <li><strong>T2:</strong> Sumar $100 a cuenta Y</li>
+                            </ul>
+                            <div class="mermaid-container">
+                                <div class="mermaid">
+                                    graph LR
+                                    A[Cuenta X: $500] -->|T1: -$100| B[Cuenta X: $400]
+                                    C[Cuenta Y: $200] -->|T2: +$100| D[Cuenta Y: $300]
+
+                                    style A fill:#f8d7da
+                                    style B fill:#d4edda
+                                    style C fill:#f8d7da
+                                    style D fill:#d4edda
+                                </div>
+                            </div>
+                            <p><strong>Sin Atomicidad:</strong> Si T1 se completa pero T2 falla, X pierde $100 pero Y no
+                                los recibe - ¡inconsistencia!</p>
+                            <p><strong>Con Atomicidad:</strong> Si cualquier parte falla, todo el proceso se revierte al
+                                estado original.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 12.2: Consistencia Detallada -->
+            <section>
+                <section>
+                    <h2><i class="fas fa-balance-scale"></i> ACID: Consistencia (Consistency)</h2>
+
+                    <div class="definition-box">
+                        <h3>Mantenimiento de Estados Válidos</h3>
+                        <p><strong>Consistencia</strong> en transacciones significa que la base de datos debe
+                            <mark>permanecer en un estado válido</mark> antes y después de una transacción.
+                        </p>
+                    </div>
+
+                    <div class="concept-box">
+                        <h4>Características de un Estado Válido</h4>
+                        <ul>
+                            <li>Sigue todas las reglas, restricciones y relaciones definidas (claves primarias,
+                                foráneas,
+                                etc.)</li>
+                            <li>Si una transacción viola cualquiera de estas reglas, se revierte para prevenir datos
+                                corruptos</li>
+                            <li>Ejemplo de violación: deducir dinero de una cuenta pero no agregarlo a otra en una
+                                transferencia</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2><i class="fas fa-university"></i> Ejemplo: Sistema Bancario - Conservación del Balance Total
+                    </h2>
+
+                    <div class="highlight-box">
+                        <h3>Regla de Consistencia</h3>
+                        <p><strong>La suma de todos los balances debe permanecer constante</strong></p>
+                    </div>
+
+                    <div class="mermaid-container banking-diagram">
+                        <div class="mermaid" id="banking-system-diagram">
+                            graph TD
+                            A["Estado Inicial<br />Cuenta X: $500<br />Cuenta Y: $200<br />Total: $700"]
+                            A -->|Transferencia $100| B["Estado Final<br />Cuenta X: $400<br />Cuenta Y:
+                            $300<br />Total: $700"]
+                            A -->|Fallo Parcial| C["Estado Inconsistente<br />Cuenta X: $400<br />Cuenta Y:
+                            $200<br />Total: $600 ❌"]
+                            C -->|Rollback por Consistencia| A
+
+                            style A fill:#e8f5e8,stroke:#28a745,stroke-width:2px
+                            style B fill:#d4edda,stroke:#28a745,stroke-width:2px
+                            style C fill:#f8d7da,stroke:#dc3545,stroke-width:2px
+                        </div>
+                    </div>
+
+                    <div class="r-hstack fragment">
+                        <div class="column">
+                            <div class="concept-box">
+                                <h4>Verificación de Consistencia</h4>
+                                <p><strong>Total antes de T:</strong> 500 + 200 = 700</p>
+                                <p><strong>Total después de T:</strong> 400 + 300 = 700 ✅</p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="highlight-box">
+                                <h4>Mecanismo de Protección</h4>
+                                <p>Si la transacción falla en el medio, el sistema mantiene consistencia mediante
+                                    <strong>rollback</strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 12.3: Aislamiento Detallado -->
+            <section>
+                <section>
+                    <h2><i class="fas fa-lock"></i> ACID: Aislamiento (Isolation)</h2>
+
+                    <div class="definition-box">
+                        <h3>Transacciones Independientes</h3>
+                        <p><strong>Aislamiento</strong> asegura que las transacciones se ejecuten
+                            <mark>independientemente
+                                sin afectarse entre sí</mark>. Los cambios realizados por una transacción no son
+                            visibles
+                            para otras hasta que se confirmen.
+                        </p>
+                    </div>
+
+                    <div class="concept-box">
+                        <h4>Problemas que Previene el Aislamiento</h4>
+                        <ul>
+                            <li><strong>Dirty Reads:</strong> Leer datos no confirmados</li>
+                            <li><strong>Non-repeatable Reads:</strong> Los datos cambian entre dos lecturas</li>
+                            <li><strong>Phantom Reads:</strong> Aparecen nuevas filas durante una transacción</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2><i class="fas fa-sync-alt"></i> Ejemplo: Transacciones Concurrentes</h2>
+
+                    <div class="highlight-box">
+                        <h3>Estado Inicial</h3>
+                        <p><strong>X = $500, Y = $500</strong></p>
+                    </div>
+
+                    <div class="r-hstack">
+                        <div class="column">
+                            <div class="concept-box"
+                                style="background: rgba(40, 167, 69, 0.1); border-left: 4px solid #28a745;">
+                                <h4><i class="fas fa-arrow-right"></i> Transacción T</h4>
+                                <ol>
+                                    <li>Lee Y (valor: 500)</li>
+                                    <li>Deduce $50 de X (nuevo X = 450)</li>
+                                    <li>Suma $50 a Y (nuevo Y = 550)</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="concept-box"
+                                style="background: rgba(35, 53, 110, 0.1); border-left: 4px solid #23356E;">
+                                <h4><i class="fas fa-arrow-right"></i> Transacción T''</h4>
+                                <ol>
+                                    <li>Lee X (500) y Y (500)</li>
+                                    <li>Calcula suma: 500 + 500 = 1000</li>
+                                    <li>Mientras tanto, valores cambian a X=450, Y=550</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="r-hstack fragment">
+                        <div class="column">
+                            <div class="highlight-box">
+                                <h4><i class="fas fa-shield-alt"></i> Con Aislamiento</h4>
+                                <p>T'' no lee valores desactualizados mientras T está en progreso. Las transacciones son
+                                    independientes, y T'' accede a los valores finales solo después de que T confirme.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="concept-box" style="background: rgba(40, 167, 69, 0.1);">
+                                <h4><i class="fas fa-check-circle"></i> Resultado Correcto</h4>
+                                <p><strong>Suma final = 450 + 550 = 1000 ✅</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 12.4: Durabilidad e Impacto -->
+            <section>
+                <h2><i class="fas fa-save"></i> ACID: Durabilidad y Gestión del SGBD</h2>
+
+                <!-- Primera fila: Solo Durabilidad -->
+                <div class="definition-box">
+                    <h3><i class="fas fa-shield-alt"></i> Durabilidad (Durability)</h3>
+                    <p><strong>Durabilidad</strong> asegura que una vez que una transacción se confirma,
+                        <mark>sus cambios se guardan permanentemente</mark>, incluso si el sistema falla.
+                    </p>
+                    <ul class="r-hstack"
+                        style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; list-style: none; padding: 0;">
+                        <li><i class="fas fa-memory"></i> Los datos se almacenan en memoria no volátil</li>
+                        <li><i class="fas fa-undo"></i> La base de datos puede recuperarse al último estado confirmado
+                        </li>
+                        <li><i class="fas fa-check-circle"></i> No se pierden datos confirmados</li>
+                    </ul>
+
+                    <div class="highlight-box fragment" style="margin-top: 1rem;">
+                        <h4><i class="fas fa-university"></i> Ejemplo Bancario</h4>
+                        <p>Después de transferir dinero exitosamente de Cuenta A a Cuenta B, los cambios se
+                            almacenan en disco. Incluso si hay un crash inmediatamente después del commit, los
+                            detalles de la transferencia permanecen intactos cuando el sistema se recupera.</p>
+                    </div>
+                </div>
+
+                <!-- Segunda fila: Responsabilidades + Casos de Uso -->
+                <div class="r-hstack fragment">
+                    <div class="column">
+                        <div class="concept-box">
+                            <h4><i class="fas fa-cogs"></i> Responsabilidades en el SGBD</h4>
+                            <table class="comparison-table">
+                                <thead>
+                                    <tr>
+                                        <th>Propiedad</th>
+                                        <th>Responsable</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Atomicity</strong></td>
+                                        <td>Transaction Manager</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Consistency</strong></td>
+                                        <td>Application Programmer</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Isolation</strong></td>
+                                        <td>Concurrency Control Manager</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Durability</strong></td>
+                                        <td>Recovery Manager</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <div class="highlight-box">
+                            <h4><i class="fas fa-industry"></i> Casos de Uso Críticos</h4>
+                            <ul>
+                                <li><i class="fas fa-university"></i> <strong>Banca:</strong> Transferencias, depósitos,
+                                    retiros</li>
+                                <li><i class="fas fa-shopping-cart"></i> <strong>E-commerce:</strong> Inventarios,
+                                    pedidos, detalles de clientes</li>
+                                <li><i class="fas fa-heartbeat"></i> <strong>Salud:</strong> Registros de pacientes,
+                                    resultados de pruebas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </section>
+
+            <!-- Slide 13: Modelo Documental (NoSQL) -->
+            <section>
+                <h2><i class="fas fa-file-code"></i> Modelo Documental (NoSQL)</h2>
+
+                <div class="definition-box">
+                    <h3>Contexto de Surgimiento</h3>
+                    <p>El término <strong>NoSQL ("no solo SQL")</strong> se refiere a sistemas no relacionales que
+                        surgieron como alternativa para manejar grandes volúmenes de datos y escalabilidad requerida por
+                        aplicaciones web modernas.</p>
+                </div>
+
+                <div class="concept-box fragment">
+                    <h3>Características Principales</h3>
+                    <ul>
+                        <li><strong>Esquema Dinámico:</strong> No requiere esquemas fijos, mayor flexibilidad</li>
+                        <li><strong>Escalabilidad Horizontal:</strong> Distribución entre múltiples nodos</li>
+                        <li><strong>Almacenamiento de Documentos:</strong> Datos en formato JSON/XML</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box fragment">
+                    <h3>Propiedades BASE</h3>
+                    <p>Priorizan <mark>disponibilidad y tolerancia de partición</mark>:</p>
+                    <ul>
+                        <li><strong>Basically Available:</strong> Sistema básicamente disponible</li>
+                        <li><strong>Soft State:</strong> Estado del sistema puede cambiar</li>
+                        <li><strong>Eventual Consistency:</strong> Consistencia eventual, no inmediata</li>
+                    </ul>
+                </div>
+            </section>
+            <!-- Slide 14: Comparación de Modelos -->
+            <section>
+                <h2><i class="fas fa-balance-scale"></i> Comparación: Relacional vs Documental</h2>
+
+                <div class="concept-box">
+                    <h3>Análisis Comparativo</h3>
+                    <p>La elección entre modelos depende de los <mark>requisitos específicos del proyecto</mark> y las
+                        características del dominio de aplicación.</p>
+                </div>
+
+                <table class="comparison-table fragment">
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Modelo Relacional</th>
+                            <th>Modelo Documental</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Estructura</strong></td>
+                            <td>Tablas con filas y columnas</td>
+                            <td>Documentos JSON/XML</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Esquema</strong></td>
+                            <td>Fijo y predefinido</td>
+                            <td>Flexible y dinámico</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Escalabilidad</strong></td>
+                            <td>Vertical (más potencia)</td>
+                            <td>Horizontal (más nodos)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Consistencia</strong></td>
+                            <td>ACID - Inmediata</td>
+                            <td>BASE - Eventual</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Casos de Uso</strong></td>
+                            <td>Transacciones financieras, ERP</td>
+                            <td>Big Data, IoT, redes sociales</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Slide 15: Casos de Uso - Modelo Relacional -->
+            <section>
+                <h2><i class="fas fa-university"></i> Casos de Uso: Modelo Relacional</h2>
+
+                <div class="concept-box">
+                    <h3>Contextos Ideales</h3>
+                    <p>El modelo relacional con propiedades ACID es <mark>perfecto para sistemas donde la integridad de
+                            datos es crítica</mark> y no negociable.</p>
+                </div>
+
+                <div class="r-hstack fragment">
+                    <div class="column">
+                        <div class="highlight-box">
+                            <h4><i class="fas fa-money-bill-wave"></i> Sistemas Financieros</h4>
+                            <ul>
+                                <li>Transacciones bancarias</li>
+                                <li>Sistemas de pago</li>
+                                <li>Contabilidad empresarial</li>
+                                <li>Auditoría financiera</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="highlight-box">
+                            <h4><i class="fas fa-building"></i> Sistemas Empresariales</h4>
+                            <ul>
+                                <li>ERP (Enterprise Resource Planning)</li>
+                                <li>CRM (Customer Relationship Management)</li>
+                                <li>Sistemas de inventario</li>
+                                <li>Gestión de recursos humanos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="definition-box fragment">
+                    <h4>Ejemplos de Tecnologías</h4>
+                    <p><strong>Oracle Database, PostgreSQL, MySQL, Microsoft SQL Server</strong></p>
+                </div>
+            </section>
+
+            <!-- Slide 16: Casos de Uso - Modelo Documental -->
+            <section>
+                <h2><i class="fas fa-globe"></i> Casos de Uso: Modelo Documental</h2>
+
+                <div class="concept-box">
+                    <h3>Contextos Ideales</h3>
+                    <p>El modelo documental con propiedades BASE <mark>brilla en entornos que requieren flexibilidad y
+                            escalabilidad masiva</mark>.</p>
+                </div>
+
+                <div class="r-hstack fragment">
+                    <div class="column">
+                        <div class="highlight-box">
+                            <h4><i class="fas fa-chart-line"></i> Big Data y Analytics</h4>
+                            <ul>
+                                <li>Análisis de grandes volúmenes</li>
+                                <li>Data warehousing</li>
+                                <li>Business intelligence</li>
+                                <li>Machine learning datasets</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="highlight-box">
+                            <h4><i class="fas fa-mobile-alt"></i> Aplicaciones Modernas</h4>
+                            <ul>
+                                <li>Redes sociales</li>
+                                <li>Internet de las cosas (IoT)</li>
+                                <li>Aplicaciones móviles</li>
+                                <li>Sistemas de recomendación</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="definition-box fragment">
+                    <h4>Ejemplos de Tecnologías</h4>
+                    <p><strong>MongoDB, CouchDB, Amazon DynamoDB, RavenDB</strong></p>
+                </div>
+            </section>
+
+            <!-- Slide 17: Tendencias Futuras -->
+            <section>
+                <h2><i class="fas fa-crystal-ball"></i> Tendencias y Perspectivas Futuras</h2>
+
+                <div class="concept-box">
+                    <h3>Evolución del Panorama de Datos</h3>
+                    <p>En un contexto de datos cada vez más complejos e interconectados, surge la pregunta:
+                        <mark>¿dominará un solo modelo o la clave será la coexistencia?</mark>
+                    </p>
+                </div>
+
+                <div class="highlight-box fragment">
+                    <h3>Enfoque Híbrido</h3>
+                    <p>Las evidencias apuntan hacia un <strong>futuro híbrido</strong> donde diferentes arquitecturas
+                        colaboran según las necesidades específicas:</p>
+                    <ul>
+                        <li>Sistemas poliglotas que combinan múltiples modelos</li>
+                        <li>Arquitecturas de microservicios con bases de datos especializadas</li>
+                        <li>Integración de modelos relacionales y NoSQL</li>
+                    </ul>
+                </div>
+
+                <div class="definition-box fragment">
+                    <h3>Competencia Profesional</h3>
+                    <p>La habilidad clave será <mark>saber elegir el modelo arquitectónico adecuado</mark> para cada
+                        tipo de construcción de sistema de información.</p>
+                </div>
+            </section>
+
+            <!-- Slide 18: Síntesis de Conceptos -->
+            <section>
+                <h2><i class="fas fa-lightbulb"></i> Síntesis de Conceptos Fundamentales</h2>
+
+                <div class="r-hstack">
+                    <div class="column">
+                        <div class="concept-box">
+                            <h4>Arquitectura y Estructura</h4>
+                            <ul>
+                                <li>SGBD como sistemas complejos con arquitectura de <strong>tres niveles</strong></li>
+                                <li>La <mark>independencia de datos</mark> es clave para la flexibilidad</li>
+                                <li>Los componentes trabajan coordinadamente</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="column fragment">
+                        <div class="concept-box">
+                            <h4>Modelos y Aplicaciones</h4>
+                            <ul>
+                                <li><strong>Modelo relacional:</strong> ACID, estructura rígida</li>
+                                <li><strong>Modelo documental:</strong> BASE, flexibilidad</li>
+                                <li>Cada modelo tiene <mark>casos de uso específicos</mark></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box fragment">
+                    <h3>Preparación para Temas Avanzados</h3>
+                    <p>Los fundamentos estudiados son la <mark>base para temas avanzados</mark> como diseño de esquemas,
+                        normalización, optimización de consultas y gestión de transacciones.</p>
+                </div>
+            </section>
+
+            <!-- Slide 19: Actividades de Evaluación -->
+            <section>
+                <h2><i class="fas fa-clipboard-check"></i> Actividades de Evaluación</h2>
+
+                <div class="r-hstack">
+                    <div class="column">
+                        <div class="concept-box">
+                            <h4><i class="fas fa-university"></i> PE-1.1: Arquitectura ANSI-SPARC - Sistema Reservas
+                                UIDE</h4>
+                            <p><strong>Objetivo:</strong> Diseñar arquitectura ANSI-SPARC para sistema de reservas de
+                                aulas</p>
+                            <p><strong>Sistema base:</strong> <a href="http://66.29.142.84/uide/consultar_aulas"
+                                    target="_blank" style="color: #23356E; text-decoration: underline;">Sistema de
+                                    Reservas UIDE</a></p>
+                            <ul>
+                                <li><strong>Nivel Externo:</strong> Vistas por usuario (Estudiantes, Docentes,
+                                    Administradores)</li>
+                                <li><strong>Nivel Lógico:</strong> Esquema conceptual (Aulas, Reservas, Usuarios,
+                                    Horarios)</li>
+                                <li><strong>Nivel Interno:</strong> Almacenamiento físico (Archivos, Índices,
+                                    Estructuras)</li>
+                                <li><strong>Independencia:</strong> Física y lógica aplicada al contexto UIDE</li>
+                            </ul>
+                            <p><strong>Entregable:</strong> Diagrama ANSI-SPARC con herramientas de modelado</p>
+                            <p><strong>Formato:</strong> PE-1.1_ApellidoNombre_ANSI-SPARC_ReservasUIDE.pdf</p>
+                            <p><strong>Puntaje:</strong> 2.25 puntos</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="concept-box">
+                            <h4><i class="fas fa-balance-scale"></i> TA-1.1: Análisis ACID vs BASE</h4>
+                            <p><strong>Objetivo:</strong> Comparación de propiedades transaccionales</p>
+                            <ul>
+                                <li><strong>Propiedades ACID:</strong> Atomicidad, Consistencia, Aislamiento,
+                                    Durabilidad</li>
+                                <li><strong>Propiedades BASE:</strong> Basically Available, Soft State, Eventual
+                                    Consistency</li>
+                                <li><strong>Casos de uso:</strong> Banca vs E-commerce vs Redes Sociales</li>
+                                <li><strong>Recomendación:</strong> Justificación técnica por contexto</li>
+                            </ul>
+                            <p><strong>Entregable:</strong> Ficha comparativa de 1 página</p>
+                            <p><strong>Puntaje:</strong> 2.25 puntos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>Total de la semana:</strong> 4.5/30 puntos (Evaluación diagnóstica)</p>
+                </div>
+            </section>
+
+            <!-- Slide 20: Cierre -->
+            <section>
+                <div style="text-align: center; padding: 2em;">
+                    <h1 style="color: var(--uide-primary); margin-bottom: 1em;">
+                        <i class="fas fa-graduation-cap"></i> Fundamentos Consolidados
+                    </h1>
+
+                    <div class="concept-box">
+                        <h3>Logros de Aprendizaje</h3>
+                        <ul style="text-align: left; font-size: 1.1em;">
+                            <li><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>Arquitectura
+                                    ANSI-SPARC:</strong> Tres niveles de abstracción dominados</li>
+                            <li><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>Componentes
+                                    SGBD:</strong> Arquitectura en 5 capas identificada</li>
+                            <li><i class="fas fa-check-circle" style="color: #28a745;"></i>
+                                <strong>Cliente/Servidor:</strong> Separación de responsabilidades comprendida
+                            </li>
+                            <li><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>Propiedades
+                                    ACID:</strong> Transacciones y consistencia aplicadas</li>
+                            <li><i class="fas fa-check-circle" style="color: #28a745;"></i> <strong>ACID vs
+                                    BASE:</strong> Modelos relacionales y documentales comparados</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-top: 2em; font-size: 1.1em; color: var(--uide-secondary);">
+                        <strong>Universidad Internacional del Ecuador</strong><br>
+                        Sistemas de Gestión de Bases de Datos - Semana 1<br>
+                        <em>Fundamentos para la construcción de sistemas de información robustos</em>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
+
+    <script>
+        // Initialize Reveal.js
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+            controls: true,
+            progress: true,
+            center: true,
+            touch: true,
+            loop: false,
+            width: 1024,
+            height: 768,
+            margin: 0.1,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+
+        // Initialize Mermaid with enhanced responsive configuration
+        if (typeof mermaid !== 'undefined') {
+            mermaid.initialize({
+                startOnLoad: false, // Disable auto-start to control rendering
+                theme: 'default',
+                themeVariables: {
+                    primaryColor: '#910048',
+                    primaryTextColor: '#23356E',
+                    primaryBorderColor: '#E9AB21',
+                    lineColor: '#23356E',
+                    secondaryColor: '#f8f8f8',
+                    tertiaryColor: '#fff'
+                },
+                securityLevel: 'loose',
+                flowchart: {
+                    useMaxWidth: true,
+                    htmlLabels: true,
+                    curve: 'basis'
+                },
+                // Enhanced responsive configuration
+                maxTextSize: 90000,
+                maxEdges: 200,
+                // Responsive font sizing
+                fontSize: window.innerWidth < 768 ? 12 : window.innerWidth < 1024 ? 14 : 16
+            });
+
+            // Function to render Mermaid diagrams one by one
+            function renderMermaidDiagrams() {
+                const mermaidElements = document.querySelectorAll('.mermaid');
+                let index = 0;
+
+                function renderNext() {
+                    if (index < mermaidElements.length) {
+                        const element = mermaidElements[index];
+                        const graphDefinition = element.textContent;
+                        const id = 'mermaid-' + index;
+
+                        mermaid.render(id, graphDefinition).then(function (result) {
+                            element.innerHTML = result.svg;
+                            index++;
+                            // Small delay between renders to prevent conflicts
+                            setTimeout(renderNext, 100);
+                        }).catch(function (error) {
+                            console.error('Mermaid rendering error:', error);
+                            index++;
+                            setTimeout(renderNext, 100);
+                        });
+                    }
+                }
+
+                renderNext();
+            }
+
+            // Render diagrams when Reveal.js is ready
+            Reveal.on('ready', function () {
+                setTimeout(renderMermaidDiagrams, 500);
+            });
+
+            // Re-render diagrams when slides change (for lazy loading)
+            Reveal.on('slidechanged', function (event) {
+                const currentSlide = event.currentSlide;
+                const mermaidInSlide = currentSlide.querySelectorAll('.mermaid');
+
+                mermaidInSlide.forEach(function (element, index) {
+                    if (element.textContent.trim() && !element.querySelector('svg')) {
+                        const graphDefinition = element.textContent;
+                        const id = 'mermaid-slide-' + event.indexh + '-' + index;
+
+                        mermaid.render(id, graphDefinition).then(function (result) {
+                            element.innerHTML = result.svg;
+                        }).catch(function (error) {
+                            console.error('Mermaid slide rendering error:', error);
+                        });
+                    }
+                });
+            });
+
+            // Enhanced responsive behavior for window resize
+            let resizeTimeout;
+            window.addEventListener('resize', function () {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(function () {
+                    // Re-initialize Mermaid with new font size based on screen width
+                    const newFontSize = window.innerWidth < 768 ? 12 : window.innerWidth < 1024 ? 14 : 16;
+
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: 'default',
+                        themeVariables: {
+                            primaryColor: '#910048',
+                            primaryTextColor: '#23356E',
+                            primaryBorderColor: '#E9AB21',
+                            lineColor: '#23356E',
+                            secondaryColor: '#f8f8f8',
+                            tertiaryColor: '#fff'
+                        },
+                        securityLevel: 'loose',
+                        flowchart: {
+                            useMaxWidth: true,
+                            htmlLabels: true,
+                            curve: 'basis'
+                        },
+                        maxTextSize: 90000,
+                        maxEdges: 200,
+                        fontSize: newFontSize
+                    });
+
+                    // Re-render all visible diagrams
+                    const visibleMermaidElements = document.querySelectorAll('.present .mermaid');
+                    visibleMermaidElements.forEach(function (element, index) {
+                        if (element.textContent.trim()) {
+                            const graphDefinition = element.textContent;
+                            const id = 'mermaid-resize-' + Date.now() + '-' + index;
+
+                            mermaid.render(id, graphDefinition).then(function (result) {
+                                element.innerHTML = result.svg;
+                            }).catch(function (error) {
+                                console.error('Mermaid resize rendering error:', error);
+                            });
+                        }
+                    });
+                }, 300); // Debounce resize events
+            });
+        }
+    </script>
+
+</body>
+
+</html>

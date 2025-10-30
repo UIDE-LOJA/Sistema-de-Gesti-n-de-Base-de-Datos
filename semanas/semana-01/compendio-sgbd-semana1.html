@@ -17,6 +17,12 @@
     <!-- UIDE Theme CSS -->
     <link rel="stylesheet" href="../../assets/css/uide-theme.css">
 
+    <!-- Mermaid.js for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+
+    <!-- D3.js for interactive visualizations -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
     <!-- Custom Styles -->
     <style>
         /* Enhanced concept-box styling */
@@ -102,6 +108,223 @@
             border-radius: 3px;
         }
 
+        /* Mermaid diagram styling */
+        .mermaid-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mermaid {
+            text-align: center;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Responsive Mermaid diagrams - fit to container */
+        .mermaid svg {
+            max-width: 100%;
+            max-height: 450px;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        /* Ensure text in Mermaid diagrams is readable */
+        .mermaid .node text,
+        .mermaid .edgeLabel text,
+        .mermaid .label text {
+            font-size: 14px !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+            font-weight: 500 !important;
+            line-height: 1.2 !important;
+        }
+
+        /* Specific styling for multiline text in nodes */
+        .mermaid .node rect {
+            min-width: 120px !important;
+            min-height: 50px !important;
+        }
+
+        .mermaid .node text tspan {
+            font-size: 13px !important;
+            font-weight: 500 !important;
+        }
+
+        /* Ensure emojis and icons are visible */
+        .mermaid .node text tspan:first-child {
+            font-size: 16px !important;
+            font-weight: 600 !important;
+        }
+
+        /* Ensure parent containers don't overflow */
+        .concept-box {
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        section {
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Mobile responsive adjustments for Mermaid */
+        @media (max-width: 768px) {
+            .mermaid-container {
+                padding: 1rem;
+                margin: 1rem 0;
+                overflow: hidden;
+                max-width: calc(100vw - 2rem);
+                box-sizing: border-box;
+            }
+
+            .mermaid svg {
+                max-width: 100%;
+                max-height: 350px;
+                width: auto;
+                height: auto;
+            }
+
+            .mermaid .node text,
+            .mermaid .edgeLabel text,
+            .mermaid .label text {
+                font-size: 12px !important;
+            }
+
+            .mermaid .node text tspan {
+                font-size: 11px !important;
+            }
+
+            .mermaid .node text tspan:first-child {
+                font-size: 14px !important;
+            }
+
+            /* Ensure nodes are large enough for touch and multiline text */
+            .mermaid .node rect,
+            .mermaid .node circle,
+            .mermaid .node ellipse {
+                min-width: 100px !important;
+                min-height: 45px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mermaid-container {
+                padding: 0.5rem;
+                border-radius: 8px;
+                max-width: calc(100vw - 1rem);
+            }
+
+            .mermaid svg {
+                max-width: 100%;
+                max-height: 300px;
+                width: auto;
+                height: auto;
+            }
+
+            .mermaid .node text,
+            .mermaid .edgeLabel text,
+            .mermaid .label text {
+                font-size: 11px !important;
+            }
+
+            .mermaid .node text tspan {
+                font-size: 10px !important;
+            }
+
+            .mermaid .node text tspan:first-child {
+                font-size: 12px !important;
+            }
+
+            .mermaid .node rect {
+                min-width: 90px !important;
+                min-height: 40px !important;
+            }
+        }
+
+        /* D3.js chart styling */
+        #model-comparison-chart {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* Progressive diagram loading styles */
+        .mermaid-container[id*="diagram"] {
+            position: relative;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mermaid-container[id*="diagram"] .mermaid {
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        .mermaid-container[id*="diagram"]>div:last-child {
+            animation: pulse 2s infinite;
+        }
+
+        /* Smooth transitions for diagram updates */
+        .mermaid svg {
+            transition: all 0.5s ease;
+        }
+
+        /* Fragment animation enhancement */
+        .mermaid-step {
+            transform-origin: center;
+        }
+
         /* Table styling */
         .comparison-table {
             width: 100%;
@@ -161,7 +384,9 @@
             <!-- Quote Slide -->
             <section data-background-color="#f8f8f8">
                 <blockquote style="font-size: 1.2em; text-align: center;">
-                    <p><strong>"Un Sistema Gestor de Bases de Datos es una colección de datos relacionados entre sí, estructurados y organizados, y un conjunto de programas que acceden y gestionan esos datos."</strong></p>
+                    <p><strong>"Un Sistema Gestor de Bases de Datos es una colección de datos relacionados entre sí,
+                            estructurados y organizados, y un conjunto de programas que acceden y gestionan esos
+                            datos."</strong></p>
                     <footer style="margin-top: 1em; color: var(--uide-secondary);">
                         — Definición Fundamental de SGBD
                     </footer>
@@ -170,55 +395,65 @@
 
             <!-- Curriculum Context -->
             <section data-background-color="#f8f8f8">
-                <h2>Contexto en la Unidad 1</h2>
+                <h2>Contexto Curricular y Objetivos</h2>
 
                 <section>
-                    <h3>Progresión Temática</h3>
+                    <h3>Ubicación en el Programa</h3>
+                    <div class="concept-box info">
+                        <h4><i class="fas fa-map-marked-alt"></i> Ruta de Aprendizaje</h4>
+                        <p>Esta semana establece los <mark>cimientos conceptuales</mark> para todo el curso de SGBD</p>
+                    </div>
+
                     <div class="r-hstack">
                         <div class="column">
-                            <h4>Semana 1 (Actual)</h4>
                             <div
-                                style="background: rgba(233, 171, 33, 0.2); padding: 1em; border-radius: 8px; border: 2px solid var(--uide-accent);">
+                                style="background: rgba(233, 171, 33, 0.2); padding: 1.5em; border-radius: 8px; border: 2px solid var(--uide-accent);">
+                                <h4><i class="fas fa-star"></i> Semana 1 (Actual)</h4>
                                 <strong>Fundamentos de SGBD</strong><br>
-                                <small>Arquitectura, componentes y modelos</small>
+                                <small>Arquitectura, componentes y modelos de datos</small>
                             </div>
                         </div>
                         <div class="column fragment">
-                            <h4>Próximamente</h4>
-                            <div style="background: rgba(145, 0, 72, 0.1); padding: 1em; border-radius: 8px;">
-                                <strong>Semana 2</strong><br>
-                                <small>Modelo Relacional y SQL</small>
+                            <div style="background: rgba(145, 0, 72, 0.1); padding: 1.5em; border-radius: 8px;">
+                                <h4><i class="fas fa-arrow-right"></i> Semana 2</h4>
+                                <strong>Modelo Relacional</strong><br>
+                                <small>SQL básico y operaciones</small>
                             </div>
                         </div>
                         <div class="column fragment">
-                            <h4>Futuro</h4>
-                            <div style="background: rgba(35, 53, 110, 0.1); padding: 1em; border-radius: 8px;">
-                                <strong>Unidad 2</strong><br>
-                                <small>Diseño y Normalización</small>
+                            <div style="background: rgba(35, 53, 110, 0.1); padding: 1.5em; border-radius: 8px;">
+                                <h4><i class="fas fa-forward"></i> Unidades 2-4</h4>
+                                <strong>Temas Avanzados</strong><br>
+                                <small>Diseño, normalización, optimización</small>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 <section>
-                    <h3>Temas de la Semana 1</h3>
+                    <h3>Objetivos de Aprendizaje</h3>
                     <div class="r-hstack">
                         <div class="column">
-                            <h4>Contenidos Principales</h4>
-                            <ul>
-                                <li><mark>Arquitectura de SGBD (ANSI-SPARC)</mark></li>
-                                <li><mark>Componentes: Cliente/Servidor</mark></li>
-                                <li><mark>Procesos y Buffers</mark></li>
-                                <li><mark>Modelos: Relacional vs Documental</mark></li>
-                            </ul>
+                            <div class="concept-box">
+                                <h4><i class="fas fa-brain"></i> Competencias Conceptuales</h4>
+                                <ul style="text-align: left; font-size: 0.9em;">
+                                    <li><strong>Definir</strong> qué es un SGBD y su propósito</li>
+                                    <li><strong>Explicar</strong> la arquitectura ANSI-SPARC</li>
+                                    <li><strong>Identificar</strong> componentes principales</li>
+                                    <li><strong>Distinguir</strong> modelos de datos</li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="column fragment">
-                            <h4>Objetivos de Aprendizaje</h4>
-                            <ul>
-                                <li><strong>Arquitectónico:</strong> Mapear componentes de SGBD</li>
-                                <li><strong>Comparativo:</strong> Analizar modelos de datos</li>
-                                <li><strong>Práctico:</strong> Aplicar conceptos en casos reales</li>
-                            </ul>
+                            <div class="concept-box">
+                                <h4><i class="fas fa-tools"></i> Competencias Prácticas</h4>
+                                <ul style="text-align: left; font-size: 0.9em;">
+                                    <li><strong>Mapear</strong> arquitecturas de SGBD</li>
+                                    <li><strong>Comparar</strong> modelos relacionales vs NoSQL</li>
+                                    <li><strong>Analizar</strong> casos de uso específicos</li>
+                                    <li><strong>Evaluar</strong> ventajas y desventajas</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -231,11 +466,15 @@
                 <section data-auto-animate>
                     <h3>1.1 Definición y Propósito</h3>
                     <div class="concept-box">
-                        <p>Un <mark>Sistema Gestor de Bases de Datos (SGBD)</mark> es una colección de datos relacionados entre sí, estructurados y organizados, y un conjunto de programas que acceden y gestionan esos datos.</p>
-                        
+                        <p>Un <mark>Sistema Gestor de Bases de Datos (SGBD)</mark> es una colección de datos
+                            relacionados entre sí, estructurados y organizados, y un conjunto de programas que acceden y
+                            gestionan esos datos.</p>
+
                         <div class="fragment">
                             <h4>Objetivo Principal</h4>
-                            <p>Fungir como <strong>interfaz entre la base de datos, los usuarios y las aplicaciones</strong>, proporcionando el método de organización necesario para el almacenamiento y la recuperación flexible de grandes cantidades de información.</p>
+                            <p>Fungir como <strong>interfaz entre la base de datos, los usuarios y las
+                                    aplicaciones</strong>, proporcionando el método de organización necesario para el
+                                almacenamiento y la recuperación flexible de grandes cantidades de información.</p>
                         </div>
                     </div>
                 </section>
@@ -243,9 +482,25 @@
                 <section data-auto-animate>
                     <h3>1.2 Arquitectura de Tres Niveles (ANSI-SPARC)</h3>
                     <div class="concept-box">
-                        <p>La arquitectura más aceptada fue propuesta por el comité <strong>ANSI-SPARC</strong> en 1975, con el objetivo de <mark>separar los programas de aplicación de la BD física</mark>.</p>
-                        
-                        <p style="text-align: center; color: var(--uide-secondary); font-style: italic; margin-top: 2em;">
+                        <p>La arquitectura más aceptada fue propuesta por el comité <strong>ANSI-SPARC</strong> en 1975,
+                            con el objetivo de <mark>separar los programas de aplicación de la BD física</mark>.</p>
+
+                        <div class="mermaid-container" id="ansi-sparc-diagram">
+                            <div class="mermaid">
+                                graph TD
+                                A[Nivel Externo] --> B[Nivel Lógico] --> C[Nivel Interno]
+                                style A fill:#e8f5e8
+                                style B fill:#fff3cd
+                                style C fill:#f8d7da
+                            </div>
+                            <div
+                                style="text-align: center; margin-top: 1rem; font-size: 0.9em; color: var(--uide-secondary);">
+                                <i class="fas fa-sitemap"></i> Arquitectura de Tres Niveles ANSI-SPARC
+                            </div>
+                        </div>
+
+                        <p
+                            style="text-align: center; color: var(--uide-secondary); font-style: italic; margin-top: 2em;">
                             Navega verticalmente (↓) para explorar cada nivel
                         </p>
                     </div>
@@ -254,9 +509,11 @@
                 <section data-auto-animate>
                     <h3>Nivel Interno o Físico</h3>
                     <div class="concept-box">
-                        <div style="background: rgba(220, 53, 69, 0.1); padding: 2rem; border-radius: 8px; border-left: 4px solid rgba(220, 53, 69, 0.8);">
+                        <div
+                            style="background: rgba(220, 53, 69, 0.1); padding: 2rem; border-radius: 8px; border-left: 4px solid rgba(220, 53, 69, 0.8);">
                             <h4><i class="fas fa-hdd"></i> Nivel Interno o Físico</h4>
-                            <p>Es el <strong>nivel más bajo de abstracción</strong> y describe cómo se almacenan realmente los datos.</p>
+                            <p>Es el <strong>nivel más bajo de abstracción</strong> y describe cómo se almacenan
+                                realmente los datos.</p>
                             <ul style="text-align: left; font-size: 1.1em;">
                                 <li>Emplea un <strong>modelo físico de datos</strong></li>
                                 <li>Es el <strong>único nivel donde los datos existen realmente</strong></li>
@@ -270,9 +527,11 @@
                 <section data-auto-animate>
                     <h3>Nivel Lógico o Conceptual</h3>
                     <div class="concept-box">
-                        <div style="background: rgba(233, 171, 33, 0.1); padding: 2rem; border-radius: 8px; border-left: 4px solid rgba(233, 171, 33, 0.8);">
+                        <div
+                            style="background: rgba(233, 171, 33, 0.1); padding: 2rem; border-radius: 8px; border-left: 4px solid rgba(233, 171, 33, 0.8);">
                             <h4><i class="fas fa-sitemap"></i> Nivel Lógico o Conceptual</h4>
-                            <p>Describe la <strong>estructura de toda la base de datos</strong> para una comunidad de usuarios.</p>
+                            <p>Describe la <strong>estructura de toda la base de datos</strong> para una comunidad de
+                                usuarios.</p>
                             <ul style="text-align: left; font-size: 1.1em;">
                                 <li>Describe <strong>entidades, atributos, relaciones</strong></li>
                                 <li>Define <strong>operaciones y restricciones</strong></li>
@@ -286,7 +545,8 @@
                 <section data-auto-animate>
                     <h3>Nivel Externo o de Vistas</h3>
                     <div class="concept-box">
-                        <div style="background: rgba(40, 167, 69, 0.1); padding: 2rem; border-radius: 8px; border-left: 4px solid rgba(40, 167, 69, 0.8);">
+                        <div
+                            style="background: rgba(40, 167, 69, 0.1); padding: 2rem; border-radius: 8px; border-left: 4px solid rgba(40, 167, 69, 0.8);">
                             <h4><i class="fas fa-users"></i> Nivel Externo o de Vistas</h4>
                             <p>Describe la <strong>parte de la BD a la que los usuarios pueden acceder</strong>.</p>
                             <ul style="text-align: left; font-size: 1.1em;">
@@ -326,74 +586,115 @@
                 <h2>2. Componentes del SGBD</h2>
 
                 <section data-auto-animate>
-                    <h3>2.1 Componentes Generales</h3>
+                    <h3>2.1 Componentes Principales</h3>
                     <div class="concept-box">
-                        <p>Un SGBD es un <mark>paquete de software muy complejo</mark> compuesto por varios subsistemas para manejar la definición, manipulación, control y generación de aplicaciones.</p>
-                    </div>
-                </section>
+                        <p>Un SGBD es un <mark>paquete de software complejo</mark> compuesto por varios subsistemas que
+                            trabajan coordinadamente.</p>
 
-                <section data-auto-animate>
-                    <h3>Motor de la Base de Datos</h3>
-                    <div class="concept-box">
-                        <div style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px;">
-                            <h4><i class="fas fa-cogs"></i> Motor de la Base de Datos</h4>
-                            <p>Componente central que:</p>
-                            <ul style="text-align: left;">
-                                <li><strong>Acepta peticiones lógicas</strong> de otros subsistemas</li>
-                                <li><strong>Convierte a su equivalente físico</strong></li>
-                                <li><strong>Accede a la base de datos y al diccionario</strong></li>
-                            </ul>
+                        <div class="mermaid-container">
+                            <div class="mermaid">
+                                graph TD
+                                A["👥 Usuarios<br />Aplicaciones"] --> B["🖥️ Interfaz<br />de Usuario"]
+                                B --> C["⚙️ Procesador<br />de Consultas"]
+                                C --> D["🔧 Motor<br />de BD"]
+                                D --> E["💾 Base de<br />Datos"]
+                                F["👨‍💼 Administrador<br />DBA"] --> G["🛠️ Herramientas<br />de Admin"]
+                                G --> C
+                                style A fill:#e8f5e8
+                                style B fill:#fff3cd
+                                style C fill:#d1ecf1
+                                style D fill:#f8d7da
+                                style E fill:#e2e3e5
+                                style F fill:#e8f5e8
+                                style G fill:#fff3cd
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <section data-auto-animate>
-                    <h3>Procesador del Lenguaje</h3>
+                    <h3>2.2 Funciones Principales del SGBD</h3>
                     <div class="concept-box">
-                        <div style="background: rgba(35, 53, 110, 0.1); padding: 1.5rem; border-radius: 8px;">
-                            <h4><i class="fas fa-code"></i> Intérprete o Procesador del Lenguaje</h4>
-                            <p>Responsable de:</p>
-                            <ul style="text-align: left;">
-                                <li><strong>Procesar sentencias DDL</strong> (Lenguaje de Definición de Datos)</li>
-                                <li><strong>Procesar sentencias DML</strong> (Lenguaje de Manipulación de Datos)</li>
-                                <li><strong>Validar sintaxis y semántica</strong></li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
+                        <p>Un SGBD debe proporcionar <mark>funciones esenciales</mark> para la gestión eficiente y
+                            segura de los datos.</p>
 
-                <section data-auto-animate>
-                    <h3>Optimizador y Mecanismos</h3>
-                    <div class="concept-box">
                         <div class="r-hstack">
                             <div class="column fragment">
-                                <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
-                                    <h5><i class="fas fa-tachometer-alt"></i> Optimizador de Consultas</h5>
-                                    <p>Realiza la <strong>optimización de cada pregunta</strong> y elige el plan de actuación más eficiente</p>
+                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-database"></i> Gestión de Datos</h4>
+                                    <ul style="text-align: left; font-size: 0.9em;">
+                                        <li><strong>Almacenamiento físico</strong> eficiente</li>
+                                        <li><strong>Organización de archivos</strong> e índices</li>
+                                        <li><strong>Gestión de espacio</strong> en disco</li>
+                                        <li><strong>Compresión</strong> y optimización</li>
+                                    </ul>
                                 </div>
                             </div>
                             <div class="column fragment">
-                                <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px;">
-                                    <h5><i class="fas fa-database"></i> Mecanismo de Almacenamiento</h5>
-                                    <p>Traduce operaciones a <strong>lenguaje de bajo nivel</strong> para acceder a los datos</p>
+                                <div style="background: rgba(35, 53, 110, 0.1); padding: 1.5rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-search"></i> Procesamiento de Consultas</h4>
+                                    <ul style="text-align: left; font-size: 0.9em;">
+                                        <li><strong>Análisis sintáctico</strong> de SQL</li>
+                                        <li><strong>Optimización</strong> de consultas</li>
+                                        <li><strong>Ejecución</strong> eficiente</li>
+                                        <li><strong>Gestión de resultados</strong></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="fragment" style="background: rgba(220, 53, 69, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                            <h5><i class="fas fa-sync-alt"></i> Motor de Transacciones</h5>
-                            <p>Gestiona la ejecución de transacciones para asegurar la <strong>corrección y fiabilidad</strong></p>
+
+                        <div class="r-hstack" style="margin-top: 1rem;">
+                            <div class="column fragment">
+                                <div style="background: rgba(233, 171, 33, 0.1); padding: 1.5rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-shield-alt"></i> Control y Seguridad</h4>
+                                    <ul style="text-align: left; font-size: 0.9em;">
+                                        <li><strong>Autenticación</strong> y autorización</li>
+                                        <li><strong>Integridad referencial</strong></li>
+                                        <li><strong>Control de concurrencia</strong></li>
+                                        <li><strong>Auditoría</strong> y logging</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="column fragment">
+                                <div style="background: rgba(145, 0, 72, 0.1); padding: 1.5rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-tools"></i> Administración</h4>
+                                    <ul style="text-align: left; font-size: 0.9em;">
+                                        <li><strong>Backup y recovery</strong></li>
+                                        <li><strong>Monitoreo</strong> de rendimiento</li>
+                                        <li><strong>Mantenimiento</strong> automático</li>
+                                        <li><strong>Gestión de usuarios</strong></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <section data-auto-animate>
-                    <h3>2.2 Arquitectura Cliente/Servidor</h3>
+                    <h3>2.3 Arquitectura Cliente/Servidor</h3>
                     <div class="concept-box">
-                        <h4>Modelo de Distribución</h4>
-                        <div class="r-hstack">
+                        <h4>Modelo de Distribución Básico</h4>
+
+                        <div class="mermaid-container fragment" id="client-server-diagram">
+                            <div class="mermaid">
+                                graph LR
+                                A["💻 Cliente<br />Aplicación"] --> B["🌐 Red<br />Comunicación"] --> C["🖥️
+                                Servidor<br />SGBD"] --> D["💾 Base de<br />Datos"]
+                                style A fill:#e8f5e8
+                                style B fill:#fff3cd
+                                style C fill:#d1ecf1
+                                style D fill:#f8d7da
+                            </div>
+                            <div
+                                style="text-align: center; margin-top: 1rem; font-size: 0.9em; color: var(--uide-secondary);">
+                                <i class="fas fa-network-wired"></i> Arquitectura Cliente/Servidor
+                            </div>
+                        </div>
+
+                        <div class="r-hstack" style="margin-top: 1rem;">
                             <div class="column fragment">
-                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                                <div
+                                    style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px; text-align: center;">
                                     <h5><i class="fas fa-desktop"></i> Cliente</h5>
                                     <p><strong>Interfaz de usuario</strong></p>
                                     <ul style="text-align: left; font-size: 0.9em;">
@@ -404,7 +705,8 @@
                                 </div>
                             </div>
                             <div class="column fragment">
-                                <div style="background: rgba(35, 53, 110, 0.1); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                                <div
+                                    style="background: rgba(35, 53, 110, 0.1); padding: 1.5rem; border-radius: 8px; text-align: center;">
                                     <h5><i class="fas fa-server"></i> Servidor</h5>
                                     <p><strong>Motor de BD</strong></p>
                                     <ul style="text-align: left; font-size: 0.9em;">
@@ -419,82 +721,54 @@
                 </section>
 
                 <section data-auto-animate>
-                    <h3>2.3 Componentes de Memoria (Oracle)</h3>
+                    <h3>2.4 Arquitectura Cliente/Servidor Detallada</h3>
                     <div class="concept-box">
-                        <h4>Estructuras de Memoria Principales</h4>
-                        <p>En sistemas como Oracle, la arquitectura incluye el <strong>Área Global del Sistema (SGA)</strong> y el <strong>Área Global del Programa (PGA)</strong>.</p>
-                    </div>
-                </section>
+                        <h4>Modelo de Distribución Avanzado</h4>
 
-                <section data-auto-animate>
-                    <h3>Búfer Caché de la Base de Datos</h3>
-                    <div class="concept-box">
-                        <div style="background: rgba(40, 167, 69, 0.1); padding: 2rem; border-radius: 8px; border-left: 4px solid rgba(40, 167, 69, 0.8);">
-                            <h4><i class="fas fa-memory"></i> Búfer Caché de la Base de Datos</h4>
-                            <p><strong>"Guarda temporalmente los datos más recientemente consultados por los usuarios de base de datos"</strong></p>
-                            <ul style="text-align: left; font-size: 1.1em;">
-                                <li>Mejora el <strong>rendimiento de consultas</strong></li>
-                                <li>Reduce accesos a disco</li>
-                                <li>Implementa algoritmos de reemplazo (LRU)</li>
-                            </ul>
+                        <div class="mermaid-container fragment" id="client-server-diagram-detailed">
+                            <div class="mermaid">
+                                graph LR
+                                A1["📱 Aplicaciones<br />Móviles/Web"] --> N["🌐 Red<br />Internet/LAN"]
+                                A2["🛠️ Herramientas<br />de Admin"] --> N
+                                A3["🖥️ Interfaces<br />de Usuario"] --> N
+                                N --> B["⚙️ Motor SGBD<br />Servidor"]
+                                B --> C["💾 Base de<br />Datos"]
+                                style A1 fill:#e8f5e8
+                                style A2 fill:#e8f5e8
+                                style A3 fill:#e8f5e8
+                                style N fill:#fff3cd
+                                style B fill:#d1ecf1
+                                style C fill:#f8d7da
+                            </div>
+                            <div
+                                style="text-align: center; margin-top: 1rem; font-size: 0.9em; color: var(--uide-secondary);">
+                                <i class="fas fa-network-wired"></i> Modelo de Distribución Detallado
+                            </div>
                         </div>
-                    </div>
-                </section>
 
-                <section data-auto-animate>
-                    <h3>Búfer de Registro de Operaciones</h3>
-                    <div class="concept-box">
-                        <div style="background: rgba(233, 171, 33, 0.1); padding: 2rem; border-radius: 8px; border-left: 4px solid rgba(233, 171, 33, 0.8);">
-                            <h4><i class="fas fa-clipboard-list"></i> Búfer de Registro de Operaciones (Redo Log Buffer)</h4>
-                            <p><strong>"Guarda un registro de las modificaciones realizadas sobre la base de datos"</strong></p>
-                            <ul style="text-align: left; font-size: 1.1em;">
-                                <li>Asegura la <strong>durabilidad de transacciones</strong></li>
-                                <li>Permite recuperación ante fallos</li>
-                                <li>Registra cambios antes de confirmarlos</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-
-                <section data-auto-animate>
-                    <h3>Memoria Compartida</h3>
-                    <div class="concept-box">
-                        <div style="background: rgba(35, 53, 110, 0.1); padding: 2rem; border-radius: 8px; border-left: 4px solid rgba(35, 53, 110, 0.8);">
-                            <h4><i class="fas fa-share-alt"></i> Memoria Compartida (Shared Pool)</h4>
-                            <p><strong>Guarda temporalmente las sentencias SQL más usadas por los usuarios de la base de datos</strong></p>
-                            <ul style="text-align: left; font-size: 1.1em;">
-                                <li>Cachea <strong>planes de ejecución</strong></li>
-                                <li>Reutiliza consultas compiladas</li>
-                                <li>Mejora eficiencia del sistema</li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-
-                <section data-auto-animate>
-                    <h3>2.4 Procesos de Fondo</h3>
-                    <div class="concept-box">
-                        <p>Los <mark>procesos de fondo mantienen la relación</mark> entre las estructuras físicas y de memoria.</p>
-                        
-                        <div class="r-hstack">
+                        <div class="r-hstack" style="margin-top: 1rem;">
                             <div class="column fragment">
-                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
-                                    <h5><i class="fas fa-pen"></i> Database Writer (DBWR)</h5>
-                                    <p>Escribe en archivos de datos los bloques modificados</p>
-                                </div>
-                                <div style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
-                                    <h5><i class="fas fa-file-alt"></i> Log Writer (LGWR)</h5>
-                                    <p>Escribe en disco las entradas del registro</p>
+                                <div
+                                    style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                                    <h5><i class="fas fa-desktop"></i> Cliente</h5>
+                                    <p><strong>Interfaz de usuario</strong></p>
+                                    <ul style="text-align: left; font-size: 0.9em;">
+                                        <li>Aplicaciones de usuario</li>
+                                        <li>Herramientas de consulta</li>
+                                        <li>Interfaces gráficas</li>
+                                    </ul>
                                 </div>
                             </div>
                             <div class="column fragment">
-                                <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
-                                    <h5><i class="fas fa-tools"></i> System Monitor (SMON)</h5>
-                                    <p>Recuperación de instancias durante el inicio</p>
-                                </div>
-                                <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
-                                    <h5><i class="fas fa-user-cog"></i> Process Monitor (PMON)</h5>
-                                    <p>Recupera procesos cuando falla un usuario</p>
+                                <div
+                                    style="background: rgba(35, 53, 110, 0.1); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                                    <h5><i class="fas fa-server"></i> Servidor</h5>
+                                    <p><strong>Motor de BD</strong></p>
+                                    <ul style="text-align: left; font-size: 0.9em;">
+                                        <li>Procesamiento de consultas</li>
+                                        <li>Gestión de transacciones</li>
+                                        <li>Control de concurrencia</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -509,18 +783,21 @@
                 <section data-auto-animate>
                     <h3>3.1 Clasificación General</h3>
                     <div class="concept-box">
-                        <p>Los modelos de datos definen <mark>cómo se estructuran, almacenan y manipulan los datos</mark> en un sistema de gestión de bases de datos.</p>
-                        
+                        <p>Los modelos de datos definen <mark>cómo se estructuran, almacenan y manipulan los
+                                datos</mark> en un sistema de gestión de bases de datos.</p>
+
                         <div class="r-hstack" style="margin-top: 2rem;">
                             <div class="column fragment">
-                                <div style="background: rgba(40, 167, 69, 0.1); padding: 2rem; border-radius: 8px; text-align: center;">
+                                <div
+                                    style="background: rgba(40, 167, 69, 0.1); padding: 2rem; border-radius: 8px; text-align: center;">
                                     <h4><i class="fas fa-table"></i> Relacional</h4>
                                     <p><strong>Estructura Tabular</strong></p>
                                     <small>SQL, ACID, Esquema Fijo</small>
                                 </div>
                             </div>
                             <div class="column fragment">
-                                <div style="background: rgba(35, 53, 110, 0.1); padding: 2rem; border-radius: 8px; text-align: center;">
+                                <div
+                                    style="background: rgba(35, 53, 110, 0.1); padding: 2rem; border-radius: 8px; text-align: center;">
                                     <h4><i class="fas fa-file-code"></i> Documental</h4>
                                     <p><strong>Documentos JSON/XML</strong></p>
                                     <small>NoSQL, BASE, Esquema Flexible</small>
@@ -534,24 +811,31 @@
                     <h3>3.2 Modelo Relacional</h3>
                     <div class="concept-box">
                         <div class="definition-box">
-                            <p>Postulado por <strong>Edgar Frank Codd en 1970</strong>, basado en la lógica de predicados y la teoría de conjuntos. Es el modelo más utilizado en la actualidad.</p>
+                            <p>Postulado por <strong>Edgar Frank Codd en 1970</strong>, basado en la lógica de
+                                predicados y la teoría de conjuntos. Es el modelo más utilizado en la actualidad.</p>
                         </div>
 
                         <h4>Características Principales:</h4>
                         <div class="r-vstack">
-                            <div class="fragment" style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                            <div class="fragment"
+                                style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
                                 <h5><i class="fas fa-th"></i> Estructura Tabular Rígida</h5>
-                                <p>La información se organiza en <strong>relaciones o tablas</strong>, compuestas por filas (registros) y columnas (atributos)</p>
+                                <p>La información se organiza en <strong>relaciones o tablas</strong>, compuestas por
+                                    filas (registros) y columnas (atributos)</p>
                             </div>
 
-                            <div class="fragment" style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                            <div class="fragment"
+                                style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
                                 <h5><i class="fas fa-lock"></i> Esquema Fijo</h5>
-                                <p>Trabajan con un <strong>esquema predefinido y estricto</strong> que debe respetarse para garantizar la integridad</p>
+                                <p>Trabajan con un <strong>esquema predefinido y estricto</strong> que debe respetarse
+                                    para garantizar la integridad</p>
                             </div>
 
-                            <div class="fragment" style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
+                            <div class="fragment"
+                                style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
                                 <h5><i class="fas fa-code"></i> Lenguaje Estándar</h5>
-                                <p>Utiliza <strong>SQL (Structured Query Language)</strong> para consultar y manipular los datos</p>
+                                <p>Utiliza <strong>SQL (Structured Query Language)</strong> para consultar y manipular
+                                    los datos</p>
                             </div>
                         </div>
                     </div>
@@ -560,15 +844,18 @@
                 <section data-auto-animate>
                     <h3>Propiedades ACID</h3>
                     <div class="concept-box">
-                        <p>Las bases de datos relacionales manejan un conjunto de propiedades definidas por el acrónimo <mark>ACID</mark>, cruciales para garantizar la confiabilidad.</p>
-                        
+                        <p>Las bases de datos relacionales manejan un conjunto de propiedades definidas por el acrónimo
+                            <mark>ACID</mark>, cruciales para garantizar la confiabilidad.
+                        </p>
+
                         <div class="r-hstack" style="margin-top: 1rem;">
                             <div class="column fragment">
                                 <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
                                     <h5><i class="fas fa-atom"></i> Atomicidad</h5>
                                     <p>Todo o nada</p>
                                 </div>
-                                <div style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
+                                <div
+                                    style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
                                     <h5><i class="fas fa-check-circle"></i> Consistencia</h5>
                                     <p>Estado válido</p>
                                 </div>
@@ -578,7 +865,8 @@
                                     <h5><i class="fas fa-user-secret"></i> Aislamiento</h5>
                                     <p>Transacciones independientes</p>
                                 </div>
-                                <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
+                                <div
+                                    style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
                                     <h5><i class="fas fa-save"></i> Durabilidad</h5>
                                     <p>Persistencia garantizada</p>
                                 </div>
@@ -591,24 +879,31 @@
                     <h3>3.3 Modelo Documental (NoSQL)</h3>
                     <div class="concept-box">
                         <div class="definition-box">
-                            <p>El término <strong>NoSQL ("no solo SQL")</strong> se refiere a sistemas de gestión de bases de datos no relacionales que surgieron como alternativa al SGBDR tradicional.</p>
+                            <p>El término <strong>NoSQL ("no solo SQL")</strong> se refiere a sistemas de gestión de
+                                bases de datos no relacionales que surgieron como alternativa al SGBDR tradicional.</p>
                         </div>
 
                         <h4>Características Principales:</h4>
                         <div class="r-vstack">
-                            <div class="fragment" style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                            <div class="fragment"
+                                style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
                                 <h5><i class="fas fa-expand-arrows-alt"></i> Esquema Dinámico</h5>
-                                <p>No requieren <strong>esquemas fijos ni rígidos</strong>, permitiendo mayor flexibilidad</p>
+                                <p>No requieren <strong>esquemas fijos ni rígidos</strong>, permitiendo mayor
+                                    flexibilidad</p>
                             </div>
 
-                            <div class="fragment" style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
+                            <div class="fragment"
+                                style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
                                 <h5><i class="fas fa-network-wired"></i> Escalabilidad Horizontal</h5>
-                                <p>Diseñadas para <strong>escalar horizontalmente</strong> usando clusters distribuidos</p>
+                                <p>Diseñadas para <strong>escalar horizontalmente</strong> usando clusters distribuidos
+                                </p>
                             </div>
 
-                            <div class="fragment" style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px;">
+                            <div class="fragment"
+                                style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px;">
                                 <h5><i class="fas fa-file-alt"></i> Almacenamiento de Documentos</h5>
-                                <p>Los datos se almacenan en <strong>documentos JSON/XML</strong> con estructura flexible</p>
+                                <p>Los datos se almacenan en <strong>documentos JSON/XML</strong> con estructura
+                                    flexible</p>
                             </div>
                         </div>
                     </div>
@@ -617,20 +912,49 @@
                 <section data-auto-animate>
                     <h3>Propiedades BASE</h3>
                     <div class="concept-box">
-                        <p>Los sistemas NoSQL siguen las propiedades <mark>BASE</mark> en lugar de ACID, priorizando disponibilidad y tolerancia de partición.</p>
-                        
+                        <p>Los sistemas NoSQL siguen las propiedades <mark>BASE</mark> en lugar de ACID, priorizando
+                            disponibilidad y tolerancia de partición.</p>
+
+                        <div class="mermaid-container fragment">
+                            <div class="mermaid">
+                                graph LR
+                                A1["⚛️ Atomicity<br />Todo o Nada"] --> BA["🌐 Basically Available<br />Alta
+                                Disponibilidad"]
+                                C1["✅ Consistency<br />Estado Válido"] --> EC["⏰ Eventual Consistency<br />Consistencia
+                                Eventual"]
+                                I1["🔒 Isolation<br />Independencia"] --> SS["🔄 Soft State<br />Estado Flexible"]
+                                D1["💾 Durability<br />Persistencia"] --> BA
+
+                                style A1 fill:#e8f5e8
+                                style C1 fill:#e8f5e8
+                                style I1 fill:#e8f5e8
+                                style D1 fill:#e8f5e8
+                                style BA fill:#d1ecf1
+                                style SS fill:#d1ecf1
+                                style EC fill:#d1ecf1
+                            </div>
+                            <div
+                                style="text-align: center; margin-top: 1rem; font-size: 0.9em; color: var(--uide-secondary);">
+                                <span style="color: #28a745;">🏛️ ACID (Relacional)</span> →
+                                <span style="color: #007bff;">☁️ BASE (NoSQL)</span>
+                            </div>
+                        </div>
+
                         <div class="r-vstack" style="margin-top: 1rem;">
-                            <div class="fragment" style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                            <div class="fragment"
+                                style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
                                 <h5><i class="fas fa-check"></i> Basically Available</h5>
                                 <p>El sistema está <strong>básicamente disponible</strong> la mayor parte del tiempo</p>
                             </div>
 
-                            <div class="fragment" style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
+                            <div class="fragment"
+                                style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
                                 <h5><i class="fas fa-exchange-alt"></i> Soft State</h5>
                                 <p>El estado del sistema puede <strong>cambiar con el tiempo</strong></p>
                             </div>
 
-                            <div class="fragment" style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                            <div class="fragment"
+                                style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
                                 <h5><i class="fas fa-clock"></i> Eventual Consistency</h5>
                                 <p>Los datos serán <strong>consistentes eventualmente</strong>, no inmediatamente</p>
                             </div>
@@ -641,6 +965,9 @@
                 <section data-auto-animate>
                     <h3>3.4 Comparación: Relacional vs Documental</h3>
                     <div class="concept-box">
+                        <!-- Visualización Interactiva D3.js -->
+                        <div id="model-comparison-chart" style="width: 100%; height: 400px; margin: 2rem 0;"></div>
+
                         <table class="comparison-table">
                             <thead>
                                 <tr>
@@ -685,7 +1012,8 @@
                     <div class="concept-box">
                         <div class="r-hstack">
                             <div class="column">
-                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid rgba(40, 167, 69, 0.8);">
+                                <div
+                                    style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid rgba(40, 167, 69, 0.8);">
                                     <h4><i class="fas fa-table"></i> SGBD Relacionales</h4>
                                     <ul style="text-align: left; font-size: 0.9em;">
                                         <li><strong>Oracle Database</strong></li>
@@ -696,7 +1024,8 @@
                                 </div>
                             </div>
                             <div class="column">
-                                <div style="background: rgba(35, 53, 110, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid rgba(35, 53, 110, 0.8);">
+                                <div
+                                    style="background: rgba(35, 53, 110, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid rgba(35, 53, 110, 0.8);">
                                     <h4><i class="fas fa-file-code"></i> SGBD Documentales</h4>
                                     <ul style="text-align: left; font-size: 0.9em;">
                                         <li><strong>MongoDB</strong></li>
@@ -725,7 +1054,8 @@
                                 </div>
                                 <div class="flashcard-back">
                                     <h4>Interno, Lógico, Externo</h4>
-                                    <p><strong>Interno:</strong> almacenamiento físico, <strong>Lógico:</strong> estructura conceptual, <strong>Externo:</strong> vistas de usuario.</p>
+                                    <p><strong>Interno:</strong> almacenamiento físico, <strong>Lógico:</strong>
+                                        estructura conceptual, <strong>Externo:</strong> vistas de usuario.</p>
                                     <small>Separación de programas y BD física</small>
                                 </div>
                             </div>
@@ -740,7 +1070,8 @@
                                 </div>
                                 <div class="flashcard-back">
                                     <h4>Caché, Redo Log, Shared Pool</h4>
-                                    <p><strong>Búfer Caché:</strong> datos recientes, <strong>Redo Log:</strong> registro de cambios, <strong>Shared Pool:</strong> SQL compilado.</p>
+                                    <p><strong>Búfer Caché:</strong> datos recientes, <strong>Redo Log:</strong>
+                                        registro de cambios, <strong>Shared Pool:</strong> SQL compilado.</p>
                                     <small>Optimización de rendimiento</small>
                                 </div>
                             </div>
@@ -759,7 +1090,10 @@
                                 </div>
                                 <div class="flashcard-back">
                                     <h4>Escritura y Monitoreo</h4>
-                                    <p><strong>DBWR:</strong> escribe datos, <strong>LGWR:</strong> escribe logs, <strong>SMON:</strong> recupera instancias, <strong>PMON:</strong> recupera procesos.</p>
+                                    <p><strong>DBWR:</strong> escribe datos, <strong>LGWR:</strong> escribe logs,
+                                        <strong>SMON:</strong> recupera instancias, <strong>PMON:</strong> recupera
+                                        procesos.
+                                    </p>
                                     <small>Mantienen integridad del sistema</small>
                                 </div>
                             </div>
@@ -774,7 +1108,9 @@
                                 </div>
                                 <div class="flashcard-back">
                                     <h4>Consistencia vs Disponibilidad</h4>
-                                    <p><strong>ACID:</strong> consistencia inmediata, transacciones confiables. <strong>BASE:</strong> disponibilidad alta, consistencia eventual.</p>
+                                    <p><strong>ACID:</strong> consistencia inmediata, transacciones confiables.
+                                        <strong>BASE:</strong> disponibilidad alta, consistencia eventual.
+                                    </p>
                                     <small>Relacional vs NoSQL</small>
                                 </div>
                             </div>
@@ -794,7 +1130,8 @@
                                 </div>
                                 <div class="flashcard-back">
                                     <h4>Tabular, Fijo, SQL</h4>
-                                    <p><strong>Estructura tabular</strong> con filas y columnas, <strong>esquema fijo</strong> predefinido, usa <strong>SQL</strong> estándar.</p>
+                                    <p><strong>Estructura tabular</strong> con filas y columnas, <strong>esquema
+                                            fijo</strong> predefinido, usa <strong>SQL</strong> estándar.</p>
                                     <small>Edgar Codd, 1970</small>
                                 </div>
                             </div>
@@ -810,7 +1147,8 @@
                                 </div>
                                 <div class="flashcard-back">
                                     <h4>Flexible, Escalable, Distribuido</h4>
-                                    <p><strong>Esquema dinámico</strong>, <strong>escalabilidad horizontal</strong>, documentos <strong>JSON/XML</strong> flexibles.</p>
+                                    <p><strong>Esquema dinámico</strong>, <strong>escalabilidad horizontal</strong>,
+                                        documentos <strong>JSON/XML</strong> flexibles.</p>
                                     <small>Big Data y alta disponibilidad</small>
                                 </div>
                             </div>
@@ -824,11 +1162,16 @@
                 <h2>Referencias (Formato APA)</h2>
                 <div style="font-size: 0.7em; text-align: left; max-height: 500px; overflow-y: auto;">
                     <p>Elmasri, R., & Navathe, S. B. (2011). <em>Sistemas de bases de datos</em>. Pearson.</p>
-                    <p>Silberschatz, A., Korth, H.F., & Sudarshan, S. (1998). <em>Fundamentos de bases de datos</em> (3ª ed.). McGraw-Hill.</p>
+                    <p>Silberschatz, A., Korth, H.F., & Sudarshan, S. (1998). <em>Fundamentos de bases de datos</em> (3ª
+                        ed.). McGraw-Hill.</p>
                     <p>Oppel, A. (2011). <em>Fundamentos de bases de datos</em>. McGraw Hill.</p>
-                    <p>Sadalage, P. & Fowler, M. (2013). <em>NoSQL Distilled, A Brief Guide to the Emerging World of Polyglot Persistence</em>. Addison Wesley.</p>
-                    <p>Castro Romero, A., González Sanabria, J., & Callejas Cuervo, M. (2012). Utilidad y funcionamiento de las bases de datos NoSQL. <em>Facultad de Ingeniería</em>, 21(33), 21-32.</p>
-                    <p>Moreno Arboleda, F. J., Quintero Rendón, J. E., & Rueda Vásquez, R. (2016). Una comparación de rendimiento entre Oracle y MongoDB. <em>Ciencia e Ingeniería Neogranadina</em>, 26(1), 109-129.</p>
+                    <p>Sadalage, P. & Fowler, M. (2013). <em>NoSQL Distilled, A Brief Guide to the Emerging World of
+                            Polyglot Persistence</em>. Addison Wesley.</p>
+                    <p>Castro Romero, A., González Sanabria, J., & Callejas Cuervo, M. (2012). Utilidad y funcionamiento
+                        de las bases de datos NoSQL. <em>Facultad de Ingeniería</em>, 21(33), 21-32.</p>
+                    <p>Moreno Arboleda, F. J., Quintero Rendón, J. E., & Rueda Vásquez, R. (2016). Una comparación de
+                        rendimiento entre Oracle y MongoDB. <em>Ciencia e Ingeniería Neogranadina</em>, 26(1), 109-129.
+                    </p>
                     <p>IONOS Digitalguide. (2022). Introducción al sistema gestor de base de datos (SGBD).</p>
                     <p>Núñez Hervas, R. (2023). <em>Gestión de Bases de Datos</em>. Grupo Editorial RA-MA.</p>
                 </div>
@@ -848,7 +1191,8 @@
                     <h3>PE-1.1: Mapeo de Arquitectura SGBD</h3>
                     <div class="concept-box">
                         <h4 style="color: var(--uide-primary);">Práctico Experimental 1.1</h4>
-                        <p><strong>Actividad:</strong> Mapear arquitectura de un SGBD (cliente/servidor, procesos, buffers) en diagrama</p>
+                        <p><strong>Actividad:</strong> Mapear arquitectura de un SGBD (cliente/servidor, procesos,
+                            buffers) en diagrama</p>
                         <p><strong>Enfoque:</strong> Representación visual de componentes arquitectónicos</p>
                         <ul style="text-align: left;">
                             <li>Diagrama de arquitectura cliente/servidor</li>
@@ -868,7 +1212,8 @@
                     <h3>TA-1.1: Comparación de Modelos</h3>
                     <div class="concept-box">
                         <h4 style="color: var(--uide-secondary);">Trabajo Autónomo 1.1</h4>
-                        <p><strong>Actividad:</strong> Ficha de 1 página comparando 2 modelos (relacional vs documental) con un caso de uso</p>
+                        <p><strong>Actividad:</strong> Ficha de 1 página comparando 2 modelos (relacional vs documental)
+                            con un caso de uso</p>
                         <p><strong>Enfoque:</strong> Análisis comparativo aplicado a escenario real</p>
                         <ul style="text-align: left;">
                             <li>Definición de caso de uso específico</li>
@@ -932,47 +1277,92 @@
 
             <!-- Conclusiones -->
             <section data-transition="convex">
-                <h2>Conclusiones</h2>
-                
+                <h2>Síntesis y Conclusiones</h2>
+
                 <section>
                     <div class="concept-box">
-                        <h4>Conceptos Clave Aprendidos</h4>
-                        <ul style="text-align: left;">
-                            <li>La <mark>arquitectura ANSI-SPARC</mark> proporciona independencia de datos en tres niveles</li>
-                            <li>Los <mark>componentes del SGBD</mark> trabajan coordinadamente para gestionar datos eficientemente</li>
-                            <li>Los <mark>modelos relacionales y documentales</mark> tienen aplicaciones específicas según el contexto</li>
-                            <li>La elección del modelo depende de <mark>requisitos de consistencia vs disponibilidad</mark></li>
-                        </ul>
+                        <h4><i class="fas fa-lightbulb"></i> Conceptos Fundamentales Consolidados</h4>
+                        <div class="r-hstack">
+                            <div class="column">
+                                <h5>Arquitectura y Estructura</h5>
+                                <ul style="text-align: left; font-size: 0.9em;">
+                                    <li>Los <mark>SGBD</mark> son sistemas complejos con arquitectura de <strong>tres
+                                            niveles</strong></li>
+                                    <li>La <mark>independencia de datos</mark> es clave para la flexibilidad</li>
+                                    <li>Los <mark>componentes</mark> trabajan coordinadamente</li>
+                                </ul>
+                            </div>
+                            <div class="column fragment">
+                                <h5>Modelos y Aplicaciones</h5>
+                                <ul style="text-align: left; font-size: 0.9em;">
+                                    <li><mark>Modelo relacional</mark>: ACID, estructura rígida</li>
+                                    <li><mark>Modelo documental</mark>: BASE, flexibilidad</li>
+                                    <li>Cada modelo tiene <strong>casos de uso específicos</strong></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
                 <section>
                     <div class="concept-box info">
-                        <h4>Preparación para la Próxima Semana</h4>
-                        <p>En la <strong>Semana 2</strong> profundizaremos en:</p>
-                        <ul style="text-align: left;">
-                            <li>Modelo relacional en detalle</li>
-                            <li>Lenguaje SQL y operaciones básicas</li>
-                            <li>Diseño de esquemas relacionales</li>
-                            <li>Integridad referencial y restricciones</li>
-                        </ul>
+                        <h4><i class="fas fa-road"></i> Continuidad del Aprendizaje</h4>
+                        <p>Los fundamentos estudiados en esta semana son la <mark>base para temas avanzados</mark>:</p>
+
+                        <div class="r-hstack">
+                            <div class="column fragment">
+                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h5>Próxima Semana</h5>
+                                    <ul style="text-align: left; font-size: 0.9em;">
+                                        <li>Modelo relacional detallado</li>
+                                        <li>SQL y operaciones básicas</li>
+                                        <li>Diseño de esquemas</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="column fragment">
+                                <div style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h5>Unidades Futuras</h5>
+                                    <ul style="text-align: left; font-size: 0.9em;">
+                                        <li>Normalización y diseño</li>
+                                        <li>Transacciones y concurrencia</li>
+                                        <li>Optimización y rendimiento</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section data-background-color="#f8f8f8">
+                    <div class="title-slide">
+                        <h2 style="color: var(--uide-primary);">¡Fundamentos Consolidados!</h2>
+                        <p style="font-size: 1.2em; margin: 2rem 0;">
+                            Has completado exitosamente los <mark>fundamentos de SGBD</mark>
+                        </p>
+
+                        <div
+                            style="background: rgba(233, 171, 33, 0.1); border-radius: 8px; padding: 1.5rem; margin: 2rem 0;">
+                            <p><i class="fas fa-check-circle" style="color: #28a745;"></i>
+                                <strong>Arquitectura ANSI-SPARC</strong> comprendida
+                            </p>
+                            <p><i class="fas fa-check-circle" style="color: #28a745;"></i>
+                                <strong>Componentes del SGBD</strong> identificados
+                            </p>
+                            <p><i class="fas fa-check-circle" style="color: #28a745;"></i>
+                                <strong>Modelos de datos</strong> comparados
+                            </p>
+                        </div>
+
+                        <div style="margin-top: 2em; font-size: 0.9em; color: var(--uide-secondary);">
+                            <strong>Universidad Internacional del Ecuador</strong><br>
+                            <em>Semana 1 - Fundamentos de SGBD completada</em>
+                        </div>
                     </div>
                 </section>
             </section>
 
-            <!-- Final Slide -->
-            <section data-background-color="#f8f8f8">
-                <h2>Conclusión</h2>
-                <div class="concept-box">
-                    <p>Los Sistemas de Gestión de Bases de Datos son fundamentales para la gestión eficiente de información que permite:</p>
-                    <ul style="text-align: left;">
-                        <li>Organizar y estructurar grandes volúmenes de datos</li>
-                        <li>Garantizar integridad y consistencia de la información</li>
-                        <li>Proporcionar acceso concurrente y seguro</li>
-                        <li>Adaptar la arquitectura a las necesidades específicas</li>
-                    </ul>
-                </div>
-            </section>
+
 
         </div>
     </div>
@@ -990,20 +1380,402 @@
             transitionSpeed: 'default',
             backgroundTransition: 'fade',
             plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
-            
+
             // Navigation
             controls: true,
             progress: true,
             center: true,
             touch: true,
             loop: false,
-            
+
             // Presentation size
             width: 1024,
             height: 768,
             margin: 0.1,
             minScale: 0.2,
             maxScale: 2.0
+        });
+
+        // Robust Mermaid initialization
+        let mermaidInitialized = false;
+
+        function initializeMermaid() {
+            if (mermaidInitialized || typeof mermaid === 'undefined') {
+                return;
+            }
+
+            try {
+                // Clear any existing configuration
+                if (mermaid.initialize) {
+                    mermaid.initialize({
+                        startOnLoad: false, // We'll manually control rendering
+                        theme: 'default',
+                        themeVariables: {
+                            primaryColor: '#910048',
+                            primaryTextColor: '#23356E',
+                            primaryBorderColor: '#E9AB21',
+                            lineColor: '#23356E',
+                            secondaryColor: '#f8f8f8',
+                            tertiaryColor: '#fff',
+                            fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+                            fontSize: '14px'
+                        },
+                        securityLevel: 'loose',
+                        flowchart: {
+                            useMaxWidth: true,
+                            htmlLabels: true,
+                            curve: 'basis',
+                            padding: 20
+                        },
+                        sequence: {
+                            useMaxWidth: true
+                        },
+                        gantt: {
+                            useMaxWidth: true
+                        }
+                    });
+                }
+
+                mermaidInitialized = true;
+                console.log('Mermaid initialized successfully');
+
+                // Render diagrams after initialization
+                setTimeout(renderAllMermaidDiagrams, 200);
+
+            } catch (error) {
+                console.error('Error initializing Mermaid:', error);
+            }
+        }
+
+        function renderAllMermaidDiagrams() {
+            const mermaidElements = document.querySelectorAll('.mermaid');
+            console.log(`Found ${mermaidElements.length} mermaid elements to render`);
+
+            mermaidElements.forEach((element, index) => {
+                if (!element.querySelector('svg') && element.textContent.trim()) {
+                    try {
+                        // Generate unique ID for each diagram
+                        const diagramId = `mermaid-diagram-${index}-${Date.now()}`;
+                        element.id = diagramId;
+
+                        // Get the diagram content
+                        const content = element.textContent.trim();
+
+                        // Clear the element
+                        element.innerHTML = '';
+
+                        // Use mermaid.render for better error handling
+                        if (mermaid.render) {
+                            mermaid.render(`${diagramId}-svg`, content)
+                                .then(({ svg }) => {
+                                    element.innerHTML = svg;
+                                    console.log(`Diagram ${index} rendered successfully`);
+
+                                    // Make the rendered SVG responsive
+                                    setTimeout(() => {
+                                        const svgElement = element.querySelector('svg');
+                                        if (svgElement) {
+                                            makeResponsive(svgElement);
+                                        }
+                                    }, 100);
+                                })
+                                .catch(error => {
+                                    console.error(`Error rendering diagram ${index}:`, error);
+                                    element.innerHTML = `<div style="color: red; padding: 10px; border: 1px solid red; border-radius: 4px;">
+                                        <strong>Error rendering diagram:</strong><br>
+                                        <pre style="white-space: pre-wrap; font-size: 11px;">${content}</pre>
+                                    </div>`;
+                                });
+                        } else {
+                            // Fallback to mermaid.init
+                            mermaid.init(undefined, element);
+                            setTimeout(() => {
+                                const svgElement = element.querySelector('svg');
+                                if (svgElement) {
+                                    makeResponsive(svgElement);
+                                }
+                            }, 100);
+                        }
+
+                    } catch (error) {
+                        console.error(`Error processing diagram ${index}:`, error);
+                        element.innerHTML = `<div style="color: red; padding: 10px;">Error: Could not render diagram</div>`;
+                    }
+                }
+            });
+        }
+
+        // Function to make diagrams responsive after rendering
+        function makeResponsive(svg) {
+            if (!svg) return;
+
+            try {
+                // Get the container
+                const container = svg.closest('.mermaid-container');
+                if (!container) return;
+
+                // Get container dimensions
+                const containerRect = container.getBoundingClientRect();
+                const maxWidth = Math.max(300, containerRect.width - 64); // Account for padding, minimum 300px
+
+                // Get original dimensions
+                const originalWidth = svg.getAttribute('width') || svg.getBBox().width;
+                const originalHeight = svg.getAttribute('height') || svg.getBBox().height;
+
+                // Remove fixed width and height attributes
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+
+                // Set viewBox to preserve aspect ratio
+                if (!svg.getAttribute('viewBox')) {
+                    svg.setAttribute('viewBox', `0 0 ${originalWidth} ${originalHeight}`);
+                }
+
+                // Calculate appropriate dimensions to fit within container
+                const maxHeight = window.innerWidth <= 768 ? 350 : 400;
+                const finalMaxWidth = Math.min(maxWidth, originalWidth);
+
+                // Set responsive styles - ensure it fits within container bounds
+                svg.style.width = 'auto';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = finalMaxWidth + 'px';
+                svg.style.maxHeight = maxHeight + 'px';
+                svg.style.display = 'block';
+                svg.style.margin = '0 auto';
+                svg.style.boxSizing = 'border-box';
+
+                // Preserve aspect ratio and prevent distortion
+                svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+                console.log(`Made diagram responsive: container=${containerRect.width}px, max-width=${finalMaxWidth}px, max-height=${maxHeight}px`);
+
+            } catch (error) {
+                console.warn('Error making diagram responsive:', error);
+            }
+        }
+
+
+
+
+
+        // D3.js Interactive Comparison Chart
+        function createModelComparisonChart() {
+            const data = [
+                { aspect: 'Flexibilidad', relacional: 3, documental: 9 },
+                { aspect: 'Consistencia', relacional: 10, documental: 6 },
+                { aspect: 'Escalabilidad', relacional: 5, documental: 9 },
+                { aspect: 'Rendimiento', relacional: 8, documental: 7 },
+                { aspect: 'Simplicidad', relacional: 7, documental: 5 }
+            ];
+
+            const margin = { top: 40, right: 80, bottom: 60, left: 80 };
+            const width = 800 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+
+            const svg = d3.select('#model-comparison-chart')
+                .append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom);
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            // Scales
+            const x = d3.scaleBand()
+                .domain(data.map(d => d.aspect))
+                .range([0, width])
+                .padding(0.3);
+
+            const y = d3.scaleLinear()
+                .domain([0, 10])
+                .range([height, 0]);
+
+            // Color scale
+            const colors = {
+                relacional: '#910048',
+                documental: '#23356E'
+            };
+
+            // Tooltip
+            const tooltip = d3.select('body').append('div')
+                .attr('class', 'chart-tooltip');
+
+            // Bars for Relacional
+            g.selectAll('.bar-relacional')
+                .data(data)
+                .enter().append('rect')
+                .attr('class', 'bar-relacional')
+                .attr('x', d => x(d.aspect))
+                .attr('y', d => y(d.relacional))
+                .attr('width', x.bandwidth() / 2)
+                .attr('height', d => height - y(d.relacional))
+                .attr('fill', colors.relacional)
+                .attr('opacity', 0.8)
+                .on('mouseover', function (event, d) {
+                    d3.select(this).attr('opacity', 1);
+                    tooltip.style('opacity', 1)
+                        .html(`Relacional<br/>${d.aspect}: ${d.relacional}/10`)
+                        .style('left', (event.pageX + 10) + 'px')
+                        .style('top', (event.pageY - 10) + 'px');
+                })
+                .on('mouseout', function () {
+                    d3.select(this).attr('opacity', 0.8);
+                    tooltip.style('opacity', 0);
+                });
+
+            // Bars for Documental
+            g.selectAll('.bar-documental')
+                .data(data)
+                .enter().append('rect')
+                .attr('class', 'bar-documental')
+                .attr('x', d => x(d.aspect) + x.bandwidth() / 2)
+                .attr('y', d => y(d.documental))
+                .attr('width', x.bandwidth() / 2)
+                .attr('height', d => height - y(d.documental))
+                .attr('fill', colors.documental)
+                .attr('opacity', 0.8)
+                .on('mouseover', function (event, d) {
+                    d3.select(this).attr('opacity', 1);
+                    tooltip.style('opacity', 1)
+                        .html(`Documental<br/>${d.aspect}: ${d.documental}/10`)
+                        .style('left', (event.pageX + 10) + 'px')
+                        .style('top', (event.pageY - 10) + 'px');
+                })
+                .on('mouseout', function () {
+                    d3.select(this).attr('opacity', 0.8);
+                    tooltip.style('opacity', 0);
+                });
+
+            // Axes
+            g.append('g')
+                .attr('transform', `translate(0,${height})`)
+                .call(d3.axisBottom(x))
+                .selectAll('text')
+                .style('font-size', '12px')
+                .style('fill', '#333');
+
+            g.append('g')
+                .call(d3.axisLeft(y))
+                .selectAll('text')
+                .style('font-size', '12px')
+                .style('fill', '#333');
+
+            // Legend
+            const legend = g.append('g')
+                .attr('transform', `translate(${width - 120}, 20)`);
+
+            legend.append('rect')
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('width', 15)
+                .attr('height', 15)
+                .attr('fill', colors.relacional);
+
+            legend.append('text')
+                .attr('x', 20)
+                .attr('y', 12)
+                .text('Relacional')
+                .style('font-size', '12px')
+                .style('fill', '#333');
+
+            legend.append('rect')
+                .attr('x', 0)
+                .attr('y', 25)
+                .attr('width', 15)
+                .attr('height', 15)
+                .attr('fill', colors.documental);
+
+            legend.append('text')
+                .attr('x', 20)
+                .attr('y', 37)
+                .text('Documental')
+                .style('font-size', '12px')
+                .style('fill', '#333');
+
+            // Title
+            g.append('text')
+                .attr('x', width / 2)
+                .attr('y', -10)
+                .attr('text-anchor', 'middle')
+                .style('font-size', '16px')
+                .style('font-weight', 'bold')
+                .style('fill', '#910048')
+                .text('Comparación de Modelos de Datos (Escala 1-10)');
+        }
+
+        // Function to make all existing Mermaid diagrams responsive
+        function makeAllDiagramsResponsive() {
+            const allSvgs = document.querySelectorAll('.mermaid svg');
+            allSvgs.forEach(svg => {
+                makeResponsive(svg);
+            });
+            console.log(`Made ${allSvgs.length} diagrams responsive`);
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeMermaid);
+        } else {
+            initializeMermaid();
+        }
+
+        // Also initialize after Reveal.js is ready (if present)
+        if (typeof Reveal !== 'undefined') {
+            Reveal.on('ready', () => {
+                setTimeout(initializeMermaid, 100);
+            });
+        }
+
+        // Initialize visualizations when DOM is ready
+        document.addEventListener('DOMContentLoaded', function () {
+            // Wait for Reveal.js to be ready
+            Reveal.addEventListener('ready', function () {
+                console.log('Reveal.js ready, initializing diagrams...');
+
+                // Handle slide changes for D3 charts and responsive updates
+                Reveal.addEventListener('slidechanged', function (event) {
+                    const currentSlide = event.currentSlide;
+                    console.log('Slide changed, checking for charts...');
+
+                    // D3 chart
+                    if (currentSlide.querySelector('#model-comparison-chart')) {
+                        setTimeout(createModelComparisonChart, 1000);
+                    }
+
+                    // Make any diagrams responsive after slide change
+                    setTimeout(() => {
+                        const slideSvgs = currentSlide.querySelectorAll('.mermaid svg');
+                        slideSvgs.forEach(svg => makeResponsive(svg));
+                    }, 500);
+                });
+
+                // Handle fragment changes for step-by-step reveals
+                Reveal.addEventListener('fragmentshown', function (event) {
+                    const fragment = event.fragment;
+
+                    // Add special animations for fragments
+                    if (fragment.classList.contains('mermaid-step')) {
+                        fragment.style.transform = 'scale(1.05)';
+                        fragment.style.transition = 'transform 0.3s ease';
+                        setTimeout(() => {
+                            fragment.style.transform = 'scale(1)';
+                        }, 300);
+                    }
+
+                    // If fragment contains a mermaid diagram, ensure it's rendered
+                    const mermaidInFragment = fragment.querySelector('.mermaid');
+                    if (mermaidInFragment && !mermaidInFragment.querySelector('svg')) {
+                        setTimeout(() => {
+                            renderAllMermaidDiagrams();
+                        }, 100);
+                    }
+                });
+            });
+
+            // Handle window resize to maintain responsiveness
+            window.addEventListener('resize', function () {
+                setTimeout(makeAllDiagramsResponsive, 300);
+            });
         });
 
         // Simple Flashcard System
