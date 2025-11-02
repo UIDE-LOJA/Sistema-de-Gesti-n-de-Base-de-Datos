@@ -1,0 +1,1293 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Semana 2 - Transacciones y Control de Concurrencia</title>
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.css" id="theme">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/monokai.css">
+
+    <!-- UIDE Theme CSS -->
+    <link rel="stylesheet" href="../../assets/css/uide-theme.css">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/aipti-diagrams.css">
+    <link rel="stylesheet" href="presentacion-clase-semana2.css">
+
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+
+    <!-- D3.js for advanced visualizations -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Floating Help Icon -->
+    <div class="floating-help-emoji" onclick="showSGBDReference()" title="Guía Rápida de SGBD">
+        <i class="fas fa-info-circle"></i>
+    </div>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Title Slide -->
+            <section data-background-color="#f8f8f8" data-transition="convex">
+                <div class="title-slide">
+                    <h1><i class="fas fa-database"></i> Presentación Semana 2</h1>
+                    <h2>Transacciones y Control de Concurrencia</h2>
+
+                    <div class="course-info">
+                        <strong>05 LTI_05A_300-SGBD-ASC</strong> • Quinto Nivel<br>
+                        <strong>Sistemas de Gestión de Bases de Datos</strong><br>
+                        <em>Prof. Charlie Cárdenas Toledo, M.Sc.</em><br>
+                        Universidad Internacional del Ecuador • Noviembre 2025
+                    </div>
+
+                    <div
+                        style="background: rgba(233, 171, 33, 0.1); border-radius: 8px; padding: 1em; margin: 1em 0; font-size: 0.9em;">
+                        <strong>Propiedades ACID, Técnicas de Bloqueo y Gestión de Transacciones</strong><br>
+                        <em>Semana 2 • Concurrencia • Control de Acceso • Protocolos de Validación</em>
+                    </div>
+
+                    <div style="margin-top: 2em; font-size: 0.9em; font-style: italic; color: var(--uide-secondary);">
+                        Fundamentos de procesamiento confiable de transacciones en SGBD
+                    </div>
+                </div>
+            </section>
+
+            <!-- Objetivos de la Presentación -->
+            <section data-transition="convex">
+                <h2><i class="fas fa-bullseye"></i> Objetivos de la Presentación</h2>
+
+                <div class="concept-box">
+                    <div class="r-hstack">
+                        <div class="column">
+                            <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h5><i class="fas fa-exchange-alt"></i> Comprender</h5>
+                                <p style="font-size: 0.9em;">El concepto de <strong>transacciones</strong> y su ciclo de vida</p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h5><i class="fas fa-shield-alt"></i> Analizar</h5>
+                                <p style="font-size: 0.9em;">Las <strong>propiedades ACID</strong> y su importancia en SGBD</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="r-hstack" style="margin-top: 1rem;">
+                        <div class="column">
+                            <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h5><i class="fas fa-lock"></i> Explorar</h5>
+                                <p style="font-size: 0.9em;">Técnicas de <strong>control de concurrencia</strong> y bloqueo</p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h5><i class="fas fa-exclamation-triangle"></i> Identificar</h5>
+                                <p style="font-size: 0.9em;">Problemas de <strong>concurrencia</strong> y sus soluciones</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Agenda -->
+            <section>
+                <h3><i class="fas fa-list-ul"></i> Agenda</h3>
+                <div class="concept-box">
+                    <div class="r-hstack">
+                        <div class="column">
+                            <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h5><i class="fas fa-exchange-alt"></i> 1. Conceptos de Transacciones</h5>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h5><i class="fas fa-shield-alt"></i> 2. Propiedades ACID</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="r-hstack" style="margin-top: 1rem;">
+                        <div class="column">
+                            <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h5><i class="fas fa-lock"></i> 3. Control de Concurrencia</h5>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h5><i class="fas fa-check-circle"></i> 4. Técnicas de Bloqueo</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: center;">
+                        <h5><i class="fas fa-cogs"></i> 5. Protocolos de Validación</h5>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conceptos de Transacciones -->
+            <section data-transition="convex">
+                <h2><i class="fas fa-exchange-alt"></i> Conceptos de Transacciones</h2>
+
+                <section>
+                    <h3>Definición Fundamental</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "Una transacción es una unidad de la ejecución de un programa que puede estar compuesta por varias operaciones de acceso a la base de datos"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <h4><i class="fas fa-cog"></i> Características Clave</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>Unidad lógica de trabajo</strong> compuesta por múltiples operaciones</li>
+                                    <li><strong>Responsabilidad</strong>: Llevar la BD de un estado consistente a otro diferente</li>
+                                    <li><strong>Contexto</strong>: Esencial en sistemas transaccionales (OLTP)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Ciclo de Vida de una Transacción</h3>
+                    <div class="concept-box">
+                        <div class="r-hstack">
+                            <div class="column">
+                                <h4><i class="fas fa-play"></i> Operaciones Básicas</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>inicio_t</strong>: Inicio de la transacción</li>
+                                    <li><strong>leer</strong>: Lectura de gránulo y valor</li>
+                                    <li><strong>escribir</strong>: Escritura de gránulo, valor escrito y valor anterior</li>
+                                    <li><strong>fin_t</strong>: Fin de la transacción</li>
+                                </ul>
+                            </div>
+                            <div class="column">
+                                <h4><i class="fas fa-control"></i> Operaciones de Control</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>confirmar (COMMIT)</strong>: Confirma los cambios permanentemente</li>
+                                    <li><strong>abortar (ABORT)</strong>: Cancela la transacción y deshace cambios</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Estados de una Transacción</h3>
+                    <div class="concept-box">
+                        <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                            <thead>
+                                <tr style="background: rgba(35, 53, 110, 0.1);">
+                                    <th style="padding: 0.5rem; border: 1px solid #ddd; text-align: left;">Estado</th>
+                                    <th style="padding: 0.5rem; border: 1px solid #ddd; text-align: left;">Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Activa</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Estado inicial de la transacción</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Parcialmente confirmada</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Después de ejecutar todas las instrucciones</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Confirmada</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Operaciones exitosas, efectos registrados en BD</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Abortada</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Sin efecto sobre el sistema, retorna al estado original</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div style="text-align: center; margin-top: 1rem;">
+                            <code style="background: rgba(233, 171, 33, 0.1); padding: 0.5rem; border-radius: 4px;">
+                                Activa → Parcialmente confirmada → Confirmada<br>
+                                &nbsp;&nbsp;↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+                                Abortada ← ← ← ← ←
+                            </code>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Propiedades ACID -->
+            <section data-transition="convex">
+                <h2><i class="fas fa-shield-alt"></i> Propiedades ACID</h2>
+
+                <section>
+                    <h3>Fundamentos ACID</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(35, 53, 110, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "Propiedades que aseguran el procesamiento confiable de las transacciones de bases de datos"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                    <h4><i class="fas fa-atom"></i> Atomicidad</h4>
+                                    <p style="font-size: 0.9em;">Todo o nada</p>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                    <h4><i class="fas fa-check-circle"></i> Consistencia</h4>
+                                    <p style="font-size: 0.9em;">Estados válidos</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="r-hstack" style="margin-top: 1rem;">
+                            <div class="column">
+                                <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                    <h4><i class="fas fa-user-secret"></i> Aislamiento</h4>
+                                    <p style="font-size: 0.9em;">Independencia</p>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                                    <h4><i class="fas fa-save"></i> Durabilidad</h4>
+                                    <p style="font-size: 0.9em;">Permanencia</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3><i class="fas fa-atom"></i> Atomicidad (Atomicity)</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "Una unidad atómica de trabajo; se completa totalmente o no se completa en absoluto"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <h4><i class="fas fa-cogs"></i> Principios Clave</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>Todo o nada</strong>: Ejecución completa o sin efecto</li>
+                                    <li><strong>Operaciones atómicas</strong>: Ocurren totalmente o no ocurren</li>
+                                    <li><strong>Manejo de fallos</strong>: Si alguna parte falla, la transacción entera falla</li>
+                                </ul>
+                            </div>
+                            <div class="column">
+                                <h4><i class="fas fa-shield-alt"></i> Responsabilidad</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>Subsistema de recuperación</strong> del SGBD</li>
+                                    <li><strong>Rollback automático</strong> en caso de fallo</li>
+                                    <li><strong>Garantía de integridad</strong> ante interrupciones</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3><i class="fas fa-check-circle"></i> Consistencia (Consistency)</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(35, 53, 110, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "Una transacción sólo lleva a la base de datos de un estado válido a otro"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <h4><i class="fas fa-balance-scale"></i> Garantías</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>Estados válidos</strong>: Solo transiciones entre estados coherentes</li>
+                                    <li><strong>Conservación</strong>: La ejecución aislada conserva la consistencia</li>
+                                    <li><strong>Coherencia final</strong>: Todos los datos quedan en estado coherente</li>
+                                </ul>
+                            </div>
+                            <div class="column">
+                                <h4><i class="fas fa-rules"></i> Implicaciones</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>Reglas de negocio</strong> se aplican a todas las modificaciones</li>
+                                    <li><strong>Restricciones de integridad</strong> (como integridad referencial)</li>
+                                    <li><strong>Validaciones</strong> antes de confirmar cambios</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3><i class="fas fa-user-secret"></i> Aislamiento (Isolation)</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(233, 171, 33, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "Define cómo y cuándo los cambios producidos por una operación se hacen visibles para las demás operaciones concurrentes"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <h4><i class="fas fa-lock"></i> Niveles de Aislamiento</h4>
+                                <ol style="font-size: 0.9em;">
+                                    <li><strong>Serializable</strong>: Nivel más estricto</li>
+                                    <li><strong>Lecturas Repetibles</strong>: Bloqueos hasta el final</li>
+                                    <li><strong>Lecturas Comprometidas</strong>: Permite lecturas no repetibles</li>
+                                    <li><strong>Lecturas No Comprometidas</strong>: Nivel más bajo</li>
+                                </ol>
+                            </div>
+                            <div class="column">
+                                <h4><i class="fas fa-balance-scale"></i> Trade-off</h4>
+                                <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <p style="font-size: 0.9em; margin: 0;">
+                                        <strong>Mayor aislamiento</strong> = Mayor precisión, pero menor concurrencia
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3><i class="fas fa-save"></i> Durabilidad (Durability)</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(145, 0, 72, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "Asegura que una vez que una transacción es confirmada, las modificaciones son registradas permanentemente"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <h4><i class="fas fa-database"></i> Características</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>Permanencia</strong>: Cambios persisten incluso ante fallos del sistema</li>
+                                    <li><strong>Resistencia a fallos</strong>: Supervivencia a caídas de energía, crashes</li>
+                                    <li><strong>Recuperabilidad</strong>: Capacidad de restaurar estado tras fallo</li>
+                                </ul>
+                            </div>
+                            <div class="column">
+                                <h4><i class="fas fa-tools"></i> Responsabilidad</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>Subsistema de recuperación</strong> del SGBD</li>
+                                    <li><strong>Logs de transacciones</strong> para recuperación</li>
+                                    <li><strong>Respaldos y checkpoints</strong> periódicos</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Control de Concurrencia -->
+            <section data-transition="convex">
+                <h2><i class="fas fa-lock"></i> Control de Concurrencia</h2>
+
+                <section>
+                    <h3>Necesidad del Control de Concurrencia</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "Garantizar la consistencia al realizar diferentes transacciones en una Base de Datos"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <h4><i class="fas fa-users"></i> Contexto Multiusuario</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>Transacciones concurrentes</strong> (interleaving) en BD multiusuario</li>
+                                    <li><strong>Mejor aprovechamiento</strong> de recursos del sistema</li>
+                                    <li><strong>Reducción</strong> en tiempos de respuesta</li>
+                                    <li><strong>Múltiples usuarios</strong> accediendo simultáneamente</li>
+                                </ul>
+                            </div>
+                            <div class="column">
+                                <h4><i class="fas fa-check-double"></i> Criterio de Correctitud</h4>
+                                <div style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <p style="font-size: 0.9em; margin: 0;">
+                                        <strong>Serializabilidad</strong>: La ejecución concurrente es correcta solo si su efecto es el mismo que si se ejecutaran secuencialmente en cualquier orden
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Enfoques de Control de Concurrencia</h3>
+                    <div class="concept-box">
+                        <div class="r-hstack">
+                            <div class="column">
+                                <div style="background: rgba(233, 171, 33, 0.1); padding: 1.5rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-shield-alt"></i> Control Pesimista</h4>
+                                    <ul style="font-size: 0.9em;">
+                                        <li><strong>Asume conflictos</strong> frecuentes</li>
+                                        <li><strong>Técnicas de bloqueo</strong> preventivas</li>
+                                        <li><strong>Bloquea recursos</strong> antes del acceso</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div style="background: rgba(145, 0, 72, 0.1); padding: 1.5rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-rocket"></i> Control Optimista</h4>
+                                    <ul style="font-size: 0.9em;">
+                                        <li><strong>Asume conflictos</strong> raros</li>
+                                        <li><strong>Validación posterior</strong> a la ejecución</li>
+                                        <li><strong>Rollback</strong> si hay conflictos</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 1rem;">
+                            <h4><i class="fas fa-gavel"></i> Planificador</h4>
+                            <p style="font-size: 0.9em; background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                                <strong>Arbitro de conflictos</strong> de acceso que coordina operaciones concurrentes y garantiza la consistencia del sistema
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Técnicas de Bloqueo -->
+            <section data-transition="convex">
+                <h2><i class="fas fa-key"></i> Técnicas de Bloqueo</h2>
+
+                <section>
+                    <h3>Conceptos Fundamentales de Bloqueo</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(233, 171, 33, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "El bloqueo es una información del tipo de acceso que se permite a un elemento"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <h4><i class="fas fa-shield-alt"></i> Propósito</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>Prevenir interacción destructiva</strong> entre usuarios</li>
+                                    <li><strong>Controlar acceso</strong> a datos compartidos</li>
+                                    <li><strong>Imposición automática</strong> por el SGBD</li>
+                                </ul>
+                            </div>
+                            <div class="column">
+                                <h4><i class="fas fa-layer-group"></i> Granularidad</h4>
+                                <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <p style="font-size: 0.9em; margin: 0;">
+                                        <strong>Principio</strong>: A mayor granularidad, menor concurrencia
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Niveles de Granularidad</h3>
+                    <div class="concept-box">
+                        <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                            <thead>
+                                <tr style="background: rgba(35, 53, 110, 0.1);">
+                                    <th style="padding: 0.5rem; border: 1px solid #ddd; text-align: left;">Nivel</th>
+                                    <th style="padding: 0.5rem; border: 1px solid #ddd; text-align: left;">Unidad</th>
+                                    <th style="padding: 0.5rem; border: 1px solid #ddd; text-align: left;">Concurrencia</th>
+                                    <th style="padding: 0.5rem; border: 1px solid #ddd; text-align: left;">Overhead</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Fila</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Fila individual</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Máxima</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Alto</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Página</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Bloques de 8KB</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Alta</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Medio</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Tabla</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Tabla completa</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Baja</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Bajo</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Base de Datos</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">BD completa</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Mínima</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Mínimo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div style="text-align: center; margin-top: 1rem; background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                            <strong>Recomendación</strong>: Sistema de granularidad múltiple permite varios niveles según necesidades
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Tipos de Bloqueo (Modos)</h3>
+                    <div class="concept-box">
+                        <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                            <thead>
+                                <tr style="background: rgba(35, 53, 110, 0.1);">
+                                    <th style="padding: 0.5rem; border: 1px solid #ddd; text-align: left;">Tipo</th>
+                                    <th style="padding: 0.5rem; border: 1px solid #ddd; text-align: left;">Modo</th>
+                                    <th style="padding: 0.5rem; border: 1px solid #ddd; text-align: left;">Acceso Permitido</th>
+                                    <th style="padding: 0.5rem; border: 1px solid #ddd; text-align: left;">Propósito</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Compartido (S)</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Solo lectura</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Lecturas concurrentes</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Operaciones de solo lectura</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Exclusivo (X)</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Lectura y escritura</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Solo una transacción</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Operaciones que escriben datos</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Actualización (U)</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Temporal</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Solo una transacción</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Operaciones que pueden escribir</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;"><strong>Intención (I)</strong></td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Varios modos (IS, IX, SIX)</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Jerarquía de bloqueo</td>
+                                    <td style="padding: 0.5rem; border: 1px solid #ddd;">Bloqueo a nivel grueso</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Protocolo de Bloqueo en Dos Fases (2PL)</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(145, 0, 72, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "Todos los bloqueos preceden a los desbloqueos"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-expand-arrows-alt"></i> Fase de Expansión</h4>
+                                    <ul style="font-size: 0.9em;">
+                                        <li><strong>Se pueden adquirir</strong> nuevos bloqueos</li>
+                                        <li><strong>NO se puede liberar</strong> ningún bloqueo existente</li>
+                                        <li><strong>Acumulación</strong> de recursos necesarios</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-compress-arrows-alt"></i> Fase de Contracción</h4>
+                                    <ul style="font-size: 0.9em;">
+                                        <li><strong>Se pueden liberar</strong> todos los bloqueos existentes</li>
+                                        <li><strong>NO se pueden adquirir</strong> nuevos bloqueos</li>
+                                        <li><strong>Liberación</strong> progresiva de recursos</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 1rem; background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                            <strong>Garantía Fundamental</strong>: "Si S es cualquier planificación de transacciones de dos fases, S es secuenciable"
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3><i class="fas fa-exclamation-triangle"></i> Problema: Interbloqueo (Deadlock)</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(220, 53, 69, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid #dc3545; font-style: italic; font-size: 1.0em;">
+                            "Situación en la que un grupo de transacciones no pueden continuar porque están esperando unas a las otras"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <h4><i class="fas fa-code"></i> Ejemplo Clásico</h4>
+                                <table style="width: 100%; border-collapse: collapse; font-size: 0.8em;">
+                                    <thead>
+                                        <tr style="background: rgba(35, 53, 110, 0.1);">
+                                            <th style="padding: 0.5rem; border: 1px solid #ddd;">Transacción T1</th>
+                                            <th style="padding: 0.5rem; border: 1px solid #ddd;">Transacción T2</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding: 0.5rem; border: 1px solid #ddd;"><code>LOCK A;</code></td>
+                                            <td style="padding: 0.5rem; border: 1px solid #ddd;"><code>LOCK B;</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 0.5rem; border: 1px solid #ddd;"><code>LOCK B; (Espera T2 libere B)</code></td>
+                                            <td style="padding: 0.5rem; border: 1px solid #ddd;"><code>LOCK A; (Espera T1 libere A)</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="column">
+                                <h4><i class="fas fa-search"></i> Detección</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>T1 espera B</strong> (que tiene T2)</li>
+                                    <li><strong>T2 espera A</strong> (que tiene T1)</li>
+                                    <li><strong>Espera indefinida</strong> = Deadlock</li>
+                                </ul>
+                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                                    <strong>Grafo de esperas</strong>: La existencia de un <strong>ciclo</strong> indica deadlock
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Protocolos de Validación -->
+            <section data-transition="convex">
+                <h2><i class="fas fa-rocket"></i> Control de Concurrencia Optimista</h2>
+
+                <section>
+                    <h3>Filosofía Optimista</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "Los conflictos entre las transacciones son raros"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <h4><i class="fas fa-target"></i> Objetivo</h4>
+                                <p style="font-size: 0.9em; background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <strong>Evitar los costosos bloqueos</strong> cuando la probabilidad de conflicto es baja
+                                </p>
+                            </div>
+                            <div class="column">
+                                <h4><i class="fas fa-route"></i> Dos Enfoques Principales</h4>
+                                <ol style="font-size: 0.9em;">
+                                    <li><strong>Protocolos de Validación</strong></li>
+                                    <li><strong>Protocolos Basados en Marcas Temporales</strong></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Protocolos Optimistas de Validación</h3>
+                    <div class="concept-box">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px; width: 30%;">
+                                <h4><i class="fas fa-play"></i> 1. Fase de Lectura</h4>
+                                <ul style="font-size: 0.8em;">
+                                    <li>Ejecución normal de la transacción</li>
+                                    <li>Actualizaciones en memoria local</li>
+                                    <li>Sin bloqueos durante la ejecución</li>
+                                </ul>
+                            </div>
+                            <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px; width: 30%;">
+                                <h4><i class="fas fa-check"></i> 2. Fase de Validación</h4>
+                                <ul style="font-size: 0.8em;">
+                                    <li>Verificación de conflictos al intentar COMMIT</li>
+                                    <li>Análisis de serializabilidad</li>
+                                    <li>Decisión: Confirmar o abortar</li>
+                                </ul>
+                            </div>
+                            <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px; width: 30%;">
+                                <h4><i class="fas fa-save"></i> 3. Fase de Escritura</h4>
+                                <ul style="font-size: 0.8em;">
+                                    <li>Si validación exitosa: Escritura real en BD</li>
+                                    <li>Si hay conflicto: Abort y reinicio</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h4><i class="fas fa-thumbs-up"></i> Ventajas</h4>
+                            <ul style="font-size: 0.9em;">
+                                <li><strong>Alta concurrencia</strong> cuando conflictos son raros</li>
+                                <li><strong>Sin deadlocks</strong> por diseño</li>
+                                <li><strong>Menor overhead</strong> durante ejecución</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Protocolos Basados en Marcas Temporales</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(233, 171, 33, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "Asegurar serializabilidad sin imponer bloqueos mediante ordenamiento temporal"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <h4><i class="fas fa-clock"></i> Asignación de Marcas</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>MT(Ti)</strong>: Marca temporal asignada a transacción Ti</li>
+                                    <li><strong>Orden de entrada</strong>: Marca basada en tiempo de llegada al sistema</li>
+                                    <li><strong>Contador o reloj</strong>: Mecanismos de asignación</li>
+                                </ul>
+                            </div>
+                            <div class="column">
+                                <h4><i class="fas fa-database"></i> Marcas por Elemento</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>MTR(D)</strong>: Mayor marca de transacciones que leyeron con éxito</li>
+                                    <li><strong>MTW(D)</strong>: Mayor marca de transacciones que escribieron con éxito</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <h4><i class="fas fa-award"></i> Ventajas</h4>
+                            <ul style="font-size: 0.9em;">
+                                <li><strong>Sin deadlocks</strong>: Ninguna transacción espera</li>
+                                <li><strong>Serializabilidad garantizada</strong>: Por orden temporal</li>
+                                <li><strong>Decisiones inmediatas</strong>: Sin esperas por recursos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Aplicaciones Prácticas -->
+            <section data-transition="convex">
+                <h2><i class="fas fa-industry"></i> Aplicaciones en el Mundo Real</h2>
+
+                <section>
+                    <h3>Casos de Uso por Industria</h3>
+                    <div class="concept-box">
+                        <div class="r-hstack">
+                            <div class="column">
+                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-university"></i> Sistemas OLTP</h4>
+                                    <ul style="font-size: 0.9em;">
+                                        <li><strong>Bancos</strong>: Transferencias, depósitos, retiros</li>
+                                        <li><strong>E-commerce</strong>: Compras, inventario, pagos</li>
+                                        <li><strong>Reservas</strong>: Vuelos, hoteles, eventos</li>
+                                        <li><strong>Control</strong>: Bloqueos estrictos para consistencia</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-chart-bar"></i> Sistemas OLAP</h4>
+                                    <ul style="font-size: 0.9em;">
+                                        <li><strong>Data warehouses</strong>: Consultas complejas, reportes</li>
+                                        <li><strong>Business Intelligence</strong>: Análisis multidimensional</li>
+                                        <li><strong>Control</strong>: Optimista por baja contención de escritura</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <h4><i class="fas fa-cloud"></i> Sistemas Distribuidos</h4>
+                            <ul style="font-size: 0.9em;">
+                                <li><strong>Bases de datos distribuidas</strong>: Coordinación entre nodos</li>
+                                <li><strong>Microservicios</strong>: Transacciones entre servicios</li>
+                                <li><strong>Cloud</strong>: Elasticidad y disponibilidad</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Tecnologías y Herramientas</h3>
+                    <div class="concept-box">
+                        <div class="r-hstack">
+                            <div class="column">
+                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-database"></i> SGBDs Relacionales</h4>
+                                    <ul style="font-size: 0.8em;">
+                                        <li><strong>MySQL</strong>: InnoDB engine, niveles de aislamiento configurables</li>
+                                        <li><strong>PostgreSQL</strong>: MVCC (Multi-Version Concurrency Control)</li>
+                                        <li><strong>Oracle</strong>: Advanced Queuing, RAC</li>
+                                        <li><strong>SQL Server</strong>: Lock Manager, Always On</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-network-wired"></i> Bases de Datos NoSQL</h4>
+                                    <ul style="font-size: 0.8em;">
+                                        <li><strong>MongoDB</strong>: Optimistic Concurrency Control</li>
+                                        <li><strong>Cassandra</strong>: Eventually Consistent, Tunable Consistency</li>
+                                        <li><strong>Redis</strong>: Single-threaded, atomic operations</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <h4><i class="fas fa-rocket"></i> Sistemas de Nueva Generación</h4>
+                            <ul style="font-size: 0.9em;">
+                                <li><strong>CockroachDB</strong>: Distributed SQL, ACID garantizado</li>
+                                <li><strong>TiDB</strong>: Distributed transactions, HTAP</li>
+                                <li><strong>YugabyteDB</strong>: Multi-region deployment, strong consistency</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Mejores Prácticas -->
+            <section data-transition="convex">
+                <h2><i class="fas fa-star"></i> Mejores Prácticas y Tendencias</h2>
+
+                <section>
+                    <h3>Diseño de Transacciones</h3>
+                    <div class="concept-box">
+                        <div class="r-hstack">
+                            <div class="column">
+                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-lightbulb"></i> Principios de Diseño</h4>
+                                    <ol style="font-size: 0.9em;">
+                                        <li><strong>Mantén transacciones cortas</strong> para reducir contención</li>
+                                        <li><strong>Minimiza el scope</strong> de bloqueos</li>
+                                        <li><strong>Ordena acceso a recursos</strong> para prevenir deadlocks</li>
+                                        <li><strong>Usa niveles de aislamiento apropiados</strong> según necesidades</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div style="background: rgba(35, 53, 110, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-tachometer-alt"></i> Optimización de Rendimiento</h4>
+                                    <ol style="font-size: 0.9em;">
+                                        <li><strong>Indexación adecuada</strong> para reducir lock time</li>
+                                        <li><strong>Particionamiento</strong> para distribuir contención</li>
+                                        <li><strong>Connection pooling</strong> para gestión eficiente</li>
+                                        <li><strong>Batch processing</strong> para operaciones masivas</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Manejo de Errores</h4>
+                            <ol style="font-size: 0.9em;">
+                                <li><strong>Retry logic</strong> con backoff exponencial</li>
+                                <li><strong>Circuit breakers</strong> para fallas cascada</li>
+                                <li><strong>Timeout configurables</strong> por tipo de operación</li>
+                                <li><strong>Logging detallado</strong> para diagnóstico</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Tendencias y Evolución</h3>
+                    <div class="concept-box">
+                        <div class="r-hstack">
+                            <div class="column">
+                                <div style="background: rgba(145, 0, 72, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-atom"></i> MVCC (Multi-Version Concurrency Control)</h4>
+                                    <ul style="font-size: 0.9em;">
+                                        <li><strong>Versiones múltiples</strong> de datos</li>
+                                        <li><strong>Lectores no bloquean escritores</strong></li>
+                                        <li><strong>Garbage collection</strong> de versiones antiguas</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div style="background: rgba(40, 167, 69, 0.1); padding: 1rem; border-radius: 8px;">
+                                    <h4><i class="fas fa-globe"></i> Transacciones Distribuidas</h4>
+                                    <ul style="font-size: 0.9em;">
+                                        <li><strong>2PC (Two-Phase Commit)</strong>: Coordinación distribuida</li>
+                                        <li><strong>Saga Pattern</strong>: Transacciones de larga duración</li>
+                                        <li><strong>Compensating Transactions</strong>: Deshacimiento semántico</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(233, 171, 33, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <h4><i class="fas fa-balance-scale"></i> Consistency Models</h4>
+                            <ul style="font-size: 0.9em;">
+                                <li><strong>Strong Consistency</strong>: Linearizability, Sequential consistency</li>
+                                <li><strong>Eventual Consistency</strong>: CRDTs, Gossip protocols</li>
+                                <li><strong>Causal Consistency</strong>: Happened-before relationships</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>Lecciones Clave</h3>
+                    <div class="concept-box">
+                        <blockquote style="background: rgba(40, 167, 69, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--uide-primary); font-style: italic; font-size: 1.0em;">
+                            "Las transacciones seguirán evolucionando hacia modelos híbridos que combinen las garantías de ACID con la escalabilidad de sistemas distribuidos"
+                        </blockquote>
+
+                        <div class="r-hstack" style="margin-top: 1.5rem;">
+                            <div class="column">
+                                <h4><i class="fas fa-compass"></i> Principios Fundamentales</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li><strong>ACID es la base</strong> de sistemas confiables</li>
+                                    <li><strong>Concurrencia vs. Consistencia</strong> es un trade-off constante</li>
+                                    <li><strong>No existe solución única</strong> - cada caso requiere análisis</li>
+                                    <li><strong>Monitoring es esencial</strong> para optimización continua</li>
+                                </ul>
+                            </div>
+                            <div class="column">
+                                <h4><i class="fas fa-question-circle"></i> Preguntas para Considerar</h4>
+                                <ul style="font-size: 0.9em;">
+                                    <li>¿Cómo balancear <strong>consistencia</strong> vs. <strong>disponibilidad</strong>?</li>
+                                    <li>¿Qué <strong>nivel de aislamiento</strong> es apropiado?</li>
+                                    <li>¿Cómo <strong>monitorear y diagnosticar</strong> problemas efectivamente?</li>
+                                    <li>¿Cuándo es apropiado <strong>relajar ACID</strong> por performance?</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Final slide with attribution -->
+            <section data-background-color="#f8f8f8" data-transition="convex">
+                <div class="title-slide">
+                    <h2>¡Gracias por su atención!</h2>
+                    <div style="margin-top: 2em; font-size: 0.8em; font-style: italic; color: var(--uide-secondary);">
+                        <em>Presentación basada en el compendio de Semana 2 - SGBD:<br>
+                        Transacciones, Propiedades ACID, Control de Concurrencia<br>
+                        y Técnicas de Bloqueo</em>
+                    </div>
+                    
+                    <div style="margin-top: 2em; font-size: 0.9em;">
+                        <strong>05 LTI_05A_300-SGBD-ASC</strong> • Universidad Internacional del Ecuador<br>
+                        <em>Prof. Charlie Cárdenas Toledo, M.Sc.</em>
+                    </div>
+                </div>
+            </section>        </div>    </div>
+
+    <!-- Reveal.js JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="presentacion-clase-semana2.js"></script>
+
+    <!-- Responsive handling script -->
+    <script>
+        // Responsive handling for presentation
+        function handleResize() {
+            // Trigger Reveal.js layout recalculation
+            if (typeof Reveal !== 'undefined') {
+                Reveal.layout();
+            }
+
+            // Re-render Mermaid diagrams if needed
+            if (typeof mermaid !== 'undefined') {
+                try {
+                    mermaid.init();
+                } catch (e) {
+                    console.log('Mermaid re-initialization skipped');
+                }
+            }
+        }
+
+        // Debounced resize handler
+        let resizeTimeout;
+        window.addEventListener('resize', function () {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(handleResize, 250);
+        });
+
+        // Orientation change handler for mobile
+        window.addEventListener('orientationchange', function () {
+            setTimeout(handleResize, 500);
+        });
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('DOM loaded, initializing presentation...');
+            handleResize();
+        });
+
+        // Performance optimization for mobile
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            // Reduce animations on mobile for better performance
+            document.documentElement.style.setProperty('--reveal-transition-speed', '0.3s');
+        }
+    </script>
+
+    <script>
+        // Initialize Reveal.js with responsive settings
+        console.log('Initializing Reveal.js...');
+
+        Reveal.initialize({
+            hash: true,
+            transition: 'convex',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+
+            // Responsive settings
+            width: '100%',
+            height: '100%',
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 2.0,
+
+            // Learn about plugins: https://revealjs.com/plugins/
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+
+            // Display controls
+            controls: true,
+            progress: true,
+            center: true,
+            touch: true,
+            loop: false,
+
+            // Keyboard navigation
+            keyboard: true,
+
+            // Overview mode
+            overview: true,
+
+            // Vertical centering of slides
+            center: true,
+
+            // Enables touch navigation on devices with touch input
+            touch: true,
+
+            // Loop the presentation
+            loop: false,
+
+            // Change the presentation direction to be RTL
+            rtl: false,
+
+            // Randomizes the order of slides each time the presentation loads
+            shuffle: false,
+
+            // Turns fragments on and off globally
+            fragments: true,
+
+            // Flags whether to include the current fragment in the URL,
+            // so that reloading brings you to the same fragment position
+            fragmentInURL: true,
+
+            // Flags if the presentation is running in an embedded mode,
+            // i.e. contained within a limited portion of the screen
+            embedded: false,
+
+            // Flags if we should show a help overlay when the questionmark
+            // key is pressed
+            help: true,
+
+            // Flags if it should be possible to pause the presentation (blackout)
+            pause: true,
+
+            // Flags if speaker notes should be visible to all viewers
+            showNotes: false,
+
+            // Global override for autoplaying embedded media (null/true/false)
+            autoPlayMedia: null,
+
+            // Global override for preloading lazy-loaded iframes (null/true/false)
+            preloadIframes: null,
+
+            // Number of milliseconds between automatically proceeding to the
+            // next slide, disabled when set to 0, this value can be overwritten
+            // by using a data-autoslide attribute on your slides
+            autoSlide: 0,
+
+            // Stop auto-sliding after user input
+            autoSlideStoppable: true,
+
+            // Use this method for navigation when auto-sliding
+            autoSlideMethod: null,
+
+            // Specify the average time in seconds that you think you'll spend
+            // presenting each slide. This is used to show a pacing timer in the
+            // speaker view
+            defaultTiming: null,
+
+            // Enable slide navigation via mouse wheel
+            mouseWheel: false,
+
+            // The display mode that will be used to show slides
+            display: 'block',
+
+            // Hide cursor if inactive
+            hideInactiveCursor: true,
+
+            // Time before the cursor is hidden (in ms)
+            hideCursorTime: 5000,
+
+            // Opens links in an iframe preview overlay
+            previewLinks: false,
+
+            // Exposes the reveal.js API through window.postMessage
+            postMessage: true,
+
+            // Dispatches all reveal.js events to the parent window through postMessage
+            postMessageEvents: false,
+
+            // Focuses body when page changes visibility to ensure keyboard shortcuts work
+            focusBodyOnPageVisibilityChange: true,
+
+            // Transition style
+            transition: 'convex', // none/fade/slide/convex/concave/zoom
+
+            // Transition speed
+            transitionSpeed: 'default', // default/fast/slow
+
+            // Transition style for full page slide backgrounds
+            backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+
+            // Number of slides away from the current that are visible
+            viewDistance: 3,
+
+            // Number of slides away from the current that are visible on mobile
+            // devices. It is advisable to set this to a lower number than
+            // viewDistance in order to save resources.
+            mobileViewDistance: 2,
+
+            // Parallax background image
+            parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+            // Parallax background size
+            parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+
+            // Number of pixels to move the parallax background per slide
+            // - Calculated automatically unless specified
+            // - Set to 0 to disable movement along an axis
+            parallaxBackgroundHorizontal: null,
+            parallaxBackgroundVertical: null,
+
+            // The maximum number of pages a single slide can expand onto when printing
+            // to PDF, unlimited by default
+            pdfMaxPagesPerSlide: Number.POSITIVE_INFINITY,
+
+            // Prints each fragment on a separate slide
+            pdfSeparateFragments: true,
+
+            // Offset used to reduce the height of content within exported PDF pages.
+            // This exists to account for environment differences based on how you
+            // print to PDF. CLI printing options, like phantomjs and wkpdf, can end
+            // on precisely the total height of the document whereas in-browser
+            // printing has to end one pixel before.
+            pdfPageHeightOffset: -1,
+
+            // Number of slides away from the current that will be preloaded
+            preloadIframes: null,
+
+            // Can be used to globally disable auto-animation
+            autoAnimate: true,
+
+            // Optionally provide a custom element matcher that will be
+            // used to dictate which elements we can animate between.
+            autoAnimateEasing: 'ease',
+
+            // Default settings for our auto-animate transitions, can be
+            // overridden per-slide or per-element via data arguments
+            autoAnimateDuration: 1.0,
+            autoAnimateUnmatched: true
+        });
+
+        // Log when Reveal is ready
+        Reveal.on('ready', function () {
+            console.log('Reveal.js is ready!');
+        });
+
+        // SGBD Reference Guide Function
+        function showSGBDReference() {
+            const sgbdInfo = `
+                <div style="max-width: 520px; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                    <h3 style="color: #2c5282; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+                        <i class="fas fa-database" style="margin-right: 8px;"></i>Guía Rápida: SGBD
+                    </h3>
+                    
+                    <div style="margin: 15px 0;">
+                        <h4 style="color: #2d3748; margin: 10px 0 5px 0; font-size: 14px;">
+                            <i class="fas fa-exchange-alt" style="color: #4299e1;"></i> Transacciones
+                        </h4>
+                        <p style="margin: 0; font-size: 12px; color: #4a5568;">• Unidad lógica de trabajo<br>• Estados: Activa → Parcialmente confirmada → Confirmada/Abortada</p>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <h4 style="color: #2d3748; margin: 10px 0 5px 0; font-size: 14px;">
+                            <i class="fas fa-shield-alt" style="color: #48bb78;"></i> Propiedades ACID
+                        </h4>
+                        <p style="margin: 0; font-size: 12px; color: #4a5568;">• <strong>A</strong>tomicidad: Todo o nada<br>• <strong>C</strong>onsistencia: Estados válidos<br>• <strong>I</strong>solation: Independencia<br>• <strong>D</strong>urabilidad: Permanencia</p>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <h4 style="color: #2d3748; margin: 10px 0 5px 0; font-size: 14px;">
+                            <i class="fas fa-lock" style="color: #ed8936;"></i> Control de Concurrencia
+                        </h4>
+                        <p style="margin: 0; font-size: 12px; color: #4a5568;">• Pesimista: Bloqueos preventivos<br>• Optimista: Validación posterior<br>• 2PL: Protocolo de dos fases</p>
+                    </div>
+                    
+                    <div style="margin: 15px 0;">
+                        <h4 style="color: #2d3748; margin: 10px 0 5px 0; font-size: 14px;">
+                            <i class="fas fa-key" style="color: #9f7aea;"></i> Tipos de Bloqueo
+                        </h4>
+                        <p style="margin: 0; font-size: 12px; color: #4a5568;">• Compartido (S): Solo lectura<br>• Exclusivo (X): Lectura y escritura<br>• Actualización (U): Temporal<br>• Intención (I): Jerarquía</p>
+                    </div>
+
+                    <div style="margin: 15px 0;">
+                        <h4 style="color: #2d3748; margin: 10px 0 5px 0; font-size: 14px;">
+                            <i class="fas fa-exclamation-triangle" style="color: #e53e3e;"></i> Problemas Comunes
+                        </h4>
+                        <p style="margin: 0; font-size: 12px; color: #4a5568;">• Deadlock: Espera circular<br>• Lecturas no repetibles<br>• Lecturas sucias<br>• Phantoms</p>
+                    </div>
+                    
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" 
+                                style="background: #4299e1; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                            <i class="fas fa-times"></i> Cerrar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing overlay if any
+            const existingOverlay = document.getElementById('sgbd-overlay');
+            if (existingOverlay) {
+                existingOverlay.remove();
+            }
+            
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'sgbd-overlay';
+            overlay.style.cssText = `
+                position: fixed; 
+                top: 0; left: 0; 
+                width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.7); 
+                display: flex; 
+                justify-content: center; 
+                align-items: center; 
+                z-index: 10000;
+                backdrop-filter: blur(3px);
+            `;
+            overlay.innerHTML = sgbdInfo;
+            
+            // Close on overlay click
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    overlay.remove();
+                }
+            });
+            
+            document.body.appendChild(overlay);
+        }
+    </script>
+
+</body>
+
+</html>

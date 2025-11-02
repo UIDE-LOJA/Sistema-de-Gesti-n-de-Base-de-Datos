@@ -1,0 +1,1538 @@
+/* Custom Styles for Simulación Presentation - Using AIPTI Styles */
+
+/* Enhanced concept-box styling */
+.concept-box {
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: none;
+    text-align: left;
+}
+
+.concept-box h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    color: var(--uide-primary);
+}
+
+.concept-box.warning {
+    border-left: 4px solid #ffc107;
+    background: rgba(255, 193, 7, 0.05);
+}
+
+.concept-box.info {
+    border-left: 4px solid var(--uide-secondary);
+    background: rgba(35, 53, 110, 0.05);
+}
+
+/* Interactive elements */
+.interactive-box {
+    background: rgba(233, 171, 33, 0.1);
+    border: 2px solid var(--uide-accent);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.discussion-point {
+    background: rgba(40, 167, 69, 0.1);
+    border-left: 4px solid var(--uide-primary);
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.timer-box {
+    background: rgba(145, 0, 72, 0.1);
+    border: 2px solid var(--uide-secondary);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.activity-card {
+    background: transparent;
+    border-radius: 12px;
+    box-shadow: none;
+    margin: 1rem 0;
+}
+
+/* Title slide styling */
+.title-slide {
+    text-align: center;
+    padding: 2rem;
+}
+
+.course-info {
+    background: transparent;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+/* Layout helpers */
+.r-hstack {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.r-vstack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Enhanced list styling */
+.concept-box ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.concept-box li {
+    margin-bottom: 0.3rem;
+}
+
+/* Highlight styling */
+mark {
+    background: rgba(233, 171, 33, 0.3);
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+}
+
+/* Animation classes */
+.fragment {
+    opacity: 0;
+}
+
+.fragment.visible {
+    opacity: 1;
+}
+
+/* Custom colors for different sections */
+.aipti-primary {
+    color: #910048;
+}
+
+.aipti-secondary {
+    color: #23356E;
+}
+
+.aipti-accent {
+    color: #E9AB21;
+}
+
+/* Enhanced responsive adjustments */
+@media (max-width: 1024px) {
+    .r-hstack {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .concept-box {
+        padding: 1.2rem;
+        font-size: 0.95em;
+    }
+}
+
+@media (max-width: 768px) {
+    .r-hstack {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .concept-box {
+        padding: 1rem;
+        font-size: 0.9em;
+    }
+    
+    .concept-box h4 {
+        font-size: 1.1em;
+    }
+    
+    .title-slide {
+        padding: 1rem;
+    }
+    
+    .course-info {
+        font-size: 0.8em;
+    }
+    
+    /* Grid adjustments for mobile */
+    .classification-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    /* Table responsive */
+    table {
+        font-size: 0.7em;
+    }
+    
+    table th, table td {
+        padding: 0.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .concept-box {
+        padding: 0.8rem;
+        font-size: 0.85em;
+    }
+    
+    .interactive-box {
+        padding: 1rem;
+    }
+    
+    .timer-box {
+        padding: 0.8rem;
+    }
+    
+    /* Stack everything vertically on very small screens */
+    .r-hstack {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+}
+
+/* Special styling for code blocks */
+.concept-box code {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+}
+
+/* Blockquote styling */
+blockquote {
+    border-left: 4px solid var(--uide-primary);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+}
+
+blockquote footer {
+    font-size: 0.8em;
+    margin-top: 0.5rem;
+}
+
+/* Button-like elements */
+.btn-like {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--uide-primary);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.btn-like:hover {
+    background: var(--uide-secondary);
+}
+
+/* Progress indicators */
+.progress-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.progress-dot.active {
+    background: var(--uide-primary);
+}
+
+/* Special styling for important notes */
+.important-note {
+    background: rgba(255, 87, 34, 0.1);
+    border: 2px solid #FF5722;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.important-note::before {
+    content: "⚠️ ";
+    font-size: 1.2em;
+}
+
+/* Styling for success messages */
+.success-message {
+    background: rgba(76, 175, 80, 0.1);
+    border: 2px solid #4CAF50;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.success-message::before {
+    content: "✅ ";
+    font-size: 1.2em;
+}
+
+/* Gallery Styles for Visual Examples */
+.visual-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.gallery-item {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-item-content {
+    padding: 0.8rem;
+}
+
+.gallery-item h6 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.gallery-item p {
+    font-size: 0.7em;
+    margin: 0;
+    color: #666;
+    line-height: 1.3;
+}
+
+/* Hybrid model specific styling */
+.hybrid-features {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.hybrid-feature {
+    flex: 1;
+    padding: 0.4rem;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.hybrid-feature p {
+    font-size: 0.6em !important;
+    margin: 0;
+}
+
+.hybrid-feature .feature-type {
+    font-size: 0.7em !important;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Responsive gallery adjustments */
+@media (max-width: 1024px) {
+    .visual-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 0.8rem;
+    }
+    
+    .gallery-item img {
+        height: 100px;
+    }
+    
+    .gallery-item-content {
+        padding: 0.6rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .visual-gallery {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.5rem;
+    }
+    
+    .gallery-item img {
+        height: 80px;
+    }
+    
+    .gallery-item-content {
+        padding: 0.5rem;
+    }
+    
+    .gallery-item h6 {
+        font-size: 0.8em;
+    }
+    
+    .gallery-item p {
+        font-size: 0.65em;
+    }
+    
+    .hybrid-features {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .visual-gallery {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .gallery-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+    
+    .gallery-item img {
+        width: 80px;
+        height: 60px;
+        flex-shrink: 0;
+    }
+    
+    .gallery-item-content {
+        flex: 1;
+        padding: 0.5rem;
+    }
+    
+    .hybrid-features {
+        flex-direction: row;
+        gap: 0.3rem;
+    }
+}/* Mermaid diagrams responsive styling */
+.mermaid-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden !important;
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+}
+
+.mermaid-container .mermaid {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    overflow: hidden !important;
+}
+
+.mermaid-container .mermaid svg {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    transform-origin: center center !important;
+}
+
+/* Tipografías y colores coherentes con tema UIDE */
+:root {
+    --uide-primary: #910048;
+    --uide-secondary: #23356E;
+    --uide-accent: #E9AB21;
+}
+
+/* Colores por defecto de nodos/aristas en Mermaid */
+.reveal .slides .mermaid .node rect,
+.reveal .slides .mermaid .node path {
+    stroke: var(--uide-secondary) !important;
+}
+
+.reveal .slides .mermaid .edgePath path {
+    stroke: var(--uide-primary) !important;
+}
+
+.reveal .slides .mermaid .label,
+.reveal .slides .mermaid text {
+    fill: #222 !important;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+/* Responsive adjustments for diagrams */
+@media (max-width: 1024px) {
+    .mermaid-container {
+        height: 300px !important;
+        max-height: 70vh !important;
+        padding: 1rem !important;
+    }
+    
+    /* Stack columns on tablets */
+    .r-hstack {
+        flex-direction: column !important;
+    }
+    
+    .column {
+        flex: 1 !important;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .mermaid-container {
+        height: 250px !important;
+        max-height: 60vh !important;
+        font-size: 0.8em;
+        padding: 0.8rem !important;
+    }
+    
+    /* Ensure columns stack properly on mobile */
+    .r-hstack {
+        flex-direction: column !important;
+        gap: 0.5rem;
+    }
+    
+    .column {
+        flex: 1 !important;
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .mermaid-container {
+        height: 200px !important;
+        max-height: 50vh !important;
+        font-size: 0.7em;
+        padding: 0.5rem !important;
+    }
+    
+    .concept-box {
+        padding: 0.8rem;
+        margin: 0.5rem 0;
+    }
+}
+
+/* Asegurar que los SVG de Mermaid ocupen el ancho del contenedor */
+.reveal .slides .mermaid,
+.reveal .slides .mermaid svg {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+}
+
+/* Mermaid diagram responsive styling */
+.mermaid {
+    max-width: 100%;
+    overflow: auto;
+}
+
+/* Forzar que Mermaid no genere scroll - configuración estricta */
+.mermaid-container * {
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.mermaid-container svg {
+    transform: scale(0.9) !important;
+    transform-origin: center center !important;
+    overflow: hidden !important;
+}
+
+/* Asegurar que el contenedor padre no tenga scroll */
+.reveal .slides section {
+    overflow: hidden !important;
+}
+
+.reveal .slides .concept-box {
+    overflow: visible !important;
+}
+
+/* Configuración específica para evitar scroll en presentaciones */
+.reveal .slides {
+    overflow: hidden !important;
+}
+
+.reveal .slide-background {
+    overflow: hidden !important;
+}
+
+/* Estilos específicos para tablas de simulación */
+table {
+    width: 100%;
+    font-size: 0.8em;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+table th {
+    background: var(--uide-primary);
+    color: white;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+}
+
+table td {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+}
+
+table tr:nth-child(even) {
+    background: rgba(248, 249, 250, 0.8);
+}
+
+/* Estilos para elementos de simulación específicos */
+.paradigm-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--uide-primary);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    margin: 0.5rem 0;
+    transition: all 0.3s ease;
+}
+
+.paradigm-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.paradigm-card.deterministic {
+    border-color: var(--uide-primary);
+}
+
+.paradigm-card.stochastic {
+    border-color: var(--uide-secondary);
+}
+
+/* Estilos para agentes */
+.agent-feature {
+    background: rgba(233, 171, 33, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.agent-feature:hover {
+    background: rgba(233, 171, 33, 0.2);
+}
+
+.agent-feature i {
+    font-size: 2em;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: var(--uide-accent);
+}
+
+/* Animaciones para elementos interactivos */
+.interactive-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.discussion-point:hover {
+    transform: translateY(-1px);
+    transition: all 0.3s ease;
+}
+
+/* Estilos para clasificación de sistemas */
+.classification-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.classification-item {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--uide-accent);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.classification-item:hover {
+    border-color: var(--uide-primary);
+    transform: scale(1.02);
+}
+
+.classification-item.discrete {
+    border-color: var(--uide-primary);
+}
+
+.classification-item.continuous {
+    border-color: var(--uide-secondary);
+}
+
+/* Indicadores de tiempo y actividades */
+.time-indicator {
+    background: rgba(145, 0, 72, 0.1);
+    border: 2px solid var(--uide-secondary);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-weight: bold;
+    color: var(--uide-secondary);
+}
+
+/* Estilos para ejemplos y casos de estudio */
+.example-box {
+    background: rgba(40, 167, 69, 0.1);
+    border-left: 4px solid var(--uide-primary);
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.case-study {
+    background: rgba(35, 53, 110, 0.1);
+    border: 2px solid var(--uide-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+/* Métricas y estadísticas */
+.metric-display {
+    background: rgba(233, 171, 33, 0.1);
+    border: 2px solid var(--uide-accent);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
+.metric-number {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--uide-primary);
+    display: block;
+}
+
+.metric-label {
+    font-size: 0.9em;
+    color: var(--uide-secondary);
+}
+/* Timer St
+yles */
+.timer-box {
+    background: rgba(145, 0, 72, 0.1);
+    border: 2px solid var(--uide-secondary);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-box button {
+    font-size: 0.8em;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.timer-box button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.timer-box button:active {
+    transform: translateY(0);
+}
+
+.timer-box button i {
+    margin-right: 0.3rem;
+}
+
+/* Timer Animation */
+@keyframes flash {
+    0%, 50% { opacity: 1; }
+    25%, 75% { opacity: 0.3; }
+}
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* Timer Display Styles */
+#timer1-display, #timer2-display {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    transition: color 0.3s ease;
+}
+
+/* Responsive timer adjustments */
+@media (max-width: 768px) {
+    .timer-box {
+        min-height: 100px;
+        padding: 0.8rem;
+    }
+    
+    .timer-box button {
+        font-size: 0.7em;
+        padding: 0.3rem 0.6rem;
+    }
+    
+    #timer1-display, #timer2-display {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .timer-box {
+        min-height: 80px;
+        padding: 0.5rem;
+    }
+    
+    .timer-box button {
+        font-size: 0.6em;
+        padding: 0.2rem 0.4rem;
+        margin: 0.1rem;
+    }
+    
+    #timer1-display, #timer2-display {
+        font-size: 1.2em;
+    }
+    
+    .timer-box div[style*="gap: 0.5rem"] {
+        gap: 0.2rem !important;
+        flex-wrap: wrap;
+    }
+}
+
+/* Notification styles */
+.timer-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #dc3545;
+    color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    z-index: 10000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    animation: pulse 0.5s ease-in-out;
+}
+
+/* Enhanced button styles for better UX */
+.timer-box button.start-btn {
+    background: #28a745;
+    color: white;
+}
+
+.timer-box button.start-btn:hover {
+    background: #218838;
+}
+
+.timer-box button.pause-btn {
+    background: #ffc107;
+    color: black;
+}
+
+.timer-box button.pause-btn:hover {
+    background: #e0a800;
+}
+
+.timer-box button.reset-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.timer-box button.reset-btn:hover {
+    background: #c82333;
+}
+
+/* Simple dice styling without animations */
+.fa-dice, .fa-dice-six {
+    display: inline-block;
+}
+
+/* Simple dice styling for specific elements */
+.animated-dice-header {
+    color: #E9AB21;
+}
+
+.animated-dice-agenda {
+    color: inherit;
+}
+
+.monte-carlo-dice {
+    color: inherit;
+}
+
+/* Simple inline dice text styling */
+.dice-text {
+    display: inline-block;
+    padding: 0.2em 0.5em;
+    background: rgba(233, 171, 33, 0.1);
+    border-radius: 4px;
+}
+
+.dice-inline {
+    margin-left: 0.3em;
+    color: #E9AB21;
+}
+
+/* Clean table styling without icons */
+table td {
+    transition: background-color 0.3s ease;
+}
+
+table tr:hover {
+    background-color: rgba(233, 171, 33, 0.1) !important;
+}
+
+/* Floating help icon */
+.floating-help-emoji {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: var(--uide-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    animation: floatPulse 3s ease-in-out infinite;
+}
+
+.floating-help-emoji i {
+    font-size: 24px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.floating-help-emoji:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.floating-help-emoji:hover i {
+    transform: rotate(15deg);
+    transition: transform 0.3s ease;
+}
+
+@keyframes floatPulse {
+    0%, 100% { 
+        transform: translateY(0px) scale(1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    50% { 
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    table tr:hover {
+        background-color: transparent !important;
+    }
+    
+    .floating-help-emoji {
+        animation: none;
+    }
+    
+    .floating-help-emoji:hover,
+    .floating-help-emoji:hover i {
+        transform: none;
+    }
+}
+/* ====
+= ANIMACIONES AGENTE ASPIRADORA ===== */
+
+/* Rotación continua del ícono de la aspiradora */
+@keyframes vacuum-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Animación de limpieza (aspirar) */
+@keyframes vacuum-clean {
+    0% { 
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    50% { 
+        transform: scale(1.2);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.6);
+    }
+    100% { 
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+}
+
+/* Animación de celda siendo limpiada */
+@keyframes cell-cleaning {
+    0% { 
+        background: #fff3cd;
+        border-color: #dc3545;
+    }
+    50% { 
+        background: #d4edda;
+        border-color: #28a745;
+        transform: scale(1.05);
+    }
+    100% { 
+        background: #d4edda;
+        border-color: #28a745;
+        transform: scale(1);
+    }
+}
+
+/* Animación de celda sucia */
+@keyframes dirt-appear {
+    0% { 
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% { 
+        opacity: 1;
+        transform: scale(1.2);
+    }
+    100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Animación de celda limpia */
+@keyframes cell-clean {
+    0% { 
+        background: #fff3cd;
+    }
+    100% { 
+        background: #d4edda;
+    }
+}
+
+/* Hover effects para las celdas */
+.vacuum-cell:hover {
+    transform: scale(1.05);
+    border-color: var(--uide-primary) !important;
+    box-shadow: 0 4px 12px rgba(35, 53, 110, 0.3);
+}
+
+/* Estados de las celdas */
+.vacuum-cell.dirty {
+    background: #fff3cd !important;
+    border-color: #dc3545 !important;
+}
+
+.vacuum-cell.clean {
+    background: #d4edda !important;
+    border-color: #28a745 !important;
+}
+
+.vacuum-cell.current {
+    border-color: var(--uide-primary) !important;
+    border-width: 4px !important;
+    box-shadow: 0 0 15px rgba(35, 53, 110, 0.5);
+}
+
+/* Animación de botones */
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3) !important;
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Animación de estado del agente */
+@keyframes status-update {
+    0% { 
+        opacity: 0.7;
+        transform: translateX(-10px);
+    }
+    100% { 
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.status-updating {
+    animation: status-update 0.3s ease-out;
+}
+
+/* Animación de progreso */
+@keyframes progress-fill {
+    0% { width: 0%; }
+    100% { width: var(--progress-width); }
+}
+
+/* Responsive para dispositivos móviles */
+@media (max-width: 768px) {
+    .vacuum-cell {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+    #vacuum-agent {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    
+    #vacuum-agent i {
+        font-size: 1em !important;
+    }
+    
+    /* Ajustar grid en móviles */
+    #vacuum-simulation > div:first-of-type {
+        max-width: 260px !important;
+        gap: 4px !important;
+    }
+}/* =====
+ ANIMACIONES MODAL RESULTADOS ===== */
+
+/* Animación de entrada del overlay */
+@keyframes fadeIn {
+    0% { 
+        opacity: 0;
+    }
+    100% { 
+        opacity: 1;
+    }
+}
+
+/* Animación de salida del overlay */
+@keyframes fadeOut {
+    0% { 
+        opacity: 1;
+    }
+    100% { 
+        opacity: 0;
+    }
+}
+
+/* Animación de entrada del modal */
+@keyframes slideIn {
+    0% { 
+        opacity: 0;
+        transform: scale(0.8) translateY(-20px);
+    }
+    100% { 
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Estilo para el kbd (tecla) */
+kbd {
+    background: #f0f0f0 !important;
+    padding: 2px 6px !important;
+    border-radius: 3px !important;
+    font-family: monospace !important;
+    font-size: 0.9em !important;
+    border: 1px solid #ccc !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
+}
+
+/* Mejoras para el overlay */
+#results-overlay {
+    backdrop-filter: blur(2px);
+}
+
+/* Prevenir scroll del body cuando el modal está abierto */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Responsive para el modal */
+@media (max-width: 480px) {
+    #results-overlay > div {
+        width: 95% !important;
+        padding: 1.5rem !important;
+        margin: 1rem !important;
+    }
+    
+    #results-overlay button {
+        padding: 0.6rem 1rem !important;
+        font-size: 0.9em !important;
+        margin: 0.2rem !important;
+        display: block !important;
+        width: 100% !important;
+    }
+}
+
+/* ===== IMÁGENES CON ALTO FIJO ===== */
+
+/* Imágenes en grids de ejemplos - alto fijo, ancho flexible */
+.concept-box img {
+    width: 100% !important;
+    height: 120px !important;
+    object-fit: cover !important;
+    border-radius: 8px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect para las imágenes */
+.concept-box img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* Responsive para imágenes en móviles */
+@media (max-width: 768px) {
+    .concept-box img {
+        width: 100% !important;
+        height: 100px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .concept-box img {
+        width: 100% !important;
+        height: 80px !important;
+    }
+}/* 
+===== VIDEOS CON ALTURA OPTIMIZADA ===== */
+
+/* Videos en grids de ejemplos - altura fija, ancho flexible */
+.concept-box video {
+    width: 100% !important;
+    height: 140px !important;
+    object-fit: cover !important;
+    border-radius: 8px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect para los videos */
+.concept-box video:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* Responsive para videos en móviles */
+@media (max-width: 768px) {
+    .concept-box video {
+        width: 100% !important;
+        height: 120px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .concept-box video {
+        width: 100% !important;
+        height: 100px !important;
+    }
+}/* ===
+== MATRIZ DE CLASIFICACIÓN INTERACTIVA ===== */
+
+/* Animaciones para las tarjetas de la matriz */
+.matrix-card {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.matrix-card:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+/* Animaciones de los íconos */
+@keyframes matrix-icon-bounce {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.2) rotate(-5deg); }
+    50% { transform: scale(1.3) rotate(5deg); }
+    75% { transform: scale(1.1) rotate(-2deg); }
+}
+
+@keyframes matrix-icon-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+/* Animación de aparición secuencial */
+@keyframes matrix-card-appear {
+    0% { 
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    100% { 
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Aplicar animación secuencial a las tarjetas */
+.matrix-card:nth-child(1) {
+    animation: matrix-card-appear 0.6s ease-out 0.1s both;
+}
+
+.matrix-card:nth-child(2) {
+    animation: matrix-card-appear 0.6s ease-out 0.2s both;
+}
+
+.matrix-card:nth-child(3) {
+    animation: matrix-card-appear 0.6s ease-out 0.3s both;
+}
+
+.matrix-card:nth-child(4) {
+    animation: matrix-card-appear 0.6s ease-out 0.4s both;
+}
+
+/* Efectos de brillo en hover */
+.matrix-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.matrix-card:hover::before {
+    left: 100%;
+}
+
+/* Animación de los ejemplos */
+.matrix-example {
+    transition: all 0.3s ease;
+}
+
+.matrix-card:hover .matrix-example {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Responsive para la matriz */
+@media (max-width: 768px) {
+    .classification-matrix {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+    
+    .matrix-card {
+        padding: 1rem !important;
+    }
+    
+    .matrix-icons {
+        font-size: 1.5em !important;
+    }
+}
+
+/* Animación de pulsación para elementos activos */
+@keyframes matrix-pulse {
+    0%, 100% { 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    50% { 
+        box-shadow: 0 8px 25px rgba(35, 53, 110, 0.3);
+    }
+}/*
+ ===== TABLA DE DECISIONES INTERACTIVA ===== */
+
+/* Animación para nuevas filas */
+@keyframes slideInRow {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Animación para filas que salen */
+@keyframes slideOutRow {
+    0% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(20px) scale(0.95);
+    }
+}
+
+/* Animación para tooltip de aprendizaje */
+@keyframes tooltipFade {
+    0% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.8);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.8);
+    }
+}
+
+/* Estilos para la tabla de decisiones */
+#decision-table {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+#decision-table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.65em;
+}
+
+#decision-table td {
+    transition: background-color 0.3s ease;
+}
+
+#decision-table tr:hover td {
+    background-color: rgba(35, 53, 110, 0.05) !important;
+}
+
+/* Botón de simular */
+#decision-table-container button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* Responsive para la tabla */
+@media (max-width: 768px) {
+    #decision-table {
+        font-size: 0.6em !important;
+    }
+    
+    #decision-table th,
+    #decision-table td {
+        padding: 0.3rem !important;
+    }
+    
+    #decision-table-container button {
+        font-size: 0.65em !important;
+        padding: 0.25rem 0.5rem !important;
+    }
+}/* 
+===== BOTONES DE LA TABLA DE DECISIONES ===== */
+
+/* Contenedor de botones */
+#decision-table-container .button-group {
+    display: flex;
+    gap: 0.4rem;
+}
+
+/* Estilos para botones de la tabla */
+#decision-table-container button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-weight: 500;
+}
+
+#decision-table-container button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+#decision-table-container button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Botón simular (primario) */
+#decision-table-container button[onclick*="addDecisionEntry"]:hover {
+    background: #1e7e34 !important;
+}
+
+/* Botón reiniciar (secundario) */
+#decision-table-container button[onclick*="resetDecisionTable"]:hover {
+    background: #7a0039 !important;
+}
+
+/* Responsive para botones */
+@media (max-width: 768px) {
+    #decision-table-container .button-group {
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+    
+    #decision-table-container button {
+        font-size: 0.65em !important;
+        padding: 0.25rem 0.5rem !important;
+        width: 100%;
+    }
+}
+
+/* Animación especial para el botón de reiniciar */
+@keyframes resetPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+#decision-table-container button[onclick*="resetDecisionTable"]:active {
+    animation: resetPulse 0.3s ease-out;
+}

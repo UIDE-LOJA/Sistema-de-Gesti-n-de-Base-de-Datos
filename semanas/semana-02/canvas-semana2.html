@@ -1,0 +1,101 @@
+<p data-start="0" data-end="349">Esta semana exploramos las <strong>estructuras de datos fundamentales</strong>, analizando las diferencias entre arrays y listas enlazadas, patrones de acceso a datos y los contratos que definen el comportamiento de los Tipos de Dato Abstracto (TDA). Compararemos <strong>costos operacionales</strong> y aprenderemos <strong>criterios de selección</strong> para diferentes contextos.</p>
+<p data-start="351" data-end="368"><strong>¿Qué veremos?</strong></p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse;" border="1"
+            data-start="370" data-end="1868">
+            <thead data-start="370" data-end="407">
+                <tr data-start="370" data-end="407">
+                    <th data-start="370" data-end="377" data-col-size="sm">Tema</th>
+                    <th data-start="377" data-end="395" data-col-size="xl">Contenido clave</th>
+                    <th data-start="395" data-end="407" data-col-size="md">Ejemplos</th>
+                </tr>
+            </thead>
+            <tbody data-start="422" data-end="1868">
+                <tr data-start="422" data-end="654">
+                    <td data-start="422" data-end="449" data-col-size="sm">Arrays vs. Listas Enlazadas</td>
+                    <td data-col-size="xl" data-start="449" data-end="574">Estructuras contiguas vs. distribuidas en memoria; comparación de costos operacionales (acceso O(1) vs O(n), inserción/eliminación O(n) vs O(1)); criterios de selección según patrones de uso.</td>
+                    <td data-col-size="md" data-start="574" data-end="654">Arrays para bases de datos con acceso por ID, listas enlazadas para colas dinámicas de eventos.</td>
+                </tr>
+                <tr data-start="655" data-end="870">
+                    <td data-start="655" data-end="682" data-col-size="sm">Acceso Secuencial vs. Aleatorio</td>
+                    <td data-col-size="xl" data-start="682" data-end="812">Patrones de acceso a datos: directo por índice (random access O(1)) vs. recorrido ordenado (sequential access O(n)); impacto en rendimiento y localización de memoria.</td>
+                    <td data-col-size="md" data-start="812" data-end="870">Acceso aleatorio en matrices para cálculos, acceso secuencial en procesamiento de streams.</td>
+                </tr>
+                <tr data-start="871" data-end="1046">
+                    <td data-start="871" data-end="911" data-col-size="sm">Tipos de Dato Abstracto (TDA)</td>
+                    <td data-col-size="xl" data-start="911" data-end="972">Abstracción de datos: separación entre interfaz (qué) e implementación (cómo); contratos de operaciones con precondiciones, poscondiciones e invariantes.</td>
+                    <td data-col-size="md" data-start="972" data-end="1046">TDA Cola con invariante FIFO, TDA Pila con invariante LIFO, TDA Lista Ordenada.</td>
+                </tr>
+                <tr data-start="1047" data-end="1222">
+                    <td data-start="1047" data-end="1072" data-col-size="sm">Invariantes y Contratos</td>
+                    <td data-col-size="xl" data-start="1072" data-end="1136">Propiedades inmutables de TDAs que garantizan robustez; especificación de contratos mediante precondiciones y poscondiciones; encapsulación para mantener consistencia.</td>
+                    <td data-col-size="md" data-start="1136" data-end="1222">Invariante FIFO en colas, mantenimiento de orden en listas ordenadas, unicidad en conjuntos.</td>
+                </tr>
+                <tr data-start="1223" data-end="1400">
+                    <td data-start="1223" data-end="1238" data-col-size="sm">Implementaciones Prácticas</td>
+                    <td data-col-size="xl" data-start="1238" data-end="1324">Análisis de implementaciones reales: Cola con arrays vs. listas enlazadas; transparencia de implementación manteniendo invariantes; código Java ejemplificando contratos.</td>
+                    <td data-col-size="md" data-start="1324" data-end="1400">Implementación de Cola con LinkedList manteniendo invariante FIFO, interface vs. clase concreta.</td>
+                </tr>
+                <tr data-start="1401" data-end="1576">
+                    <td data-start="1401" data-end="1438" data-col-size="sm">Criterios de Selección</td>
+                    <td data-col-size="xl" data-start="1438" data-end="1518">Factores de decisión: patrón de acceso dominante, frecuencia de inserción/eliminación, restricciones de memoria, predictibilidad de tamaño; análisis costo-beneficio.</td>
+                    <td data-col-size="md" data-start="1518" data-end="1576">Arrays para sistemas con memoria limitada y acceso frecuente; listas para sistemas dinámicos con modificaciones constantes.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<p data-start="1870" data-end="1898"><strong>Objetivos de aprendizaje</strong></p>
+<p data-start="1900" data-end="1930">Al finalizar la semana podrás:</p>
+<ul data-start="1932" data-end="2426">
+    <li data-start="1932" data-end="2044">
+        <p data-start="1934" data-end="2044">Comprender las diferencias fundamentales entre arrays y listas enlazadas, analizando costos operacionales y criterios de selección.</p>
+    </li>
+    <li data-start="2045" data-end="2133">
+        <p data-start="2047" data-end="2133">Distinguir entre patrones de acceso secuencial y aleatorio, evaluando su impacto en el rendimiento de aplicaciones.</p>
+    </li>
+    <li data-start="2134" data-end="2249">Explicar los conceptos de Tipos de Dato Abstracto (TDA), invariantes y contratos de operaciones en el diseño de software robusto.</li>
+    <li data-start="2250" data-end="2300">Aplicar criterios técnicos para seleccionar estructuras de datos apropiadas según los requerimientos específicos del sistema.</li>
+</ul>
+<p data-start="2428" data-end="2442"><strong>Materiales</strong></p>
+<ul data-start="2444" data-end="2647">
+    <li data-start="2444" data-end="2515">
+        <p data-start="2446" data-end="2515"><strong data-start="2446" data-end="2463">Compendio:</strong> <a
+                title="Compendio - Semana 2" href="https://uide.instructure.com/courses/30176/pages/compendio-semana-2"
+                data-course-type="wikiPages" data-published="true"
+                data-api-endpoint="https://uide.instructure.com/api/v1/courses/30176/pages/compendio-semana-2"
+                data-api-returntype="Page">Semana 2 — Arrays vs. Listas, Acceso a Datos e Invariantes de TDAs</a>.</p>
+    </li>
+    <li data-start="2444" data-end="2515"><strong>Podcast: </strong><a
+            href="https://open.spotify.com/show/estructuras-datos-podcast" target="_blank"
+            rel="noopener">Big-O, TDAs y Memoria: Los 3 Pilares que Deciden la Eficiencia</a><strong>&nbsp;</strong></li>
+    <li><strong>Video complementario: </strong>Rendimiento del Código - Análisis de Estructuras de Datos<br>
+        <strong>URL:</strong> https://www.youtube.com/watch?v=estructuras-datos-rendimiento
+    </li>
+    <li data-start="2516" data-end="2647">
+        <p data-start="2518" data-end="2647"><strong data-start="2518" data-end="2546">Bibliografía base:</strong> Cormen et al. (2009); Sedgewick (2011); Weiss (2013); Campos Laclaustra (2018); Señas & Martig (2005).</p>
+    </li>
+</ul>
+<p data-start="2649" data-end="2664"><strong>Actividades</strong></p>
+<ul data-start="2666" data-end="3004">
+    <li data-start="2666" data-end="2723">
+        <p data-start="2668" data-end="2723"><strong data-start="2668" data-end="2686">Lectura guiada</strong> del compendio y material complementario sobre estructuras de datos fundamentales.</p>
+    </li>
+    <li data-start="2724" data-end="2841">
+        <p data-start="2726" data-end="2841"><strong data-start="2726" data-end="2761">PE-1.2: Diagrama Memoria Arreglo vs Nodos</strong> analizando representación en memoria y costos operacionales de arrays y listas enlazadas — <strong data-start="2826"
+                data-end="2838">2.25 pts</strong>.</p>
+    </li>
+    <li data-start="2842" data-end="2941">
+        <p data-start="2844" data-end="2941"><strong data-start="2844" data-end="2890">TA-1.2: Ficha TDA Operaciones-Costes</strong> especificando contratos, invariantes y análisis de complejidad para TDAs comunes — <strong data-start="2926"
+                data-end="2938">2.25 pts</strong>.</p>
+    </li>
+    <li data-start="2942" data-end="3004">
+        <p data-start="2944" data-end="3004"><strong data-start="2944" data-end="2967">Total de la semana:</strong>
+            <strong data-start="2968" data-end="2978">4.5/30</strong> (Evaluación diagnóstica).
+        </p>
+    </li>
+</ul>
+<p data-start="3261" data-end="3358" data-is-last-node="" data-is-only-node="">Si tienes dudas, deja tu pregunta en el
+    canal de <strong data-start="3310" data-end="3321">DISCORD</strong> o envíame un mensaje por <strong
+        data-start="3347" data-end="3357">Canvas</strong>.</p>
