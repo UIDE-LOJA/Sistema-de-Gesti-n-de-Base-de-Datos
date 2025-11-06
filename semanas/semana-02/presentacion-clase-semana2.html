@@ -101,6 +101,9 @@ CREATE TABLE Comercios (
   cuenta_bancoloja INT NOT NULL,
   qr_code VARCHAR(255) UNIQUE NOT NULL,
   ciudad VARCHAR(50) NOT NULL,
+  categoria ENUM('RESTAURANTE', 'TRANSPORTE', 'FARMACIA', 
+                 'GASOLINERA', 'CAFETERIA', 'MINIMARKET', 
+                 'PANADERIA', 'OTROS') DEFAULT 'OTROS',
   estado ENUM('ACTIVO', 'INACTIVO') DEFAULT 'ACTIVO',
   fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (cuenta_bancoloja) REFERENCES Cuentas(id)

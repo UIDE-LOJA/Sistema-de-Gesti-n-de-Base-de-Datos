@@ -1,0 +1,133 @@
+<p><strong>Práctica Sencilla: Transacciones ACID</strong></p>
+
+<p>Aprenderás las propiedades ACID probando 4 casos simples con el sistema de pagos QR "¡ahorita!".</p>
+
+<p><strong>Preparación</strong>: Ejecuta los scripts <a href="01_crear_base_datos.sql" style="color: #666; text-decoration: none;">📄 01_crear_base_datos.sql</a> y <a href="02_insertar_datos_practica.sql" style="color: #666; text-decoration: none;">📄 02_insertar_datos_practica.sql</a></p>
+
+<p><strong>IMPORTANTE</strong>: Primero identifica el ID de tu cuenta personal ejecutando:</p>
+<div style="background: #f5f5f5; padding: 10px; border-radius: 8px; border-left: 4px solid #999; margin: 10px 0;">
+<pre style="margin: 0; font-family: monospace; font-size: 14px;">
+-- Busca tu cuenta por tu nombre
+SELECT id, titular, saldo FROM Cuentas WHERE titular LIKE '%TU_NOMBRE%';
+
+-- O ve todas las cuentas disponibles
+SELECT id, titular, saldo FROM Cuentas;
+</pre>
+</div>
+<p><strong>Anota tu ID de cuenta</strong> y úsalo en lugar de "MI_ID" en los comandos siguientes.</p>
+
+<p><strong>¿Qué realizarás?</strong></p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Paso</th>
+                    <th style="width: 50%;">Instrucciones</th>
+                    <th style="width: 30%;">Qué observar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1) Atomicidad</td>
+                    <td>Haz un pago y cancélalo con ROLLBACK antes del COMMIT</td>
+                    <td>El saldo vuelve al valor original</td>
+                </tr>
+                <tr>
+                    <td>2) Consistencia</td>
+                    <td>Intenta pagar más dinero del que tienes en la cuenta</td>
+                    <td>El SGBD rechaza la operación</td>
+                </tr>
+                <tr>
+                    <td>3) Aislamiento</td>
+                    <td>Haz dos pagos simultáneos desde diferentes sesiones SQL</td>
+                    <td>Los pagos no se interfieren entre sí</td>
+                </tr>
+                <tr>
+                    <td>4) Durabilidad</td>
+                    <td>Completa un pago con COMMIT y verifica el resultado</td>
+                    <td>El cambio se guarda permanentemente</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<p><strong>Comandos SQL (reemplaza MI_ID con tu ID de cuenta):</strong></p>
+<div style="background: #f8f8f8; padding: 15px; border-radius: 8px; border-left: 4px solid #666; margin: 15px 0;">
+<pre style="margin: 0; font-family: monospace; font-size: 14px;">
+-- 1. ATOMICIDAD: Inicia transacción y NO hagas COMMIT
+START TRANSACTION;
+UPDATE Cuentas SET saldo = saldo - 5.00 WHERE id = MI_ID;
+SELECT saldo FROM Cuentas WHERE id = MI_ID; -- Ver saldo temporal
+ROLLBACK; -- Cancelar todo
+SELECT saldo FROM Cuentas WHERE id = MI_ID; -- Ver que volvió al original
+
+-- 2. CONSISTENCIA: Intenta pagar más de lo que tienes
+UPDATE Cuentas SET saldo = saldo - 100.00 WHERE id = MI_ID AND saldo >= 100.00;
+-- Debe dar 0 filas afectadas
+
+-- 3. AISLAMIENTO: Abre dos ventanas SQL y ejecuta al mismo tiempo
+-- Ventana 1:
+START TRANSACTION;
+UPDATE Cuentas SET saldo = saldo + 10.00 WHERE id = 201; -- Comercio
+COMMIT;
+
+-- Ventana 2 (al mismo tiempo):
+START TRANSACTION;
+UPDATE Cuentas SET saldo = saldo + 5.00 WHERE id = 201; -- Mismo comercio
+COMMIT;
+
+-- 4. DURABILIDAD: Pago completo (tu cuenta → comercio)
+START TRANSACTION;
+UPDATE Cuentas SET saldo = saldo - 3.00 WHERE id = MI_ID;
+UPDATE Cuentas SET saldo = saldo + 3.00 WHERE id = 201;
+COMMIT;
+SELECT saldo FROM Cuentas WHERE id IN (MI_ID, 201); -- Verificar cambios
+</pre>
+</div>
+
+<p><strong>Ejemplo</strong>: Si tu ID es 105, reemplaza MI_ID por 105 en todos los comandos.</p>
+
+<p><strong>Tabla de resultados</strong> (completa con tus observaciones):</p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Propiedad ACID</th>
+                    <th style="width: 45%;">¿Qué observaste?</th>
+                    <th style="width: 30%;">Conclusión</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Atomicidad</td>
+                    <td>¿Qué pasó cuando hiciste ROLLBACK?</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Consistencia</td>
+                    <td>¿Por qué falló el pago excesivo?</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Aislamiento</td>
+                    <td>¿Los pagos se ejecutaron simultáneamente?</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Durabilidad</td>
+                    <td>¿El pago se guardó permanentemente?</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Entrega</strong>: Un documento con capturas de pantalla de los 4 comandos SQL ejecutados y las respuestas a las 4 preguntas.</p>
+
+<p>Basado en la <strong>Presentación Semana 2</strong>: Transacciones y Control de Concurrencia aplicado al Sistema de Pagos QR "¡ahorita!". Usa los conceptos de ACID, niveles de aislamiento y técnicas de bloqueo vistos en clase.</p>
