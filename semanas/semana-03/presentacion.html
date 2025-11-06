@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mecanismos de Persistencia y Recuperación - SGBD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Inter:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+        }
+
+        :root {
+            --uide-primary: #910048;      /* UIDE Burgundy */
+            --uide-secondary: #23356E;    /* UIDE Navy */
+            --uide-accent: #E9AB21;       /* UIDE Gold */
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a1f2e;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+        }
+
+        /* Background Animation */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: var(--uide-primary);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(-10px) rotate(0deg); }
+            100% { transform: translateY(-100px) translateX(10px) rotate(360deg); }
+        }
+
+        /* Main Container */
+        .presentation-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            perspective: 1200px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(50px) scale(0.98);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background: linear-gradient(135deg, rgba(15, 20, 25, 0.85) 0%, rgba(26, 31, 58, 0.9) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+
+        .slide.prev {
+            transform: translateX(-50px) scale(0.98);
+        }
+
+        /* Typography */
+        .slide h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--uide-accent);
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: slideInFromTop 1s ease-out;
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            animation: slideInFromLeft 1s ease-out 0.2s both;
+        }
+
+        .slide h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            margin-bottom: 1rem;
+            animation: slideInFromRight 1s ease-out 0.4s both;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #e2e8f0;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .slide ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .slide li {
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .slide li::before {
+            content: "\f054";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--uide-primary);
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            animation: scaleIn 1s ease-out 0.8s both;
+            white-space: pre-wrap;
+        }
+
+        /* Blockquotes */
+        .quote {
+            border-left: 4px solid var(--uide-accent);
+            padding: 20px;
+            margin: 20px 0;
+            background: rgba(233, 171, 33, 0.1);
+            border-radius: 0 10px 10px 0;
+            font-style: italic;
+            animation: slideInFromLeft 1s ease-out 1s both;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--uide-primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.9);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Slide Counter */
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(26, 31, 58, 0.8);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        /* Logo UIDE */
+        .uide-logo {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .uide-logo img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: var(--uide-accent);
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Animations */
+        @keyframes slideInFromTop {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInFromLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInFromRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px;
+            }
+            
+            .slide h1 { font-size: 2.5rem; }
+            .slide h2 { font-size: 2rem; }
+            .slide h3 { font-size: 1.5rem; }
+            .slide p, .slide li { font-size: 1rem; }
+        }
+
+        /* Special Effects */
+        .highlight {
+            color: var(--uide-accent);
+            font-weight: 600;
+        }
+
+        .emphasis {
+            color: var(--uide-primary);
+            font-weight: 600;
+        }
+
+        /* Slide-specific styles */
+        .title-slide {
+            text-align: center;
+            background: rgba(145, 0, 72, 0.05);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .feature-card {
+            background: rgba(15, 20, 25, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--uide-accent);
+        }
+
+        .diagram {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid var(--uide-secondary);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            white-space: pre-line;
+        }
+        
+        .mermaid-container {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid var(--uide-secondary);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            max-width: 1000px;
+            min-height: 450px;
+            overflow: hidden;
+        }
+        
+        .mermaid {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .mermaid-container {
+                padding: 20px;
+                width: 95%;
+                min-height: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="floating-elements"></div>
+    </div>
+
+    <!-- Logo UIDE -->
+    <div class="uide-logo">
+        <img src="/05%20LTI_05A_300-SGBD-ASC/assets/Logo%20UIDE.png" alt="UIDE Logo">
+    </div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h3 style="color: #e2e8f0; font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);">
+                    Presentación Semana 3
+                </h3>
+                <h2 style="color: var(--uide-accent); font-size: 2.2rem; font-weight: 600; margin-bottom: 0.5rem;">
+                    Mecanismos de Persistencia y Recuperación
+                </h2>
+                <p style="color: #ffffff; font-size: 1.4rem; font-weight: 500; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);">
+                    LTI_05A_300-SGBD-ASC • Quinto Nivel
+                </p>
+                <p style="color: #e2e8f0; font-size: 1.2rem; margin-top: 0.5rem;">
+                    Sistemas de Gestión de Base de Datos
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin: 2rem 0;">
+                <p style="color: #ffffff; font-size: 1.3rem; font-weight: 600; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);">
+                    Prof. Charlie Cárdenas Toledo, M.Sc.
+                </p>
+                <p style="color: var(--uide-primary); font-size: 1.2rem; font-weight: 500; margin-top: 0.5rem;">
+                    Universidad Internacional del Ecuador • Octubre 2025 – Febrero 2026
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2.5rem; padding: 25px; background: rgba(15, 20, 25, 0.6); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h3 style="color: var(--uide-accent); font-size: 1.4rem; margin-bottom: 1rem; text-shadow: none;">
+                    <i class="fas fa-database"></i> Logging, WAL, Checkpoints y Algoritmo ARIES
+                </h3>
+                <p style="color: #e2e8f0; font-size: 1.1rem; line-height: 1.4; margin: 0.5rem 0;">
+                    <strong>Semana 3</strong> • Recuperación y Optimización • Unidad 2 • Persistencia de Datos
+                </p>
+                <p style="color: #cbd5e1; font-size: 1rem; margin-top: 1rem; font-style: italic;">
+                    Fundamentos de logging, recuperación ante fallos y algoritmos de persistencia en SGBD
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Objetivos -->
+        <div class="slide">
+            <h2><i class="fas fa-bullseye"></i> Objetivos de la Presentación</h2>
+            <ul>
+                <li>Comprender los <span class="highlight">mecanismos de logging</span> y Write-Ahead Log (WAL)</li>
+                <li>Dominar el <span class="highlight">algoritmo ARIES</span> de recuperación de última generación</li>
+                <li>Analizar el <span class="highlight">rol de los checkpoints</span> en la sincronización</li>
+                <li>Implementar <span class="highlight">estrategias de recuperación</span> ante fallos del sistema</li>
+                <li>Aplicar <span class="highlight">principios ACID</span> en persistencia y durabilidad</li>
+            </ul>
+        </div>
+
+        <!-- Slide 3: Agenda -->
+        <div class="slide">
+            <h2><i class="fas fa-chart-line"></i> Agenda</h2>
+            <div class="content-grid">
+                <div class="feature-card">
+                    <h3>1. Fundamentos</h3>
+                    <p>Logging y Write-Ahead Log (WAL)</p>
+                </div>
+                <div class="feature-card">
+                    <h3>2. ARIES</h3>
+                    <p>Recuperación de Última Generación</p>
+                </div>
+                <div class="feature-card">
+                    <h3>3. Checkpoints</h3>
+                    <p>Puntos de Sincronización</p>
+                </div>
+                <div class="feature-card">
+                    <h3>4. Recuperación</h3>
+                    <p>Ante Fallos del Sistema</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Importancia -->
+        <div class="slide">
+            <h2><i class="fas fa-shield-alt"></i> Importancia de la Persistencia y Recuperación</h2>
+            <div class="quote">
+                "La administración de bases de datos requiere un conocimiento profundo de los mecanismos de respaldo y recuperación para asegurar la continuidad del negocio"
+            </div>
+            <div class="content-grid">
+                <div>
+                    <h3>Propiedades ACID Afectadas</h3>
+                    <ul>
+                        <li><span class="emphasis">Atomicidad</span>: Transacciones completas o nada</li>
+                        <li><span class="emphasis">Durabilidad</span>: Persistencia de cambios confirmados</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Relación con Seguridad</h3>
+                    <p>La seguridad de la información está estrechamente ligada a los procesos de respaldo y recuperación</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Logging -->
+        <div class="slide">
+            <h2><i class="fas fa-file-alt"></i> Registro de Operaciones (Logging)</h2>
+            <div class="quote">
+                "El registro de operaciones, o log, es la técnica más habitual para la recuperación ante caídas del sistema"
+            </div>
+            <div class="content-grid">
+                <div>
+                    <h3>Características del Log</h3>
+                    <ul>
+                        <li><span class="emphasis">Almacenamiento consecutivo</span></li>
+                        <li><span class="emphasis">Estado de transacciones</span></li>
+                        <li><span class="emphasis">Almacenamiento estable</span></li>
+                        <li><span class="emphasis">Recuperación confiable</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Función Principal</h3>
+                    <p>Mantener un histórico completo de todas las modificaciones para poder reconstruir el estado de la base de datos tras un fallo.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Estructura de Registros -->
+        <div class="slide">
+            <h2><i class="fas fa-list"></i> Estructura de Registros de Log</h2>
+            <div class="content-grid">
+                <div>
+                    <h3>Registros de Actualización</h3>
+                    <ul>
+                        <li><span class="emphasis">Identificador de Transacción</span></li>
+                        <li><span class="emphasis">Identificador del Elemento</span></li>
+                        <li><span class="emphasis">Valor Anterior (V₁)</span></li>
+                        <li><span class="emphasis">Valor Nuevo (V₂)</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Ejemplo de Secuencia</h3>
+                    <div class="code-block">
+&lt;T1 start&gt;
+&lt;T1, X, 100, 150&gt;
+&lt;T1, Y, 200, 250&gt;
+&lt;T1 commit&gt;
+&lt;T2 start&gt;
+&lt;T2, Z, 300, 350&gt;
+&lt;T2 abort&gt;
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: WAL Concept -->
+        <div class="slide">
+            <h2><i class="fas fa-rocket"></i> Write-Ahead Log (WAL): Concepto Central</h2>
+            <div class="quote">
+                "El Write-Ahead Log (WAL) es una estructura auxiliar de disco de solo anexión (append-only)"
+            </div>
+            <div class="mermaid-container">
+                <div class="mermaid">
+flowchart LR
+    A[📝 Modificación<br/>en Memoria] --> B[📋 Escritura al<br/>Log WAL]
+    B --> C[💾 Escritura a<br/>Disco]
+    
+    A -.->|Paso 1| B
+    B -.->|Paso 2<br/><b>OBLIGATORIO</b>| C
+    C -.->|Paso 3| D[✅ Datos<br/>Persistidos]
+    
+    style A fill:#910048,stroke:#23356E,color:#fff
+    style B fill:#E9AB21,stroke:#23356E,color:#000
+    style C fill:#23356E,stroke:#910048,color:#fff
+    style D fill:#10b981,stroke:#23356E,color:#fff
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 2rem; font-size: 1.3rem;">
+                <span class="highlight">Regla Fundamental:</span> ANTES de escribir al disco, PRIMERO escribir al log
+            </p>
+        </div>
+
+        <!-- Slide 8: WAL PostgreSQL -->
+        <div class="slide">
+            <h2><i class="fas fa-database"></i> WAL en PostgreSQL: Ejemplo Práctico</h2>
+            <div class="code-block">
+<span class="sql-keyword">EXPLAIN</span> (<span class="sql-keyword">ANALYZE</span>, <span class="sql-keyword">VERBOSE</span>, <span class="sql-keyword">BUFFERS</span>, <span class="sql-keyword">WAL</span>)
+<span class="sql-keyword">SELECT</span> *
+<span class="sql-keyword">FROM</span> public.effective_io_concurrency_test;
+
+<span class="sql-comment">-- Resultado:</span>
+<span class="sql-comment">-- WAL: records=18 bytes=5178</span>
+            </div>
+            <div class="content-grid">
+                <div>
+                    <h3>Información Proporcionada</h3>
+                    <ul>
+                        <li><span class="emphasis">Records</span>: Número de registros WAL</li>
+                        <li><span class="emphasis">Bytes</span>: Volumen de datos escritos</li>
+                        <li><span class="emphasis">Utilidad</span>: Analizar impacto de operaciones</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Configuración WAL</h3>
+                    <div class="code-block">
+<span class="sql-keyword">SHOW</span> wal_level;
+<span class="sql-keyword">SHOW</span> checkpoint_segments;
+<span class="sql-keyword">SHOW</span> wal_buffers;
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: ARIES -->
+        <div class="slide">
+            <h2><i class="fas fa-cogs"></i> Algoritmo ARIES: Estado del Arte</h2>
+            <div class="quote">
+                "ARIES (Algorithm for Recovery and Isolation Exploiting Semantics) es un state of the art recovery method"
+            </div>
+            <div class="content-grid">
+                <div>
+                    <h3>Innovaciones Clave</h3>
+                    <ul>
+                        <li><span class="emphasis">Log Sequence Numbers (LSN)</span></li>
+                        <li><span class="emphasis">Compensation Log Records (CLRs)</span></li>
+                        <li><span class="emphasis">DirtyPageTable</span></li>
+                        <li><span class="emphasis">Optimización máxima</span></li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Componentes Técnicos</h3>
+                    <p><strong>LSN:</strong> Identificador único para cada registro</p>
+                    <p><strong>CLRs:</strong> Registro de operaciones undo</p>
+                    <p><strong>DirtyPageTable:</strong> Páginas modificadas en memoria</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: ARIES Phases -->
+        <div class="slide">
+            <h2><i class="fas fa-sync-alt"></i> ARIES: Las Tres Fases de Recuperación</h2>
+            <div class="mermaid-container">
+                <div class="mermaid">
+timeline
+    title Fases de Recuperación ARIES
+    
+    section Línea de Tiempo
+        Inicio          : Último Checkpoint
+        Análisis        : Escanear desde checkpoint
+                        : Identificar transacciones incompletas
+                        : Determinar páginas sucias
+        Redo           : Repetir historia completa
+                       : Aplicar todas las acciones
+                       : Restaurar estado exacto
+        Undo           : Deshacer transacciones incompletas
+                       : Generar CLRs
+                       : Estado consistente final
+        Final          : Sistema recuperado
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Checkpoints -->
+        <div class="slide">
+            <h2><i class="fas fa-map-marker-alt"></i> Checkpoints: Puntos de Sincronización</h2>
+            <div class="quote">
+                "Un punto de control (checkpoint) es un evento que ayuda a sincronizar la caché de buffer de la base de datos con los archivos de datos en el disco"
+            </div>
+            <div class="content-grid">
+                <div>
+                    <h3>Beneficios</h3>
+                    <ul>
+                        <li><span class="emphasis">Marcador de sincronización</span></li>
+                        <li><span class="emphasis">Optimización de recuperación</span></li>
+                        <li><span class="emphasis">Mejora de rendimiento</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Función Principal</h3>
+                    <p><strong>Reducir trabajo de recuperación</strong> limitando la cantidad de registros del log que deben ser examinados tras un fallo.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Recovery Process -->
+        <div class="slide">
+            <h2><i class="fas fa-exclamation-triangle"></i> Recuperación Ante Fallos</h2>
+            <div class="content-grid">
+                <div>
+                    <h3>Rolling Forward (Redo)</h3>
+                    <div class="feature-card">
+                        <p>Volver a aplicar todas las modificaciones guardadas en el log</p>
+                        <ul>
+                            <li>SMON aplica redo logs</li>
+                            <li>Incluye cambios confirmados Y no confirmados</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <h3>Rolling Back (Undo)</h3>
+                    <div class="feature-card">
+                        <p>Deshacer transacciones no confirmadas</p>
+                        <ul>
+                            <li>PMON detecta errores de proceso</li>
+                            <li>Libera bloqueos y recursos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Performance Metrics -->
+        <div class="slide">
+            <h2><i class="fas fa-chart-bar"></i> Métricas de Rendimiento y Optimización</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Descripción</th>
+                        <th>Valor Objetivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>WAL Records/sec</strong></td>
+                        <td>Registros generados por segundo</td>
+                        <td>&lt; 10,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>WAL Bytes/sec</strong></td>
+                        <td>Bytes escritos al WAL</td>
+                        <td>&lt; 50MB/s</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Checkpoint frequency</strong></td>
+                        <td>Frecuencia de checkpoints</td>
+                        <td>5-15 min</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Recovery time</strong></td>
+                        <td>Tiempo de recuperación</td>
+                        <td>&lt; 5 min</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Slide 14: Use Cases -->
+        <div class="slide">
+            <h2><i class="fas fa-search"></i> Casos de Uso y Aplicaciones</h2>
+            <div class="content-grid">
+                <div>
+                    <h3>Casos Críticos para WAL/ARIES</h3>
+                    <ul>
+                        <li><span class="emphasis">Sistemas financieros</span></li>
+                        <li><span class="emphasis">E-commerce</span></li>
+                        <li><span class="emphasis">Sistemas médicos</span></li>
+                        <li><span class="emphasis">ERP empresarial</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Sectores de Aplicación</h3>
+                    <ul>
+                        <li><span class="emphasis">Banca y finanzas</span></li>
+                        <li><span class="emphasis">Telecomunicaciones</span></li>
+                        <li><span class="emphasis">Manufactura</span></li>
+                        <li><span class="emphasis">Gobierno</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Comparison -->
+        <div class="slide">
+            <h2><i class="fas fa-balance-scale"></i> Comparación de Estrategias</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Métodos Tradicionales</th>
+                        <th>ARIES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Identificación</strong></td>
+                        <td>Números secuenciales simples</td>
+                        <td>LSN sofisticados</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Undo handling</strong></td>
+                        <td>Undo de undo posible</td>
+                        <td>CLRs previenen cascading</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Recuperación lenta</td>
+                        <td>Optimizado para velocidad</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Industry adoption</strong></td>
+                        <td>Legacy systems</td>
+                        <td>Estándar moderno</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Slide 16: Síntesis -->
+        <div class="slide">
+            <h2><i class="fas fa-bullseye"></i> Síntesis: Principios Fundamentales</h2>
+            <div class="content-grid">
+                <div>
+                    <h3>Garantías del Sistema</h3>
+                    <ul>
+                        <li><span class="emphasis">Durabilidad</span>: Cambios confirmados nunca se pierden</li>
+                        <li><span class="emphasis">Atomicidad</span>: Transacciones completas o totalmente revertidas</li>
+                        <li><span class="emphasis">Consistencia</span>: Estado válido en todo momento</li>
+                        <li><span class="emphasis">Eficiencia</span>: Recuperación rápida y optimizada</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Implementación Exitosa</h3>
+                    <ul>
+                        <li>WAL correctamente configurado</li>
+                        <li>Checkpoints optimizados</li>
+                        <li>ARIES cuando sea posible</li>
+                        <li>Monitoreo continuo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Final -->
+        <div class="slide title-slide">
+            <h1><i class="fas fa-lightbulb"></i> Reflexiones Finales</h1>
+            <div class="quote">
+                "La robustez de un sistema de base de datos se mide no por su rendimiento en condiciones normales, sino por su capacidad de recuperación ante fallos inesperados"
+            </div>
+            <h3 style="margin-top: 2rem;">Preguntas para Considerar</h3>
+            <ul>
+                <li>¿Cómo <span class="highlight">balancear</span> rendimiento vs tiempo de recuperación?</li>
+                <li>¿Qué <span class="highlight">estrategias</span> usar para sistemas distribuidos?</li>
+                <li>¿Cómo <span class="highlight">evolucionar</span> sistemas legacy hacia ARIES?</li>
+            </ul>
+        </div>
+
+        <!-- Slide 18: Actividades Calificadas -->
+        <div class="slide">
+            <h2><i class="fas fa-clipboard-check"></i> Actividades Calificadas - Semana 3</h2>
+            <div class="content-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-flask"></i> Gestión de Práctica</h3>
+                    <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">PE-1.3 (2.25 puntos)</p>
+                    <p><strong>Laboratorio:</strong> Activar WAL, forzar transacciones y observar registros/checkpoints</p>
+                    <ul style="margin-top: 1rem; font-size: 1rem;">
+                        <li>Configurar Write-Ahead Logging</li>
+                        <li>Ejecutar transacciones de prueba</li>
+                        <li>Monitorear checkpoints automáticos</li>
+                        <li>Analizar registros WAL generados</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-file-alt"></i> Trabajo Autónomo</h3>
+                    <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">TA-1.3 (2.25 puntos)</p>
+                    <p><strong>Resumen técnico:</strong> ARIES (analyze-redo-undo) con esquema (1 página)</p>
+                    <ul style="margin-top: 1rem; font-size: 1rem;">
+                        <li>Explicación de las 3 fases</li>
+                        <li>Diagrama de flujo del proceso</li>
+                        <li>Componentes técnicos (LSN, CLRs)</li>
+                        <li>Ventajas sobre métodos tradicionales</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem; padding: 20px; background: rgba(145, 0, 72, 0.1); border-radius: 10px; border: 1px solid var(--uide-primary);">
+                <p style="color: var(--uide-primary); font-weight: 600; font-size: 1.2rem;">
+                    <i class="fas fa-chart-pie"></i> <strong>Evaluación:</strong> Contribuye al 30% (Semanas 1-4)
+                </p>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+                    Total de puntos por actividad: <strong>4.5 puntos</strong> (PE-1.3 + TA-1.3)
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- Slide Counter -->
+    <div class="slide-counter">
+        <span id="currentSlide">1</span> / <span id="totalSlides">18</span>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <script>
+        class PresentationController {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.totalSlides = this.slides.length;
+                
+                this.initElements();
+                this.createFloatingElements();
+                this.bindEvents();
+                this.loadFromURL();
+                this.updateDisplay();
+            }
+
+            initElements() {
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.currentSlideEl = document.getElementById('currentSlide');
+                this.totalSlidesEl = document.getElementById('totalSlides');
+                this.progressBar = document.getElementById('progressBar');
+                
+                this.totalSlidesEl.textContent = this.totalSlides;
+            }
+
+            createFloatingElements() {
+                const container = document.querySelector('.floating-elements');
+                const numElements = 15;
+                
+                for (let i = 0; i < numElements; i++) {
+                    const element = document.createElement('div');
+                    element.className = 'floating-element';
+                    
+                    const size = Math.random() * 60 + 20;
+                    const left = Math.random() * 100;
+                    const delay = Math.random() * 20;
+                    
+                    element.style.width = `${size}px`;
+                    element.style.height = `${size}px`;
+                    element.style.left = `${left}%`;
+                    element.style.animationDelay = `${delay}s`;
+                    
+                    container.appendChild(element);
+                }
+            }
+
+            bindEvents() {
+                this.prevBtn.addEventListener('click', () => this.previousSlide());
+                this.nextBtn.addEventListener('click', () => this.nextSlide());
+                
+                document.addEventListener('keydown', (e) => {
+                    switch(e.key) {
+                        case 'ArrowLeft':
+                        case 'ArrowUp':
+                            this.previousSlide();
+                            break;
+                        case 'ArrowRight':
+                        case 'ArrowDown':
+                        case ' ':
+                            this.nextSlide();
+                            break;
+                        case 'Home':
+                            this.goToSlide(0);
+                            break;
+                        case 'End':
+                            this.goToSlide(this.totalSlides - 1);
+                            break;
+                    }
+                });
+
+                // Touch support for mobile
+                let startX = 0;
+                let isDragging = false;
+                
+                document.addEventListener('mousedown', () => {
+                    isDragging = false;
+                });
+                
+                document.addEventListener('mousemove', () => {
+                    isDragging = true;
+                });
+                
+                document.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    isDragging = false;
+                });
+                
+                document.addEventListener('touchmove', () => {
+                    isDragging = true;
+                });
+                
+                document.addEventListener('touchend', (e) => {
+                    if (isDragging) return; // No cambiar slide si estaba seleccionando texto
+                    
+                    const endX = e.changedTouches[0].clientX;
+                    const diff = startX - endX;
+                    
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.previousSlide();
+                        }
+                    }
+                });
+            }
+
+            goToSlide(index) {
+                if (index < 0 || index >= this.totalSlides) return;
+                
+                this.slides[this.currentSlide].classList.remove('active');
+                this.slides[this.currentSlide].classList.add('prev');
+                
+                this.currentSlide = index;
+                
+                this.slides[this.currentSlide].classList.remove('prev');
+                this.slides[this.currentSlide].classList.add('active');
+                
+                // Remove prev class from all other slides
+                this.slides.forEach((slide, i) => {
+                    if (i !== this.currentSlide) {
+                        slide.classList.remove('active', 'prev');
+                    }
+                });
+                
+                this.updateURL();
+                this.updateDisplay();
+                this.resetAnimations();
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.totalSlides - 1) {
+                    this.goToSlide(this.currentSlide + 1);
+                }
+            }
+
+            previousSlide() {
+                if (this.currentSlide > 0) {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            }
+
+            updateDisplay() {
+                this.currentSlideEl.textContent = this.currentSlide + 1;
+                
+                const progress = ((this.currentSlide + 1) / this.totalSlides) * 100;
+                this.progressBar.style.width = `${progress}%`;
+                
+                this.prevBtn.disabled = this.currentSlide === 0;
+                this.nextBtn.disabled = this.currentSlide === this.totalSlides - 1;
+            }
+
+            resetAnimations() {
+                const activeSlide = this.slides[this.currentSlide];
+                const animatedElements = activeSlide.querySelectorAll('[style*="animation"]');
+                
+                animatedElements.forEach(el => {
+                    el.style.animation = 'none';
+                    el.offsetHeight; // Trigger reflow
+                    el.style.animation = null;
+                });
+            }
+
+            updateURL() {
+                const newURL = new URL(window.location);
+                newURL.hash = `slide-${this.currentSlide + 1}`;
+                window.history.replaceState(null, '', newURL);
+            }
+
+            loadFromURL() {
+                const hash = window.location.hash;
+                if (hash.startsWith('#slide-')) {
+                    const slideNumber = parseInt(hash.replace('#slide-', ''));
+                    if (slideNumber >= 1 && slideNumber <= this.totalSlides) {
+                        this.currentSlide = slideNumber - 1;
+                        
+                        // Remove active class from all slides
+                        this.slides.forEach(slide => {
+                            slide.classList.remove('active', 'prev');
+                        });
+                        
+                        // Add active class to current slide
+                        this.slides[this.currentSlide].classList.add('active');
+                    }
+                } else {
+                    // Default to first slide
+                    this.updateURL();
+                }
+                
+                // Handle browser back/forward
+                window.addEventListener('hashchange', () => {
+                    this.loadFromURL();
+                    this.updateDisplay();
+                });
+            }
+        }
+
+        // Initialize presentation when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Mermaid
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'dark',
+                themeVariables: {
+                    primaryColor: '#910048',
+                    primaryTextColor: '#f8fafc',
+                    primaryBorderColor: '#23356E',
+                    lineColor: '#E9AB21',
+                    secondaryColor: '#23356E',
+                    tertiaryColor: '#E9AB21',
+                    background: '#0f1419',
+                    mainBkg: 'rgba(15, 23, 42, 0.8)',
+                    secondBkg: 'rgba(26, 31, 58, 0.8)',
+                    tertiaryBkg: 'rgba(145, 0, 72, 0.1)'
+                },
+                timeline: {
+                    useMaxWidth: true,
+                    numberSectionStyles: 3
+                }
+            });
+            
+            new PresentationController();
+        });
+        
+        // Handle direct URL access
+        window.addEventListener('load', () => {
+            const hash = window.location.hash;
+            if (hash.startsWith('#slide-')) {
+                const slideNumber = parseInt(hash.replace('#slide-', ''));
+                if (slideNumber >= 1 && slideNumber <= document.querySelectorAll('.slide').length) {
+                    // Scroll to top to ensure proper viewing
+                    window.scrollTo(0, 0);
+                }
+            }
+        });
+
+        // Cursor personalizado eliminado para mejorar rendimiento
+    </script>
+</body>
+</html>
