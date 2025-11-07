@@ -1,18 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mecanismos de Persistencia y Recuperación - SGBD</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💾</text></svg>">
-    
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💾</text></svg>">
+
     <!-- External CSS -->
     <link rel="stylesheet" href="presentacion.css">
-    
+
     <!-- Font Awesome and Mermaid loaded async -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'">
-    <script async src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        media="print" onload="this.media='all'">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script>
+        // Configure Mermaid with better settings
+        mermaid.initialize({
+            startOnLoad: false, // We'll control rendering manually
+            theme: 'dark',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: false
+            }
+        });
+
+        console.log('✅ Mermaid configured successfully');
+    </script>
 </head>
+
 <body>
     <!-- Background removed for performance -->
 
@@ -22,80 +41,38 @@
     </div>
 
     <div class="presentation-container">
-        <!-- Loading Slide -->
-        <div class="slide loading-slide active" id="loadingSlide">
-            <div class="loading-content">
-                <div class="uide-logo-large">
-                    <img src="/05%20LTI_05A_300-SGBD-ASC/assets/Logo%20UIDE.png" alt="UIDE">
-                </div>
-                
-                <h1 class="loading-title">
-                    <i class="fas fa-database"></i> SGBD - Semana 3
-                </h1>
-                
-                <h2 class="loading-subtitle">
-                    Mecanismos de Persistencia y Recuperación
-                </h2>
-                
-                <div class="loading-progress">
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" id="loadingProgress"></div>
-                    </div>
-                    
-                    <div class="loading-steps">
-                        <div class="loading-step active" id="step1">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Cargando presentación</span>
-                        </div>
-                        <div class="loading-step" id="step2">
-                            <i class="fas fa-sync-alt fa-spin"></i>
-                            <span>Preparando diagramas</span>
-                        </div>
-                        <div class="loading-step" id="step3">
-                            <i class="fas fa-clock"></i>
-                            <span>Optimizando rendimiento</span>
-                        </div>
-                        <div class="loading-step" id="step4">
-                            <i class="fas fa-rocket"></i>
-                            <span>¡Listo para comenzar!</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="loading-info">
-                    <p><i class="fas fa-info-circle"></i> Los diagramas se cargarán progresivamente</p>
-                    <p><i class="fas fa-keyboard"></i> Usa las flechas del teclado para navegar</p>
-                </div>
-            </div>
-        </div>
-        
+
         <!-- Slide 1: Title -->
         <div class="slide active title-slide">
             <div style="text-align: center; margin-bottom: 2rem;">
-                <h3 style="color: #e2e8f0; font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);">
+                <h3
+                    style="color: #e2e8f0; font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);">
                     Presentación Semana 3
                 </h3>
                 <h2 style="color: var(--uide-accent); font-size: 2.2rem; font-weight: 600; margin-bottom: 0.5rem;">
                     Mecanismos de Persistencia y Recuperación
                 </h2>
-                <p style="color: #ffffff; font-size: 1.4rem; font-weight: 500; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);">
+                <p
+                    style="color: #ffffff; font-size: 1.4rem; font-weight: 500; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);">
                     LTI_05A_300-SGBD-ASC • Quinto Nivel
                 </p>
                 <p style="color: #e2e8f0; font-size: 1.2rem; margin-top: 0.5rem;">
                     Sistemas de Gestión de Base de Datos
                 </p>
             </div>
-            
+
             <div style="text-align: center; margin: 2rem 0;">
-                <p style="color: #ffffff; font-size: 1.3rem; font-weight: 600; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);">
+                <p
+                    style="color: #ffffff; font-size: 1.3rem; font-weight: 600; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);">
                     Prof. Charlie Cárdenas Toledo, M.Sc.
                 </p>
                 <p style="color: var(--uide-primary); font-size: 1.2rem; font-weight: 500; margin-top: 0.5rem;">
                     Universidad Internacional del Ecuador • Octubre 2025 – Febrero 2026
                 </p>
             </div>
-            
-            <div style="text-align: center; margin-top: 2.5rem; padding: 25px; background: rgba(15, 20, 25, 0.6); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
+
+            <div
+                style="text-align: center; margin-top: 2.5rem; padding: 25px; background: rgba(15, 20, 25, 0.6); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
                 <h3 style="color: var(--uide-accent); font-size: 1.4rem; margin-bottom: 1rem; text-shadow: none;">
                     <i class="fas fa-database"></i> Logging, WAL, Checkpoints y Algoritmo ARIES
                 </h3>
@@ -147,7 +124,8 @@
         <div class="slide">
             <h2><i class="fas fa-shield-alt"></i> Importancia de la Persistencia y Recuperación</h2>
             <div class="quote">
-                "La administración de bases de datos requiere un conocimiento profundo de los mecanismos de respaldo y recuperación para asegurar la continuidad del negocio"
+                "La administración de bases de datos requiere un conocimiento profundo de los mecanismos de respaldo y
+                recuperación para asegurar la continuidad del negocio"
             </div>
             <div class="content-grid">
                 <div>
@@ -159,7 +137,8 @@
                 </div>
                 <div>
                     <h3>Relación con Seguridad</h3>
-                    <p>La seguridad de la información está estrechamente ligada a los procesos de respaldo y recuperación</p>
+                    <p>La seguridad de la información está estrechamente ligada a los procesos de respaldo y
+                        recuperación</p>
                 </div>
             </div>
         </div>
@@ -168,7 +147,8 @@
         <div class="slide">
             <h2><i class="fas fa-file-alt"></i> Registro de Operaciones (Logging)</h2>
             <div class="quote">
-                "El registro de operaciones, o log, es la técnica más habitual para la recuperación ante caídas del sistema"
+                "El registro de operaciones, o log, es la técnica más habitual para la recuperación ante caídas del
+                sistema"
             </div>
             <div class="content-grid">
                 <div>
@@ -182,7 +162,8 @@
                 </div>
                 <div>
                     <h3>Función Principal</h3>
-                    <p>Mantener un histórico completo de todas las modificaciones para poder reconstruir el estado de la base de datos tras un fallo.</p>
+                    <p>Mantener un histórico completo de todas las modificaciones para poder reconstruir el estado de la
+                        base de datos tras un fallo.</p>
                 </div>
             </div>
         </div>
@@ -203,13 +184,13 @@
                 <div>
                     <h3>Ejemplo de Secuencia</h3>
                     <div class="code-block">
-&lt;T1 start&gt;
-&lt;T1, X, 100, 150&gt;
-&lt;T1, Y, 200, 250&gt;
-&lt;T1 commit&gt;
-&lt;T2 start&gt;
-&lt;T2, Z, 300, 350&gt;
-&lt;T2 abort&gt;
+                        &lt;T1 start&gt;
+                        &lt;T1, X, 100, 150&gt;
+                        &lt;T1, Y, 200, 250&gt;
+                        &lt;T1 commit&gt;
+                        &lt;T2 start&gt;
+                        &lt;T2, Z, 300, 350&gt;
+                        &lt;T2 abort&gt;
                     </div>
                 </div>
             </div>
@@ -221,27 +202,16 @@
             <div class="quote">
                 "El Write-Ahead Log (WAL) es una estructura auxiliar de disco de solo anexión (append-only)"
             </div>
-            <div class="mermaid-container">
-                <div class="mermaid">
-                    <div class="mermaid-loading">
-                        <div class="loading-spinner"></div>
-                        <p>🔄 Renderizando diagrama WAL...</p>
-                    </div>
-                    <div class="mermaid-content" style="display: none;">
-flowchart LR
-    A[📝 Modificación<br/>en Memoria] --> B[📋 Escritura al<br/>Log WAL]
-    B --> C[💾 Escritura a<br/>Disco]
-    
-    A -.->|Paso 1| B
-    B -.->|Paso 2<br/><b>OBLIGATORIO</b>| C
-    C -.->|Paso 3| D[✅ Datos<br/>Persistidos]
-    
-    style A fill:#910048,stroke:#23356E,color:#fff
-    style B fill:#E9AB21,stroke:#23356E,color:#000
-    style C fill:#23356E,stroke:#910048,color:#fff
-    style D fill:#10b981,stroke:#23356E,color:#fff
-                    </div>
-                </div>
+            <div class="mermaid">
+                flowchart LR
+                A[Memoria] --> B[Log WAL]
+                B --> C[Disco]
+                C --> D[Persistido]
+
+                style A fill:#910048,stroke:#333,color:#fff
+                style B fill:#E9AB21,stroke:#333,color:#000
+                style C fill:#23356E,stroke:#333,color:#fff
+                style D fill:#10b981,stroke:#333,color:#fff
             </div>
             <p style="text-align: center; margin-top: 2rem; font-size: 1.3rem;">
                 <span class="highlight">Regla Fundamental:</span> ANTES de escribir al disco, PRIMERO escribir al log
@@ -252,12 +222,14 @@ flowchart LR
         <div class="slide">
             <h2><i class="fas fa-database"></i> WAL en PostgreSQL: Ejemplo Práctico</h2>
             <div class="code-block">
-<span class="sql-keyword">EXPLAIN</span> (<span class="sql-keyword">ANALYZE</span>, <span class="sql-keyword">VERBOSE</span>, <span class="sql-keyword">BUFFERS</span>, <span class="sql-keyword">WAL</span>)
-<span class="sql-keyword">SELECT</span> *
-<span class="sql-keyword">FROM</span> public.effective_io_concurrency_test;
+                <span class="sql-keyword">EXPLAIN</span> (<span class="sql-keyword">ANALYZE</span>, <span
+                    class="sql-keyword">VERBOSE</span>, <span class="sql-keyword">BUFFERS</span>, <span
+                    class="sql-keyword">WAL</span>)
+                <span class="sql-keyword">SELECT</span> *
+                <span class="sql-keyword">FROM</span> public.effective_io_concurrency_test;
 
-<span class="sql-comment">-- Resultado:</span>
-<span class="sql-comment">-- WAL: records=18 bytes=5178</span>
+                <span class="sql-comment">-- Resultado:</span>
+                <span class="sql-comment">-- WAL: records=18 bytes=5178</span>
             </div>
             <div class="content-grid">
                 <div>
@@ -271,9 +243,9 @@ flowchart LR
                 <div>
                     <h3>Configuración WAL</h3>
                     <div class="code-block">
-<span class="sql-keyword">SHOW</span> wal_level;
-<span class="sql-keyword">SHOW</span> checkpoint_segments;
-<span class="sql-keyword">SHOW</span> wal_buffers;
+                        <span class="sql-keyword">SHOW</span> wal_level;
+                        <span class="sql-keyword">SHOW</span> checkpoint_segments;
+                        <span class="sql-keyword">SHOW</span> wal_buffers;
                     </div>
                 </div>
             </div>
@@ -283,7 +255,8 @@ flowchart LR
         <div class="slide">
             <h2><i class="fas fa-cogs"></i> Algoritmo ARIES: Estado del Arte</h2>
             <div class="quote">
-                "ARIES (Algorithm for Recovery and Isolation Exploiting Semantics) es un state of the art recovery method"
+                "ARIES (Algorithm for Recovery and Isolation Exploiting Semantics) es un state of the art recovery
+                method"
             </div>
             <div class="content-grid">
                 <div>
@@ -307,30 +280,18 @@ flowchart LR
         <!-- Slide 10: ARIES Phases -->
         <div class="slide">
             <h2><i class="fas fa-sync-alt"></i> ARIES: Las Tres Fases de Recuperación</h2>
-            <div class="mermaid-container">
-                <div class="mermaid">
-                    <div class="mermaid-loading">
-                        <div class="loading-spinner"></div>
-                        <p>⚙️ Renderizando timeline ARIES...</p>
-                    </div>
-                    <div class="mermaid-content" style="display: none;">
-timeline
-    title Fases de Recuperación ARIES
-    
-    section Línea de Tiempo
-        Inicio          : Último Checkpoint
-        Análisis        : Escanear desde checkpoint
-                        : Identificar transacciones incompletas
-                        : Determinar páginas sucias
-        Redo           : Repetir historia completa
-                       : Aplicar todas las acciones
-                       : Restaurar estado exacto
-        Undo           : Deshacer transacciones incompletas
-                       : Generar CLRs
-                       : Estado consistente final
-        Final          : Sistema recuperado
-                    </div>
-                </div>
+            <div class="mermaid">
+                graph TD
+                A[INICIO] --> B[ANÁLISIS]
+                B --> C[REDO]
+                C --> D[UNDO]
+                D --> E[COMPLETADO]
+
+                style A fill:#E9AB21,stroke:#333,color:#000
+                style B fill:#910048,stroke:#333,color:#fff
+                style C fill:#23356E,stroke:#333,color:#fff
+                style D fill:#910048,stroke:#333,color:#fff
+                style E fill:#10b981,stroke:#333,color:#fff
             </div>
         </div>
 
@@ -338,7 +299,8 @@ timeline
         <div class="slide">
             <h2><i class="fas fa-map-marker-alt"></i> Checkpoints: Puntos de Sincronización</h2>
             <div class="quote">
-                "Un punto de control (checkpoint) es un evento que ayuda a sincronizar la caché de buffer de la base de datos con los archivos de datos en el disco"
+                "Un punto de control (checkpoint) es un evento que ayuda a sincronizar la caché de buffer de la base
+                de datos con los archivos de datos en el disco"
             </div>
             <div class="content-grid">
                 <div>
@@ -351,7 +313,8 @@ timeline
                 </div>
                 <div>
                     <h3>Función Principal</h3>
-                    <p><strong>Reducir trabajo de recuperación</strong> limitando la cantidad de registros del log que deben ser examinados tras un fallo.</p>
+                    <p><strong>Reducir trabajo de recuperación</strong> limitando la cantidad de registros del log
+                        que deben ser examinados tras un fallo.</p>
                 </div>
             </div>
         </div>
@@ -488,7 +451,8 @@ timeline
                     <h3>Garantías del Sistema</h3>
                     <ul>
                         <li><span class="emphasis">Durabilidad</span>: Cambios confirmados nunca se pierden</li>
-                        <li><span class="emphasis">Atomicidad</span>: Transacciones completas o totalmente revertidas</li>
+                        <li><span class="emphasis">Atomicidad</span>: Transacciones completas o totalmente
+                            revertidas</li>
                         <li><span class="emphasis">Consistencia</span>: Estado válido en todo momento</li>
                         <li><span class="emphasis">Eficiencia</span>: Recuperación rápida y optimizada</li>
                     </ul>
@@ -509,7 +473,8 @@ timeline
         <div class="slide title-slide">
             <h1><i class="fas fa-lightbulb"></i> Reflexiones Finales</h1>
             <div class="quote">
-                "La robustez de un sistema de base de datos se mide no por su rendimiento en condiciones normales, sino por su capacidad de recuperación ante fallos inesperados"
+                "La robustez de un sistema de base de datos se mide no por su rendimiento en condiciones normales,
+                sino por su capacidad de recuperación ante fallos inesperados"
             </div>
             <h3 style="margin-top: 2rem;">Preguntas para Considerar</h3>
             <ul>
@@ -525,8 +490,10 @@ timeline
             <div class="content-grid">
                 <div class="feature-card">
                     <h3><i class="fas fa-flask"></i> Gestión de Práctica</h3>
-                    <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">PE-1.3 (2.25 puntos)</p>
-                    <p><strong>Laboratorio:</strong> Activar WAL, forzar transacciones y observar registros/checkpoints</p>
+                    <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">PE-1.3 (2.25
+                        puntos)</p>
+                    <p><strong>Laboratorio:</strong> Activar WAL, forzar transacciones y observar
+                        registros/checkpoints</p>
                     <ul style="margin-top: 1rem; font-size: 1rem;">
                         <li>Configurar Write-Ahead Logging</li>
                         <li>Ejecutar transacciones de prueba</li>
@@ -536,7 +503,8 @@ timeline
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-file-alt"></i> Trabajo Autónomo</h3>
-                    <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">TA-1.3 (2.25 puntos)</p>
+                    <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">TA-1.3 (2.25
+                        puntos)</p>
                     <p><strong>Resumen técnico:</strong> ARIES (analyze-redo-undo) con esquema (1 página)</p>
                     <ul style="margin-top: 1rem; font-size: 1rem;">
                         <li>Explicación de las 3 fases</li>
@@ -546,7 +514,8 @@ timeline
                     </ul>
                 </div>
             </div>
-            <div style="text-align: center; margin-top: 2rem; padding: 20px; background: rgba(145, 0, 72, 0.1); border-radius: 10px; border: 1px solid var(--uide-primary);">
+            <div
+                style="text-align: center; margin-top: 2rem; padding: 20px; background: rgba(145, 0, 72, 0.1); border-radius: 10px; border: 1px solid var(--uide-primary);">
                 <p style="color: var(--uide-primary); font-weight: 600; font-size: 1.2rem;">
                     <i class="fas fa-chart-pie"></i> <strong>Evaluación:</strong> Contribuye al 30% (Semanas 1-4)
                 </p>
@@ -572,6 +541,7 @@ timeline
     <div class="progress-bar" id="progressBar"></div>
 
     <!-- External JavaScript -->
-    <script src="presentacion.js"></script>
+    <script src="presentacion-simple.js"></script>
 </body>
+
 </html>

@@ -226,18 +226,46 @@
                         <p><i class="fas fa-sync-alt fa-spin"></i> Renderizando diagrama WAL...</p>
                     </div>
                     <div class="mermaid-content" style="display: none;">
+---
+title: Write-Ahead Log (WAL) - Flujo de Datos
+config:
+  theme: dark
+  themeVariables:
+    primaryColor: '#910048'
+    primaryTextColor: '#f8fafc'
+    primaryBorderColor: '#23356E'
+    lineColor: '#E9AB21'
+    background: '#0f1419'
+---
 flowchart LR
-    A[📝 Modificación<br/>en Memoria] --> B[📋 Escritura al<br/>Log WAL]
-    B --> C[💾 Escritura a<br/>Disco]
+    %% Definición de nodos principales
+    Memory["<i class='fas fa-memory'></i><br/>Modificación<br/>en Memoria"]
+    WALLog["<i class='fas fa-file-alt'></i><br/>Escritura al<br/>Log WAL"]
+    Disk["<i class='fas fa-hdd'></i><br/>Escritura a<br/>Disco"]
+    Persisted["<i class='fas fa-check-circle'></i><br/>Datos<br/>Persistidos"]
     
-    A -.->|Paso 1| B
-    B -.->|Paso 2<br/><b>OBLIGATORIO</b>| C
-    C -.->|Paso 3| D[✅ Datos<br/>Persistidos]
+    %% Flujo principal
+    Memory --> WALLog
+    WALLog --> Disk
+    Disk --> Persisted
     
-    style A fill:#910048,stroke:#23356E,color:#fff
-    style B fill:#E9AB21,stroke:#23356E,color:#000
-    style C fill:#23356E,stroke:#910048,color:#fff
-    style D fill:#10b981,stroke:#23356E,color:#fff
+    %% Flujo de pasos numerados
+    Memory -.->|"1. Iniciar"| WALLog
+    WALLog -.->|"2. OBLIGATORIO<br/>Antes que disco"| Disk
+    Disk -.->|"3. Confirmar"| Persisted
+    
+    %% Estilos personalizados con colores UIDE
+    style Memory fill:#910048,stroke:#23356E,stroke-width:3px,color:#fff
+    style WALLog fill:#E9AB21,stroke:#23356E,stroke-width:3px,color:#000
+    style Disk fill:#23356E,stroke:#910048,stroke-width:3px,color:#fff
+    style Persisted fill:#10b981,stroke:#23356E,stroke-width:3px,color:#fff
+    
+    %% Clases para agrupación visual
+    classDef criticalPath fill:#910048,stroke:#E9AB21,stroke-width:4px,color:#fff
+    classDef safetyNet fill:#E9AB21,stroke:#910048,stroke-width:3px,color:#000
+    
+    class Memory,Persisted criticalPath
+    class WALLog safetyNet
                     </div>
                 </div>
             </div>
@@ -312,21 +340,77 @@ flowchart LR
                         <p><i class="fas fa-cogs fa-spin"></i> Renderizando timeline ARIES...</p>
                     </div>
                     <div class="mermaid-content" style="display: none;">
-timeline
-    title Fases de Recuperación ARIES
+---
+title: "Algoritmo ARIES: Fases de Recuperación"
+config:
+  theme: dark
+  flowchart:
+    useMaxWidth: true
+    htmlLabels: true
+  themeVariables:
+    primaryColor: '#910048'
+    primaryTextColor: '#f8fafc'
+    primaryBorderColor: '#23356E'
+    lineColor: '#E9AB21'
+---
+graph TD
+    %% Fase de Inicio
+    Start(["<i class='fas fa-play-circle'></i><br/><b>INICIO</b><br/>Último Checkpoint"])
     
-    section Línea de Tiempo
-        Inicio          : Último Checkpoint
-        Análisis        : Escanear desde checkpoint
-                        : Identificar transacciones incompletas
-                        : Determinar páginas sucias
-        Redo           : Repetir historia completa
-                       : Aplicar todas las acciones
-                       : Restaurar estado exacto
-        Undo           : Deshacer transacciones incompletas
-                       : Generar CLRs
-                       : Estado consistente final
-        Final          : Sistema recuperado
+    %% Fase de Análisis
+    Analysis["<i class='fas fa-search'></i><br/><b>FASE ANÁLISIS</b><br/>Escanear desde checkpoint"]
+    AnalysisTask1["<i class='fas fa-tasks'></i><br/>Identificar transacciones<br/>incompletas"]
+    AnalysisTask2["<i class='fas fa-file-medical'></i><br/>Determinar páginas<br/>sucias (DirtyPageTable)"]
+    
+    %% Fase Redo
+    Redo["<i class='fas fa-redo'></i><br/><b>FASE REDO</b><br/>Repetir historia completa"]
+    RedoTask1["<i class='fas fa-history'></i><br/>Aplicar todas las acciones<br/>desde el checkpoint"]
+    RedoTask2["<i class='fas fa-sync'></i><br/>Restaurar estado exacto<br/>antes del fallo"]
+    
+    %% Fase Undo
+    Undo["<i class='fas fa-undo'></i><br/><b>FASE UNDO</b><br/>Deshacer transacciones<br/>incompletas"]
+    UndoTask1["<i class='fas fa-edit'></i><br/>Generar CLRs<br/>(Compensation Log Records)"]
+    UndoTask2["<i class='fas fa-balance-scale'></i><br/>Restaurar estado<br/>consistente"]
+    
+    %% Final
+    Final(["<i class='fas fa-check-circle'></i><br/><b>RECUPERACIÓN COMPLETA</b><br/>Sistema operativo"])
+    
+    %% Flujo principal
+    Start --> Analysis
+    Analysis --> AnalysisTask1
+    AnalysisTask1 --> AnalysisTask2
+    AnalysisTask2 --> Redo
+    Redo --> RedoTask1
+    RedoTask1 --> RedoTask2
+    RedoTask2 --> Undo
+    Undo --> UndoTask1
+    UndoTask1 --> UndoTask2
+    UndoTask2 --> Final
+    
+    %% Conexiones de feedback
+    RedoTask2 -.->|"Si hay errores"| Analysis
+    UndoTask1 -.->|"Logs de compensación"| RedoTask1
+    
+    %% Estilos por fases
+    style Start fill:#910048,stroke:#E9AB21,stroke-width:4px,color:#fff
+    style Analysis fill:#E9AB21,stroke:#23356E,stroke-width:3px,color:#000
+    style Redo fill:#23356E,stroke:#910048,stroke-width:3px,color:#fff
+    style Undo fill:#E9AB21,stroke:#910048,stroke-width:3px,color:#000
+    style Final fill:#10b981,stroke:#23356E,stroke-width:4px,color:#fff
+    
+    %% Estilos para tareas
+    style AnalysisTask1 fill:#fef3cd,stroke:#E9AB21,stroke-width:2px,color:#000
+    style AnalysisTask2 fill:#fef3cd,stroke:#E9AB21,stroke-width:2px,color:#000
+    style RedoTask1 fill:#d1ecf1,stroke:#23356E,stroke-width:2px,color:#000
+    style RedoTask2 fill:#d1ecf1,stroke:#23356E,stroke-width:2px,color:#000
+    style UndoTask1 fill:#fef3cd,stroke:#910048,stroke-width:2px,color:#000
+    style UndoTask2 fill:#fef3cd,stroke:#910048,stroke-width:2px,color:#000
+    
+    %% Clases para agrupaciones
+    classDef phaseHeader fill:#910048,stroke:#E9AB21,stroke-width:4px,color:#fff,font-weight:bold
+    classDef analysisPhase fill:#E9AB21,stroke:#23356E,stroke-width:3px,color:#000
+    classDef redoPhase fill:#23356E,stroke:#910048,stroke-width:3px,color:#fff
+    classDef undoPhase fill:#E9AB21,stroke:#910048,stroke-width:3px,color:#000
                     </div>
                 </div>
             </div>

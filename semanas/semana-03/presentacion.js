@@ -145,10 +145,37 @@ class PresentationController {
         // Update display
         this.updateDisplay();
         
-        // Initialize Mermaid rendering
-        window.initializeMermaidQueue();
-        console.log(`🚀 Presentación lista! Iniciando renderizado de ${window.mermaidQueue.length} diagramas...`);
-        window.renderNextMermaid();
+        // Initialize Mermaid system - but wait for Mermaid to be available
+        this.initializeMermaidWhenReady();
+    }
+    
+    initializeMermaidWhenReady() {
+        const checkMermaidAndInit = () => {
+            if (typeof mermaid !== 'undefined' && mermaid.initialize) {
+                console.log('🚀 Mermaid disponible! Iniciando sistema...');
+                
+                // First configure Mermaid
+                if (!window.configureMermaid()) {
+                    console.error('❌ No se pudo configurar Mermaid, reintentando...');
+                    setTimeout(checkMermaidAndInit, 1000);
+                    return;
+                }
+                
+                // Then initialize the system
+                window.initializeMermaidSystem();
+                console.log(`🚀 Presentación lista! Iniciando renderizado progresivo de ${window.mermaidSlideQueue.length} diagramas...`);
+                
+                // Start progressive rendering after ensuring everything is ready
+                setTimeout(() => {
+                    window.renderMermaidProgressive();
+                }, 1500);
+            } else {
+                console.log('⏳ Esperando a que Mermaid esté disponible...');
+                setTimeout(checkMermaidAndInit, 500);
+            }
+        };
+        
+        checkMermaidAndInit();
     }
 
     // Removed - elements cached in constructor
@@ -183,140 +210,252 @@ class PresentationController {
     }
 }
 
-// Mermaid Progressive Rendering System
-window.mermaidQueue = [];
-window.mermaidRendered = new Set();
+// Mermaid Official Progressive Rendering System (v10+)
+window.mermaidSlideQueue = [];
+window.mermaidProcessed = new Set();
 
-// Collect all mermaid diagrams for progressive rendering
-window.initializeMermaidQueue = () => {
+// Initialize Mermaid diagrams according to official docs
+window.initializeMermaidSystem = () => {
+    console.log('🔧 Iniciando sistema Mermaid v10+...');
+    
+    // First ensure Mermaid is configured
+    if (!window.configureMermaid()) {
+        console.error('❌ No se pudo configurar Mermaid, abortando inicialización');
+        return;
+    }
+    
+    // Convert our custom structure to standard Mermaid format
     const slides = document.querySelectorAll('.slide');
+    console.log(`📊 Encontradas ${slides.length} slides`);
+    
     slides.forEach((slide, slideIndex) => {
-        const mermaidElements = slide.querySelectorAll('.mermaid');
-        mermaidElements.forEach((el, diagramIndex) => {
-            const contentEl = el.querySelector('.mermaid-content');
-            if (contentEl) {
+        const customMermaidElements = slide.querySelectorAll('.mermaid');
+        console.log(`📋 Slide ${slideIndex}: ${customMermaidElements.length} elementos mermaid`);
+        
+        customMermaidElements.forEach((element, diagramIndex) => {
+            const contentEl = element.querySelector('.mermaid-content');
+            const loadingEl = element.querySelector('.mermaid-loading');
+            
+            if (contentEl && contentEl.textContent.trim()) {
+                let diagramCode = contentEl.textContent.trim();
+                console.log(`📝 Contenido original longitud: ${diagramCode.length}`);
+                
+                // Remove YAML frontmatter if present (not supported in v10+)
+                if (diagramCode.startsWith('---')) {
+                    const frontmatterEnd = diagramCode.indexOf('---', 3);
+                    if (frontmatterEnd !== -1) {
+                        diagramCode = diagramCode.substring(frontmatterEnd + 3).trim();
+                        console.log(`✂️ YAML frontmatter removido, nueva longitud: ${diagramCode.length}`);
+                    }
+                }
+                
+                // Clean up any problematic characters or HTML entities
+                diagramCode = diagramCode
+                    .replace(/&quot;/g, '"')
+                    .replace(/&lt;/g, '<')
+                    .replace(/&gt;/g, '>')
+                    .replace(/&amp;/g, '&');
+                
                 const id = `slide-${slideIndex}-diagram-${diagramIndex}`;
-                window.mermaidQueue.push({
+                
+                // Create standard Mermaid pre tag (as per official docs)
+                const preElement = document.createElement('pre');
+                preElement.className = 'mermaid';
+                preElement.textContent = diagramCode;
+                preElement.style.display = 'none'; // Start hidden
+                preElement.setAttribute('data-slide-id', slideIndex.toString());
+                preElement.setAttribute('data-diagram-id', id);
+                
+                // Replace custom structure with standard one
+                element.appendChild(preElement);
+                
+                // Queue for progressive rendering
+                window.mermaidSlideQueue.push({
                     slideIndex,
                     diagramIndex,
-                    element: el,
-                    id: id,
-                    code: contentEl.textContent.trim()
+                    id,
+                    element,
+                    preElement,
+                    loadingEl
                 });
-                el.setAttribute('data-mermaid-id', id);
+                
+                console.log(`📋 Encolado diagrama: ${id}`);
             }
         });
     });
 };
 
-// Progressive rendering function
-window.renderNextMermaid = () => {
-    const nextItem = window.mermaidQueue.find(item => !window.mermaidRendered.has(item.id));
-    if (!nextItem) {
-        console.log('All Mermaid diagrams rendered!');
+// Progressive rendering using official mermaid.run() method
+window.renderMermaidProgressive = async () => {
+    // Triple-check that Mermaid is available and properly initialized
+    if (typeof mermaid === 'undefined' || !mermaid.initialize || !mermaid.run) {
+        console.error('❌ Mermaid no está disponible para el renderizado');
+        // Retry after a delay
+        setTimeout(() => {
+            window.renderMermaidProgressive();
+        }, 1000);
         return;
     }
     
-    const { element, id, code } = nextItem;
-    const loadingEl = element.querySelector('.mermaid-loading');
+    const unprocessed = window.mermaidSlideQueue.filter(item => !window.mermaidProcessed.has(item.id));
     
-    if (loadingEl) {
-        loadingEl.style.display = 'flex';
+    if (unprocessed.length === 0) {
+        console.log('✅ Todos los diagramas Mermaid han sido renderizados');
+        return;
     }
     
+    // Get next diagram to process
+    const nextItem = unprocessed[0];
+    const { id, element, preElement, loadingEl } = nextItem;
+    
     try {
-        // Generate safe ID without decimals
-        const safeId = `mermaid_${id.replace(/-/g, '_')}_${Date.now()}`;
+        console.log(`🔄 Renderizando diagrama: ${id}`);
         
-        mermaid.render(safeId, code)
-            .then(result => {
-                if (loadingEl) {
-                    loadingEl.style.display = 'none';
-                }
-                element.innerHTML = result.svg;
-                element.setAttribute('data-processed', 'true');
-                window.mermaidRendered.add(id);
-                
-                console.log(`✅ Rendered diagram: ${id}`);
-                
-                // Render next diagram after short delay
-                setTimeout(() => {
-                    window.renderNextMermaid();
-                }, 200);
-            })
-            .catch(err => {
-                console.warn(`❌ Failed to render ${id}:`, err);
-                if (loadingEl) {
-                    loadingEl.innerHTML = `
-                        <div style="color: #f56565; text-align: center;">
-                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem;"></i>
-                            <p>Error en diagrama</p>
-                        </div>
-                    `;
-                }
-                window.mermaidRendered.add(id); // Mark as processed
-                
-                // Continue with next diagram
-                setTimeout(() => {
-                    window.renderNextMermaid();
-                }, 200);
-            });
-    } catch (error) {
-        console.error(`❌ Exception rendering ${id}:`, error);
-        window.mermaidRendered.add(id);
+        // Show loading state
+        if (loadingEl) {
+            loadingEl.style.display = 'flex';
+        }
+        
+        // Show the pre element for Mermaid to process
+        preElement.style.display = 'block';
+        
+        // Use official mermaid.run() method (recommended for v10+)
+        await mermaid.run({
+            nodes: [preElement],
+            suppressErrors: false
+        });
+        
+        // Hide loading, show rendered diagram
+        if (loadingEl) {
+            loadingEl.style.display = 'none';
+        }
+        
+        // Mark as processed
+        window.mermaidProcessed.add(id);
+        console.log(`✅ Diagrama renderizado exitosamente: ${id}`);
+        
+        // Continue with next diagram after delay
         setTimeout(() => {
-            window.renderNextMermaid();
-        }, 200);
+            window.renderMermaidProgressive();
+        }, 500);
+        
+    } catch (error) {
+        console.warn(`❌ Error renderizando ${id}:`, error);
+        
+        // Check if it's a timing error and retry
+        if (error.message && error.message.includes('mermaid is not defined')) {
+            console.log('⏳ Reintentando por error de timing...');
+            setTimeout(() => {
+                window.renderMermaidProgressive();
+            }, 1500);
+            return;
+        }
+        
+        // Show error state for actual diagram errors
+        if (loadingEl) {
+            loadingEl.innerHTML = `
+                <div style="color: #f56565; text-align: center; padding: 2rem;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                    <p>Error renderizando diagrama</p>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">${error.message || 'Revisa la sintaxis Mermaid'}</p>
+                </div>
+            `;
+        }
+        
+        // Hide broken pre element
+        preElement.style.display = 'none';
+        
+        // Mark as processed to continue
+        window.mermaidProcessed.add(id);
+        
+        // Continue with next diagram
+        setTimeout(() => {
+            window.renderMermaidProgressive();
+        }, 500);
     }
 };
 
-// Check if diagram is available for current slide
+// Check diagram readiness for current slide
 window.checkSlideReadiness = (slideIndex) => {
-    const slideItems = window.mermaidQueue.filter(item => item.slideIndex === slideIndex);
-    const renderedCount = slideItems.filter(item => window.mermaidRendered.has(item.id)).length;
+    const slideItems = window.mermaidSlideQueue.filter(item => item.slideIndex === slideIndex);
+    const renderedCount = slideItems.filter(item => window.mermaidProcessed.has(item.id)).length;
     
-    if (slideItems.length > 0 && renderedCount < slideItems.length) {
+    if (slideItems.length > 0) {
         console.log(`📊 Slide ${slideIndex}: ${renderedCount}/${slideItems.length} diagramas listos`);
+        
+        if (renderedCount < slideItems.length) {
+            console.log(`⏳ Algunos diagramas aún se están procesando...`);
+        }
     }
 };
+
+// CRITICAL: Prevent Mermaid auto-initialization ASAP
+if (typeof window !== 'undefined') {
+    // Set global flag to prevent auto-initialization
+    window.mermaidStartOnLoad = false;
+    
+    // Try to configure immediately when Mermaid loads
+    let mermaidConfigAttempts = 0;
+    const earlyMermaidConfig = () => {
+        if (typeof mermaid !== 'undefined' && mermaidConfigAttempts < 10) {
+            console.log('⚡ Configuración temprana de Mermaid detectada');
+            mermaid.initialize({ startOnLoad: false });
+            return true;
+        }
+        mermaidConfigAttempts++;
+        if (mermaidConfigAttempts < 10) {
+            setTimeout(earlyMermaidConfig, 100);
+        }
+        return false;
+    };
+    
+    // Start early configuration attempts
+    earlyMermaidConfig();
+}
 
 // Optimized initialization with Mermaid lazy loading
 document.addEventListener('DOMContentLoaded', () => {
     new PresentationController();
 });
 
-// Load Mermaid after everything else is ready
-window.addEventListener('load', () => {
+// Configure Mermaid when it becomes available
+window.configureMermaid = () => {
     if (typeof mermaid !== 'undefined') {
-        // Initialize Mermaid with performance settings
-        mermaid.initialize({
-            startOnLoad: false,
-            theme: 'dark',
-            themeVariables: {
-                primaryColor: '#910048',
-                primaryTextColor: '#f8fafc',
-                primaryBorderColor: '#23356E',
-                lineColor: '#E9AB21',
-                secondaryColor: '#23356E',
-                tertiaryColor: '#E9AB21',
-                background: '#0f1419',
-                mainBkg: 'rgba(15, 23, 42, 0.8)',
-                secondBkg: 'rgba(26, 31, 58, 0.8)',
-                tertiaryBkg: 'rgba(145, 0, 72, 0.1)'
-            },
-            timeline: {
-                useMaxWidth: true,
-                numberSectionStyles: 3
-            },
-            // Performance optimizations
-            securityLevel: 'loose',
-            deterministicIds: true
-        });
+        console.log('🧪 Configurando Mermaid v10+ con mejores prácticas...');
         
-        // Start presentation after loading is complete
-        // This will be called from the loading sequence
+        try {
+            // CRITICAL: Completely disable auto-initialization
+            if (mermaid.mermaidAPI) {
+                mermaid.mermaidAPI.initialize({ startOnLoad: false });
+            }
+            
+            // Initialize Mermaid with minimal, safe configuration
+            mermaid.initialize({
+                startOnLoad: false, // CRITICAL: We control rendering manually
+                theme: 'dark',
+                securityLevel: 'loose',
+                deterministicIds: false, // Disable for compatibility
+                suppressErrorRendering: false,
+                flowchart: {
+                    useMaxWidth: true,
+                    htmlLabels: false // Disable HTML labels for compatibility
+                }
+            });
+            
+            console.log('✅ Mermaid configurado correctamente');
+            return true;
+        } catch (error) {
+            console.error('❌ Error configurando Mermaid:', error);
+            return false;
+        }
+    } else {
+        console.warn('⚠️ Mermaid aún no está disponible');
+        return false;
     }
-});
+};
+
+// Remove redundant configuration - handled by initializeMermaidWhenReady()
+// This was causing timing conflicts
 
 // Handle direct URL access
 window.addEventListener('load', () => {
@@ -331,3 +470,6 @@ window.addEventListener('load', () => {
 });
 
 // Cursor personalizado eliminado para mejorar rendimiento
+
+// Debug: Verificar que el archivo se carga correctamente
+console.log('🚀 presentacion.js cargado correctamente');

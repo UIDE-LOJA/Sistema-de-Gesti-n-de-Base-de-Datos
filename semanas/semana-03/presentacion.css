@@ -65,164 +65,10 @@ body {
 }
 
 .slide:first-child {
-    display: flex; /* Show loading slide by default */
+    display: flex; /* Show first slide by default */
 }
 
-/* Loading Slide Styles */
-.loading-slide {
-    background: var(--bg-primary) !important;
-    border: none !important;
-    margin: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-}
-
-.loading-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-    max-width: 800px;
-}
-
-.uide-logo-large {
-    margin-bottom: 2rem;
-    animation: logoFloat 3s ease-in-out infinite;
-}
-
-.uide-logo-large img {
-    width: 120px;
-    height: 120px;
-    object-fit: contain;
-    filter: drop-shadow(0 5px 15px rgba(145, 0, 72, 0.3));
-}
-
-.loading-title {
-    font-size: 3rem;
-    color: var(--uide-accent);
-    margin-bottom: 1rem;
-    font-weight: 700;
-}
-
-.loading-subtitle {
-    font-size: 1.5rem;
-    color: var(--text-secondary);
-    margin-bottom: 3rem;
-    font-weight: 400;
-}
-
-.loading-progress {
-    width: 100%;
-    margin-bottom: 3rem;
-}
-
-.progress-bar-container {
-    width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 2rem;
-}
-
-.progress-bar-fill {
-    height: 100%;
-    background: var(--uide-accent);
-    width: 0%;
-    border-radius: 3px;
-    transition: width 0.8s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.progress-bar-fill::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.4),
-        transparent
-    );
-    animation: shimmer 2s infinite;
-}
-
-.loading-steps {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    width: 100%;
-}
-
-.loading-step {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.5s ease;
-}
-
-.loading-step.active {
-    background: rgba(233, 171, 33, 0.1);
-    border-color: var(--uide-accent);
-    transform: scale(1.02);
-}
-
-.loading-step.completed {
-    background: rgba(145, 0, 72, 0.1);
-    border-color: var(--uide-primary);
-}
-
-.loading-step i {
-    font-size: 1.2rem;
-    color: var(--uide-accent);
-    min-width: 20px;
-}
-
-.loading-step.completed i {
-    color: var(--uide-primary);
-}
-
-.loading-step span {
-    font-size: 1rem;
-    color: var(--text-primary);
-    font-weight: 500;
-}
-
-.loading-info {
-    margin-top: 2rem;
-}
-
-.loading-info p {
-    margin: 0.5rem 0;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-}
-
-.loading-info i {
-    color: var(--uide-accent);
-    margin-right: 8px;
-}
-
-/* Animations */
-@keyframes logoFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-}
-
-@keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
+/* Loading styles removed - direct presentation start */
 
 /* Typography */
 /* Removed heavy CSS animations for better performance */
@@ -456,29 +302,16 @@ th {
     white-space: pre-line;
 }
 
-.mermaid-container {
+/* Simplified Mermaid styling */
+
+.mermaid {
     background: rgba(15, 23, 42, 0.8);
     border: 2px solid var(--uide-secondary);
     border-radius: 15px;
     padding: 30px;
-    margin: 20px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    max-width: 1000px;
-    min-height: 400px;
-    height: auto;
-    overflow: visible;
-    position: relative;
-}
-
-.mermaid {
-    width: 100%;
-    height: auto;
-    max-width: 100%;
-    min-height: 300px;
-    display: block;
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: center;
 }
 
 .mermaid svg {
@@ -486,42 +319,7 @@ th {
     height: auto;
 }
 
-/* Loading state for Mermaid diagrams */
-.mermaid-loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 300px;
-    color: var(--text-secondary);
-}
-
-.mermaid-loading p {
-    margin-top: 1rem;
-    font-size: 1.1rem;
-    animation: pulse 2s infinite;
-    text-align: center;
-}
-
-.mermaid-loading .progress-info {
-    font-size: 0.9rem;
-    opacity: 0.7;
-    margin-top: 0.5rem;
-}
-
-.loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(233, 171, 33, 0.3);
-    border-top: 3px solid var(--uide-accent);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+/* Removed Mermaid loading states - using standard rendering */
 
 @keyframes pulse {
     0%, 100% { opacity: 1; }
@@ -539,21 +337,10 @@ th {
     .slide h3 { font-size: 1.5rem; }
     .slide p, .slide li { font-size: 1rem; }
     
-    .mermaid-container {
+    .mermaid {
         padding: 20px;
-        width: 95%;
-        min-height: 350px;
+        margin: 10px auto;
     }
     
-    .loading-steps {
-        grid-template-columns: 1fr;
-    }
-    
-    .loading-title {
-        font-size: 2.2rem;
-    }
-    
-    .loading-subtitle {
-        font-size: 1.2rem;
-    }
+    /* Loading styles removed */
 }
