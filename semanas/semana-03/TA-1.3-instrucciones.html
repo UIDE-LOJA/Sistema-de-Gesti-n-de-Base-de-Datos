@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>TA-1.3 Resumen Técnico de ARIES</title>
+</head>
+<body>
+<p>Esta actividad de trabajo autónomo te permitirá <strong>comprender el algoritmo ARIES</strong> (Algorithm for Recovery and Isolation Exploiting Semantics) utilizado para recuperación de bases de datos. Te enfocarás en <em>explicar las tres fases del algoritmo</em> y <em>crear un esquema visual</em> del proceso.</p>
+
+<p><strong>¿Qué realizarás?</strong></p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 25%;" data-col-size="md">Componente</th>
+                    <th style="width: 50%;" data-col-size="xl">Instrucciones específicas</th>
+                    <th style="width: 25%;" data-col-size="md">Criterios de calidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-col-size="md">Información personal</td>
+                    <td data-col-size="xl">Incluye tus datos personales (nombre completo, curso, fecha) y título del resumen.</td>
+                    <td data-col-size="md">Información completa.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Introducción</td>
+                    <td data-col-size="xl">Explica brevemente qué es ARIES y por qué es importante para la recuperación de bases de datos.</td>
+                    <td data-col-size="md">Contexto claro y conciso.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Fase 1: Analysis</td>
+                    <td data-col-size="xl">Explica qué hace: identificar qué transacciones estaban activas cuando ocurrió el fallo.</td>
+                    <td data-col-size="md">Explicación simple.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Fase 2: Redo</td>
+                    <td data-col-size="xl">Explica qué hace: repetir todas las operaciones para restaurar el estado antes del fallo.</td>
+                    <td data-col-size="md">Explicación simple.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Fase 3: Undo</td>
+                    <td data-col-size="xl">Explica qué hace: revertir transacciones que no hicieron COMMIT.</td>
+                    <td data-col-size="md">Explicación simple.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Esquema visual</td>
+                    <td data-col-size="xl">Crea un diagrama mostrando las 3 fases de ARIES con flechas indicando el flujo del proceso.</td>
+                    <td data-col-size="md">Esquema claro y legible.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Conceptos clave a incluir:</strong></p>
+<ul>
+    <li><strong>ARIES</strong>: Algoritmo para recuperación de bases de datos después de un fallo</li>
+    <li><strong>Analysis</strong>: Identificar qué transacciones estaban activas</li>
+    <li><strong>Redo</strong>: Repetir operaciones para restaurar el estado</li>
+    <li><strong>Undo</strong>: Revertir transacciones sin COMMIT</li>
+</ul>
+
+<p><strong>Ejemplo de esquema ARIES:</strong></p>
+<pre>
+CRASH → RECOVERY PROCESS
+
+1. ANALYSIS
+   - Leer log desde último checkpoint
+   - Identificar transacciones activas
+   - Identificar páginas sucias
+   ↓
+2. REDO
+   - Repetir TODAS las operaciones
+   - Restaurar estado al momento del crash
+   ↓
+3. UNDO
+   - Revertir transacciones sin COMMIT
+   - Restaurar consistencia
+   ↓
+RECOVERY COMPLETE
+</pre>
+
+<p><strong>Ejemplo simple:</strong></p>
+<pre>
+Antes del crash:
+- T1: BEGIN → INSERT → COMMIT ✓ (completada)
+- T2: BEGIN → UPDATE → (sin COMMIT) ✗ (incompleta)
+- CRASH!
+
+Recuperación con ARIES:
+1. Analysis: Identificar que T1 completó y T2 no
+2. Redo: Repetir INSERT de T1 y UPDATE de T2
+3. Undo: Revertir UPDATE de T2 (porque no hizo COMMIT)
+
+Resultado: Solo los cambios de T1 quedan en la BD
+</pre>
+
+<p><strong>Especificaciones técnicas de entrega</strong></p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 25%;" data-col-size="md">Aspecto</th>
+                    <th style="width: 75%;" data-col-size="xl">Especificación requerida</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-col-size="md"><strong>Formato de archivo</strong></td>
+                    <td data-col-size="xl">PDF de 1 página. Nomenclatura: TA-1.3_ApellidoNombre_ARIES.pdf</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md"><strong>Contenido</strong></td>
+                    <td data-col-size="xl">Introducción breve, explicación de las 3 fases, esquema visual.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md"><strong>Esquema</strong></td>
+                    <td data-col-size="xl">Diagrama claro mostrando flujo de Analysis → Redo → Undo.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Información importante</strong></p>
+<ul>
+    <li><strong>Modalidad:</strong> Trabajo autónomo individual — <strong>2.25 pts</strong>.</li>
+    <li><strong>Extensión:</strong> 1 página.</li>
+    <li><strong>Entrega:</strong> Plataforma institucional antes de la fecha límite especificada.</li>
+    <li><strong>Penalización por retraso:</strong> -0.25 puntos por cada día de retraso.</li>
+</ul>
+
+<p><strong>Recursos de apoyo:</strong></p>
+<ul>
+    <li>Compendio Semana 3</li>
+    <li>Núñez, R. (2023). Gestión de bases de datos</li>
+    <li>Coronel, C., & Morris, S. (2022). Database systems</li>
+</ul>
+
+<p>Si tienes dudas, utiliza el <strong>horario de tutorías (lunes 10:00-12:00, viernes 08:00-09:00)</strong> o envía consulta por <strong>correo institucional</strong> con tiempo de respuesta máximo 48 horas laborables.</p>
+</body>
+</html>

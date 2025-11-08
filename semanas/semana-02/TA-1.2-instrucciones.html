@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>TA-1.2 Mini-reporte: Niveles de Aislamiento</title>
+</head>
+<body>
+<p>Esta actividad de trabajo autónomo te permitirá <strong>elegir el nivel de aislamiento apropiado</strong> para diferentes escenarios. Te enfocarás en <em>analizar 3 casos de uso</em> y <em>justificar qué nivel de aislamiento usar</em> en cada uno.</p>
+
+<p><strong>¿Qué realizarás?</strong></p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 25%;" data-col-size="md">Componente</th>
+                    <th style="width: 50%;" data-col-size="xl">Instrucciones específicas</th>
+                    <th style="width: 25%;" data-col-size="md">Criterios de calidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-col-size="md">Información personal</td>
+                    <td data-col-size="xl">Incluye tus datos personales (nombre completo, curso, fecha).</td>
+                    <td data-col-size="md">Información completa.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Escenario 1</td>
+                    <td data-col-size="xl">Lee el escenario 1, elige un nivel de aislamiento (READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE) y justifica en 2-3 líneas por qué es apropiado.</td>
+                    <td data-col-size="md">Elección justificada.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Escenario 2</td>
+                    <td data-col-size="xl">Lee el escenario 2, elige un nivel de aislamiento y justifica en 2-3 líneas.</td>
+                    <td data-col-size="md">Elección justificada.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Escenario 3</td>
+                    <td data-col-size="xl">Lee el escenario 3, elige un nivel de aislamiento y justifica en 2-3 líneas.</td>
+                    <td data-col-size="md">Elección justificada.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Niveles de aislamiento en MySQL:</strong></p>
+<ul>
+    <li><strong>READ UNCOMMITTED</strong>: Lee datos no confirmados (dirty reads). Más rápido pero menos seguro.</li>
+    <li><strong>READ COMMITTED</strong>: Solo lee datos confirmados. Evita dirty reads.</li>
+    <li><strong>REPEATABLE READ</strong>: Garantiza lecturas consistentes durante la transacción. Nivel por defecto en MySQL.</li>
+    <li><strong>SERIALIZABLE</strong>: Máximo aislamiento, transacciones completamente aisladas. Más lento.</li>
+</ul>
+
+<p><strong>Escenarios a analizar:</strong></p>
+
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Escenario</th>
+                    <th style="width: 60%;">Descripción</th>
+                    <th style="width: 25%;">Tu elección</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Dashboard</strong></td>
+                    <td>Un dashboard que muestra estadísticas generales (total de ventas, usuarios activos). Se actualiza cada 5 minutos. No es crítico que los números sean exactos al segundo.</td>
+                    <td>Nivel: ___________<br>Justificación: ___________</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Transferencia bancaria</strong></td>
+                    <td>Sistema bancario que transfiere dinero entre cuentas. Debe garantizar que el dinero no se pierda ni se duplique. Consistencia es crítica.</td>
+                    <td>Nivel: ___________<br>Justificación: ___________</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Sistema de reservas</strong></td>
+                    <td>Sistema de reservas de asientos en un cine. Dos usuarios no pueden reservar el mismo asiento. Debe evitar doble reserva pero permitir alta concurrencia.</td>
+                    <td>Nivel: ___________<br>Justificación: ___________</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Criterios para elegir:</strong></p>
+<ul>
+    <li><strong>Consistencia requerida</strong>: ¿Qué tan crítico es que los datos sean exactos?</li>
+    <li><strong>Rendimiento</strong>: ¿Necesitas muchas transacciones concurrentes?</li>
+    <li><strong>Problemas a evitar</strong>: Dirty reads, non-repeatable reads, phantom reads</li>
+</ul>
+
+<p><strong>Formato de respuesta por escenario:</strong></p>
+<pre>
+Escenario 1: Dashboard de estadísticas
+Nivel elegido: READ COMMITTED
+Justificación: No es crítico tener datos exactos al segundo, 
+y READ COMMITTED evita dirty reads sin sacrificar mucho rendimiento.
+</pre>
+
+<p><strong>Especificaciones técnicas de entrega</strong></p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 25%;" data-col-size="md">Aspecto</th>
+                    <th style="width: 75%;" data-col-size="xl">Especificación requerida</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-col-size="md"><strong>Formato de archivo</strong></td>
+                    <td data-col-size="xl">PDF de 1 página. Nomenclatura: TA-1.2_ApellidoNombre_NivelesAislamiento.pdf</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md"><strong>Contenido</strong></td>
+                    <td data-col-size="xl">Tabla con los 3 escenarios, nivel elegido y justificación breve (2-3 líneas) para cada uno.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md"><strong>Extensión</strong></td>
+                    <td data-col-size="xl">Máximo 1 página.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Información importante</strong></p>
+<ul>
+    <li><strong>Modalidad:</strong> Trabajo autónomo individual — <strong>2.25 pts</strong>.</li>
+    <li><strong>Extensión:</strong> 1 página.</li>
+    <li><strong>Entrega:</strong> Plataforma institucional antes de la fecha límite especificada.</li>
+    <li><strong>Penalización por retraso:</strong> -0.25 puntos por cada día de retraso.</li>
+</ul>
+
+<p><strong>Recursos de apoyo:</strong></p>
+<ul>
+    <li>Compendio Semana 2</li>
+    <li>MySQL Transaction Isolation Levels: https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html</li>
+</ul>
+
+<p>Si tienes dudas, utiliza el <strong>horario de tutorías (lunes 10:00-12:00, viernes 08:00-09:00)</strong> o envía consulta por <strong>correo institucional</strong> con tiempo de respuesta máximo 48 horas laborables.</p>
+</body>
+</html>

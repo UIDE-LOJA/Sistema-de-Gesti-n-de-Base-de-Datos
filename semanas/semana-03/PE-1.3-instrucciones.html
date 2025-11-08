@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>PE-1.3 Laboratorio: WAL y Checkpoints</title>
+</head>
+<body>
+<p>Esta actividad práctica te permitirá <strong>observar el logging en MySQL</strong>. Te enfocarás en <em>verificar que el binary log esté activo</em>, <em>ejecutar transacciones simples</em>, y <em>ver los logs generados</em>.</p>
+
+<p><strong>¿Qué realizarás?</strong></p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 26%;">Actividad</th>
+                    <th style="width: 49%;">Instrucciones</th>
+                    <th style="width: 25%;">Entregable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1) Verificar binary log</td>
+                    <td>Ejecuta: <code>SHOW VARIABLES LIKE 'log_bin';</code> para verificar si está activo.</td>
+                    <td>Captura mostrando resultado.</td>
+                </tr>
+                <tr>
+                    <td>2) Crear tabla y datos</td>
+                    <td>Crea una tabla simple e inserta 3-5 registros usando transacciones.</td>
+                    <td>Script SQL ejecutado.</td>
+                </tr>
+                <tr>
+                    <td>3) Ver logs</td>
+                    <td>Ejecuta: <code>SHOW BINARY LOGS;</code> para ver los archivos de log.</td>
+                    <td>Captura de lista de logs.</td>
+                </tr>
+                <tr>
+                    <td>4) Explicar</td>
+                    <td>En 2-3 líneas: ¿Para qué sirve el binary log en MySQL?</td>
+                    <td>Explicación breve.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Comandos a ejecutar en MySQL:</strong></p>
+
+<pre>
+-- 1. Verificar binary log
+SHOW VARIABLES LIKE 'log_bin';
+
+-- 2. Crear tabla de prueba
+CREATE TABLE test_log (
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    dato VARCHAR(50)
+);
+
+-- 3. Insertar datos con transacciones
+START TRANSACTION;
+INSERT INTO test_log (dato) VALUES ('registro 1');
+INSERT INTO test_log (dato) VALUES ('registro 2');
+COMMIT;
+
+START TRANSACTION;
+INSERT INTO test_log (dato) VALUES ('registro 3');
+COMMIT;
+
+-- 4. Ver lista de binary logs
+SHOW BINARY LOGS;
+
+-- 5. Ver contenido del último log (opcional)
+SHOW BINLOG EVENTS;
+</pre>
+
+<p><strong>¿Para qué sirve el binary log?</strong></p>
+<ul>
+    <li><strong>Recuperación</strong>: Permite restaurar la base de datos después de un fallo</li>
+    <li><strong>Replicación</strong>: Envía cambios a servidores réplica</li>
+    <li><strong>Auditoría</strong>: Registra todas las operaciones que modifican datos</li>
+</ul>
+
+<p><strong>Especificaciones técnicas de entrega</strong></p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Aspecto</th>
+                    <th style="width: 75%;">Especificación requerida</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Formato de entrega</strong></td>
+                    <td>PDF con capturas y explicaciones. Nomenclatura: PE-1.3_ApellidoNombre_WAL.pdf</td>
+                </tr>
+                <tr>
+                    <td><strong>Capturas</strong></td>
+                    <td>Claras y legibles mostrando: verificación de log_bin, transacciones ejecutadas, lista de binary logs.</td>
+                </tr>
+                <tr>
+                    <td><strong>Explicación</strong></td>
+                    <td>2-3 líneas explicando para qué sirve el binary log en MySQL.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Información importante</strong></p>
+<ul>
+    <li><strong>Modalidad:</strong> Práctica presencial (lab) — <strong>2.25 pts</strong>.</li>
+    <li><strong>Duración:</strong> 90 minutos.</li>
+    <li><strong>Entrega:</strong> Documento al final de la clase.</li>
+</ul>
+
+<p><strong>Recursos de apoyo:</strong></p>
+<ul>
+    <li>Documentación MySQL Binary Log: https://dev.mysql.com/doc/refman/8.0/en/binary-log.html</li>
+    <li>Compendio Semana 3</li>
+</ul>
+
+<p>Si tienes dudas durante la actividad, levanta la mano para recibir asistencia del docente.</p>
+</body>
+</html>

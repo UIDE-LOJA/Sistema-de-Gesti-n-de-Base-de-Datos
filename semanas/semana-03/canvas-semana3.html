@@ -1,0 +1,121 @@
+<p>Esta semana exploramos <strong>Recuperación y Logging en Bases de Datos</strong> con foco en
+    <em>Write-Ahead Log (WAL)</em>, <em>algoritmo ARIES</em> y <em>crash recovery</em>. Veremos cómo los SGBD garantizan
+    durabilidad y consistencia mediante técnicas de logging, checkpoints y recuperación ante fallos.</p>
+
+<p><strong>¿Qué veremos?</strong></p>
+
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">Tema</th>
+                    <th style="width: 50%;">Contenido clave</th>
+                    <th style="width: 28%;">Ejemplos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Write-Ahead Log (WAL)</td>
+                    <td>Principio fundamental: <strong>registrar cambios antes de aplicarlos</strong>. Garantiza durabilidad
+                        (D de ACID). Estructura de registros: LSN, tipo de operación, datos before/after. En MySQL: Binary Log y InnoDB Redo Log.</td>
+                    <td>PostgreSQL WAL, MySQL Binary Log + InnoDB Redo Log, SQL Server Transaction Log.</td>
+                </tr>
+                <tr>
+                    <td>Checkpoints</td>
+                    <td><strong>Puntos de sincronización</strong> que escriben páginas sucias a disco. Reducen tiempo de
+                        recuperación al establecer punto de inicio conocido. MySQL: InnoDB checkpoints automáticos. PostgreSQL: CHECKPOINT manual.</td>
+                    <td>CHECKPOINT en PostgreSQL, InnoDB fuzzy checkpointing en MySQL, configuración innodb_flush_log_at_trx_commit.</td>
+                </tr>
+                <tr>
+                    <td>Algoritmo ARIES</td>
+                    <td><strong>Algorithm for Recovery and Isolation Exploiting Semantics</strong>. Tres fases:
+                        <strong>Analysis</strong> (identificar estado), <strong>Redo</strong> (repetir operaciones),
+                        <strong>Undo</strong> (revertir transacciones incompletas).</td>
+                    <td>Recuperación tras crash, transaction table, dirty page table, LSN tracking.</td>
+                </tr>
+                <tr>
+                    <td>Crash Recovery</td>
+                    <td>Proceso de <strong>restaurar consistencia</strong> tras fallo del sistema. Uso de logs para
+                        reconstruir estado. MySQL InnoDB: recuperación automática usando redo log. PostgreSQL: replay de WAL.</td>
+                    <td>Fallo de energía, crash del servidor, MySQL InnoDB crash recovery, PostgreSQL automatic recovery.</td>
+                </tr>
+                <tr>
+                    <td>Journaling</td>
+                    <td>Técnica de <strong>registro secuencial</strong> de operaciones. Permite replay de transacciones.
+                        MySQL: Binary Log para replicación, InnoDB Redo Log para recuperación. Trade-off entre rendimiento y seguridad.</td>
+                    <td>MySQL Binary Log (binlog), InnoDB Redo Log, PostgreSQL WAL, configuración sync_binlog y innodb_flush_log_at_trx_commit.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Objetivos de aprendizaje</strong></p>
+
+<p>Al finalizar la semana podrás:</p>
+
+<ul>
+    <li>
+        <p>Explicar el principio de <strong>Write-Ahead Log</strong> y su importancia para garantizar durabilidad en
+            transacciones.</p>
+    </li>
+    <li>
+        <p>Describir el funcionamiento de <strong>checkpoints</strong> y su rol en optimizar el tiempo de recuperación.</p>
+    </li>
+    <li>
+        <p>Comprender las <strong>tres fases del algoritmo ARIES</strong> (Analysis, Redo, Undo) y su aplicación en
+            recuperación ante fallos.</p>
+    </li>
+    <li>
+        <p>Implementar y observar <strong>logging y checkpoints</strong> en un SGBD real mediante laboratorio práctico.</p>
+    </li>
+</ul>
+
+<p><strong>Materiales</strong></p>
+
+<ul>
+    <li>
+        <p><strong>Presentación:</strong> Semana 3 — Recuperación y Logging en Bases de Datos.</p>
+    </li>
+    <li>
+        <p><strong>Bibliografía:</strong></p>
+        <ul>
+            <li>Núñez, R. (2023). <em>Gestión de bases de datos</em>. RA-MA Editorial.</li>
+            <li>Coronel, C., & Morris, S. (2022). <em>Database systems: Design, implementation, & management</em> (13th ed.). Cengage Learning.</li>
+            <li>Petrov, A. (2019). <em>Database internals: A deep dive into how distributed data systems work</em>. O'Reilly Media.</li>
+            <li>Kleppmann, M. (2023). <em>Designing data-intensive applications</em>. O'Reilly Media.</li>
+        </ul>
+    </li>
+    <li>
+        <p><strong>Documentación técnica:</strong></p>
+        <ul>
+            <li>PostgreSQL WAL: https://www.postgresql.org/docs/current/wal.html</li>
+            <li>MySQL Binary Log: https://dev.mysql.com/doc/refman/8.0/en/binary-log.html</li>
+            <li>MySQL InnoDB Recovery: https://dev.mysql.com/doc/refman/8.0/en/innodb-recovery.html</li>
+            <li>MySQL InnoDB Redo Log: https://dev.mysql.com/doc/refman/8.0/en/innodb-redo-log.html</li>
+        </ul>
+    </li>
+</ul>
+
+<p><strong>Actividades</strong></p>
+
+<ul>
+    <li>
+        <p><strong>Lectura guiada</strong> del compendio y referencias técnicas.</p>
+    </li>
+    <li>
+        <p><strong>PE-1.3: Laboratorio: activar WAL/Binary Log, forzar transacciones y observar registros/checkpoints</strong> —
+            práctica con PostgreSQL o MySQL configurando logging y analizando registros — <strong>2.25 pts</strong>.</p>
+    </li>
+    <li>
+        <p><strong>TA-1.3: Resumen técnico (1 pág.) de ARIES (analyze-redo-undo) con esquema</strong> —
+            documento explicando las tres fases del algoritmo con diagrama visual (aplicable a InnoDB y PostgreSQL) — <strong>2.25 pts</strong>.</p>
+    </li>
+    <li>
+        <p><strong>Total de la semana:</strong> <strong>4.5/30</strong> (Evaluación diagnóstica).</p>
+    </li>
+</ul>
+
+<p>Si tienes dudas, deja tu pregunta en el canal de <strong>DISCORD</strong> o envíame un mensaje por
+    <strong>Canvas</strong>.</p>
