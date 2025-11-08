@@ -312,6 +312,10 @@ th {
     margin: 20px auto;
     max-width: 800px;
     text-align: center;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .mermaid svg {

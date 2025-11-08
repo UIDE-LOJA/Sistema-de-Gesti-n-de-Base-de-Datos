@@ -323,64 +323,34 @@
         <!-- Slide 10: ARIES Phases -->
         <div class="slide">
             <h2><i class="fas fa-sync-alt"></i> ARIES: Las Tres Fases de Recuperación</h2>
-            <div
-                style="display: flex; align-items: center; justify-content: center; gap: 20px; margin: 40px auto; max-width: 1200px;">
-                <!-- Fase 1: INICIO -->
-                <div
-                    style="background: #E9AB21; border: 3px solid #23356E; border-radius: 15px; padding: 25px 20px; min-width: 180px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px;"><i class="fas fa-exclamation-triangle"
-                            style="color: #000;"></i></div>
-                    <div style="font-weight: 700; font-size: 1.3rem; color: #000; margin-bottom: 5px;">INICIO</div>
-                    <div style="font-size: 1rem; color: #000;">Sistema Fallido</div>
-                </div>
+            <div class="mermaid">
+                ---
+                config:
+                theme: dark
+                themeVariables:
+                primaryColor: '#910048'
+                primaryTextColor: '#f8fafc'
+                primaryBorderColor: '#23356E'
+                lineColor: '#E9AB21'
+                background: '#0f1419'
+                ---
+                flowchart TD
+                Start["🚀<br />INICIO<br />Sistema Fallido"]
+                Analysis["🔍<br />ANÁLISIS<br />Reconstruir Estado"]
+                Redo["↻<br />REDO<br />Rehacer Historia"]
+                Undo["↶<br />UNDO<br />Deshacer Incompletas"]
+                Complete["✅<br />COMPLETADO<br />Sistema Consistente"]
 
-                <!-- Flecha 1 -->
-                <div style="font-size: 2.5rem; color: #E9AB21;"><i class="fas fa-arrow-right"></i></div>
+                Start --> Analysis
+                Analysis --> Redo
+                Redo --> Undo
+                Undo --> Complete
 
-                <!-- Fase 2: ANÁLISIS -->
-                <div
-                    style="background: #910048; border: 3px solid #23356E; border-radius: 15px; padding: 25px 20px; min-width: 180px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px;"><i class="fas fa-search"
-                            style="color: #fff;"></i></div>
-                    <div style="font-weight: 700; font-size: 1.3rem; color: #fff; margin-bottom: 5px;">ANÁLISIS</div>
-                    <div style="font-size: 1rem; color: #fff;">Reconstruir Estado</div>
-                </div>
-
-                <!-- Flecha 2 -->
-                <div style="font-size: 2.5rem; color: #E9AB21;"><i class="fas fa-arrow-right"></i></div>
-
-                <!-- Fase 3: REDO -->
-                <div
-                    style="background: #23356E; border: 3px solid #910048; border-radius: 15px; padding: 25px 20px; min-width: 180px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px;"><i class="fas fa-redo"
-                            style="color: #fff;"></i></div>
-                    <div style="font-weight: 700; font-size: 1.3rem; color: #fff; margin-bottom: 5px;">REDO</div>
-                    <div style="font-size: 1rem; color: #fff;">Rehacer Historia</div>
-                </div>
-
-                <!-- Flecha 3 -->
-                <div style="font-size: 2.5rem; color: #E9AB21;"><i class="fas fa-arrow-right"></i></div>
-
-                <!-- Fase 4: UNDO -->
-                <div
-                    style="background: #910048; border: 3px solid #23356E; border-radius: 15px; padding: 25px 20px; min-width: 180px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px;"><i class="fas fa-undo"
-                            style="color: #fff;"></i></div>
-                    <div style="font-weight: 700; font-size: 1.3rem; color: #fff; margin-bottom: 5px;">UNDO</div>
-                    <div style="font-size: 1rem; color: #fff;">Deshacer Incompletas</div>
-                </div>
-
-                <!-- Flecha 4 -->
-                <div style="font-size: 2.5rem; color: #E9AB21;"><i class="fas fa-arrow-right"></i></div>
-
-                <!-- Fase 5: COMPLETADO -->
-                <div
-                    style="background: #10b981; border: 3px solid #23356E; border-radius: 15px; padding: 25px 20px; min-width: 180px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px;"><i class="fas fa-check-circle"
-                            style="color: #fff;"></i></div>
-                    <div style="font-weight: 700; font-size: 1.3rem; color: #fff; margin-bottom: 5px;">COMPLETADO</div>
-                    <div style="font-size: 1rem; color: #fff;">Sistema Consistente</div>
-                </div>
+                style Start fill:#E9AB21,stroke:#23356E,stroke-width:4px,color:#000
+                style Analysis fill:#910048,stroke:#23356E,stroke-width:4px,color:#fff
+                style Redo fill:#23356E,stroke:#910048,stroke-width:4px,color:#fff
+                style Undo fill:#910048,stroke:#23356E,stroke-width:4px,color:#fff
+                style Complete fill:#10b981,stroke:#23356E,stroke-width:4px,color:#fff
             </div>
         </div>
 
@@ -435,6 +405,81 @@
             </div>
         </div>
 
+        <!-- Slide 13: Performance Metrics -->
+        <div class="slide">
+                style ActiveTrans fill:#4a5568,stroke:#E9AB21,stroke-width:2px,color:#fff
+
+                %% Estilos para subprocesos
+                style AnalyzeLog fill:#2d3748,stroke:#910048,stroke-width:2px,color:#fff
+                style BuildTables fill:#2d3748,stroke:#910048,stroke-width:2px,color:#fff
+                style RedoChanges fill:#2d3748,stroke:#23356E,stroke-width:2px,color:#fff
+                style UndoTrans fill:#2d3748,stroke:#910048,stroke-width:2px,color:#fff
+
+                %% Clases para agrupación visual
+                classDef mainPhase fill:#910048,stroke:#E9AB21,stroke-width:4px,color:#fff
+                classDef systemComponent fill:#4a5568,stroke:#E9AB21,stroke-width:3px,color:#fff
+                classDef subprocess fill:#2d3748,stroke:#cbd5e1,stroke-width:2px,color:#fff
+                classDef criticalPath fill:#E9AB21,stroke:#910048,stroke-width:4px,color:#000
+                classDef success fill:#10b981,stroke:#23356E,stroke-width:4px,color:#fff
+
+                class Analysis,Redo,Undo mainPhase
+                class LogSeq,DirtyPages,ActiveTrans systemComponent
+                class AnalyzeLog,BuildTables,RedoChanges,UndoTrans subprocess
+                class Start criticalPath
+                class Complete success
+            </div>
+        </div>
+
+        <!-- Slide 11: Checkpoints -->
+        <div class="slide">
+            <h2><i class="fas fa-map-marker-alt"></i> Checkpoints: Puntos de Sincronización</h2>
+            <div class="quote">
+                "Un punto de control (checkpoint) es un evento que ayuda a sincronizar la caché de buffer de la base
+                de datos con los archivos de datos en el disco"
+            </div>
+            <div class="content-grid">
+                <div>
+                    <h3>Beneficios</h3>
+                    <ul>
+                        <li><span class="emphasis">Marcador de sincronización</span></li>
+                        <li><span class="emphasis">Optimización de recuperación</span></li>
+                        <li><span class="emphasis">Mejora de rendimiento</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Función Principal</h3>
+                    <p><strong>Reducir trabajo de recuperación</strong> limitando la cantidad de registros del log
+                        que deben ser examinados tras un fallo.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Recovery Process -->
+        <div class="slide">
+            <h2><i class="fas fa-exclamation-triangle"></i> Recuperación Ante Fallos</h2>
+            <div class="content-grid">
+                <div>
+                    <h3>Rolling Forward (Redo)</h3>
+                    <div class="feature-card">
+                        <p>Volver a aplicar todas las modificaciones guardadas en el log</p>
+                        <ul>
+                            <li>SMON aplica redo logs</li>
+                            <li>Incluye cambios confirmados Y no confirmados</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <h3>Rolling Back (Undo)</h3>
+                    <div class="feature-card">
+                        <p>Deshacer transacciones no confirmadas</p>
+                        <ul>
+                            <li>PMON detecta errores de proceso</li>
+                            <li>Libera bloqueos y recursos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Slide 13: Performance Metrics -->
         <div class="slide">
@@ -603,6 +648,15 @@
                         <li>Ventajas sobre métodos tradicionales</li>
                     </ul>
                 </div>
+            </div>
+            <div
+                style="text-align: center; margin-top: 2rem; padding: 20px; background: rgba(145, 0, 72, 0.1); border-radius: 10px; border: 1px solid var(--uide-primary);">
+                <p style="color: var(--uide-primary); font-weight: 600; font-size: 1.2rem;">
+                    <i class="fas fa-chart-pie"></i> <strong>Evaluación:</strong> Contribuye al 30% (Semanas 1-4)
+                </p>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+                    Total de puntos por actividad: <strong>4.5 puntos</strong> (PE-1.3 + TA-1.3)
+                </p>
             </div>
         </div>
     </div>

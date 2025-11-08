@@ -1,0 +1,20 @@
+<!-- Diagrama ARIES simplificado que funciona -->
+<div class="mermaid">
+    flowchart TD
+    Start["🚀<br />INICIO<br />Sistema Fallido"]
+    Analysis["🔍<br />ANÁLISIS<br />Reconstruir Estado"]
+    Redo["↻<br />REDO<br />Rehacer Historia"]
+    Undo["↶<br />UNDO<br />Deshacer Incompletas"]
+    Complete["✅<br />COMPLETADO<br />Sistema Consistente"]
+
+    Start --> Analysis
+    Analysis --> Redo
+    Redo --> Undo
+    Undo --> Complete
+
+    style Start fill:#E9AB21,stroke:#23356E,stroke-width:4px,color:#000
+    style Analysis fill:#910048,stroke:#23356E,stroke-width:4px,color:#fff
+    style Redo fill:#23356E,stroke:#910048,stroke-width:4px,color:#fff
+    style Undo fill:#910048,stroke:#23356E,stroke-width:4px,color:#fff
+    style Complete fill:#10b981,stroke:#23356E,stroke-width:4px,color:#fff
+</div>
