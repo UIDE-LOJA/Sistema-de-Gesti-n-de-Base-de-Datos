@@ -334,24 +334,71 @@
                 <div>
                     <h3>Archivos del Redo Log</h3>
                     <ul>
-                        <li><span class="emphasis">ib_logfile0, ib_logfile1</span>: Archivos circulares</li>
-                        <li><span class="emphasis">innodb_log_file_size</span>: Tamaño de cada archivo</li>
-                        <li><span class="emphasis">innodb_log_files_in_group</span>: Número de archivos (default: 2)</li>
+                        <li><span class="emphasis">#ib_redoXXX</span>: Archivos de Redo Log (MySQL 8.0.30+)</li>
+                        <li><span class="emphasis">innodb_redo_log_capacity</span>: Capacidad total del Redo Log (reemplaza innodb_log_file_size)</li>
                         <li><span class="emphasis">Log Sequence Number (LSN)</span>: Identificador único creciente</li>
+                        <li><span class="emphasis">Ubicación</span>: Directorio <code>#innodb_redo/</code> en datadir</li>
                     </ul>
                 </div>
                 <div>
-                    <h3>Configuración Básica MySQL</h3>
+                    <h3>Configuración Básica MySQL 8.0.30+</h3>
                     <div class="code-block">
 <span class="sql-comment">-- Ver configuración actual</span>
-<span class="sql-keyword">SHOW VARIABLES LIKE</span> <span class="sql-string">'innodb_log%'</span>;
+<span class="sql-keyword">SHOW VARIABLES LIKE</span> <span class="sql-string">'innodb_redo_log%'</span>;
 
-<span class="sql-comment">-- Configurar tamaño (my.cnf/my.ini)</span>
-innodb_log_file_size = 512M
-innodb_log_files_in_group = 2
+<span class="sql-comment">-- Configurar capacidad (my.cnf/my.ini)</span>
+innodb_redo_log_capacity = 512M
 innodb_flush_log_at_trx_commit = 1
+
+<span class="sql-comment">-- MySQL 8.0.29 y anteriores usaban:</span>
+<span class="sql-comment">-- innodb_log_file_size = 512M (DEPRECADO)</span>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Slide 6.0.5: Cambios importantes en MySQL 8.0.30+ -->
+        <div class="slide">
+            <h2><i class="fas fa-exclamation-triangle"></i> Importante: Cambios en MySQL 8.0.30+</h2>
+            <div class="quote">
+                "A partir de MySQL 8.0.30, la configuración del Redo Log cambió para simplificar su administración"
+            </div>
+            <div class="content-grid">
+                <div>
+                    <h3><i class="fas fa-times-circle" style="color: #ef4444;"></i> Deprecado (MySQL ≤ 8.0.29)</h3>
+                    <div style="background: rgba(239, 68, 68, 0.1); padding: 15px; border-radius: 10px; border-left: 3px solid #ef4444;">
+                        <div class="code-block">
+<span class="sql-comment">-- Parámetros antiguos (NO usar)</span>
+innodb_log_file_size = 512M
+innodb_log_files_in_group = 2
+
+<span class="sql-comment">-- Archivos generados:</span>
+ib_logfile0
+ib_logfile1
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3><i class="fas fa-check-circle" style="color: #10b981;"></i> Actual (MySQL ≥ 8.0.30)</h3>
+                    <div style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 10px; border-left: 3px solid #10b981;">
+                        <div class="code-block">
+<span class="sql-comment">-- Parámetro simplificado (USAR)</span>
+innodb_redo_log_capacity = 512M
+
+<span class="sql-comment">-- Archivos generados automáticamente:</span>
+#innodb_redo/#ib_redo1
+#innodb_redo/#ib_redo2
+...
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 1rem; padding: 15px; background: rgba(233, 171, 33, 0.15); border-radius: 8px; border-left: 4px solid #E9AB21;">
+                <p style="margin: 0; font-size: 0.95rem;">
+                    <strong><i class="fas fa-info-circle"></i> Compatibilidad:</strong> Verifica tu versión con <code>SELECT VERSION();</code>
+                    Si usas MySQL 8.0.30 o superior, usa <code>innodb_redo_log_capacity</code>.
+                    Si usas versión anterior, usa <code>innodb_log_file_size</code>.
+                </p>
             </div>
         </div>
 
@@ -1114,9 +1161,9 @@ sync_binlog = 1
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>innodb_log_file_size</strong></td>
-                        <td>Tamaño del archivo Redo Log</td>
-                        <td>256MB - 1GB</td>
+                        <td><strong>innodb_redo_log_capacity</strong></td>
+                        <td>Capacidad total del Redo Log (MySQL 8.0.30+)</td>
+                        <td>512MB - 2GB</td>
                     </tr>
                     <tr>
                         <td><strong>innodb_flush_log_at_trx_commit</strong></td>
@@ -1243,7 +1290,7 @@ sync_binlog = 1
                     <h3>Checklist de Configuración</h3>
                     <ul>
                         <li><i class="fas fa-check-circle" style="color: #10b981;"></i> <strong>innodb_flush_log_at_trx_commit = 1</strong></li>
-                        <li><i class="fas fa-check-circle" style="color: #10b981;"></i> <strong>innodb_log_file_size</strong> adecuado (512MB+)</li>
+                        <li><i class="fas fa-check-circle" style="color: #10b981;"></i> <strong>innodb_redo_log_capacity</strong> adecuado (512MB+, MySQL 8.0.30+)</li>
                         <li><i class="fas fa-check-circle" style="color: #10b981;"></i> Monitorear LSN y checkpoint age</li>
                         <li><i class="fas fa-check-circle" style="color: #10b981;"></i> Buffer pool correctamente dimensionado</li>
                         <li><i class="fas fa-check-circle" style="color: #10b981;"></i> Testear crash recovery en desarrollo</li>

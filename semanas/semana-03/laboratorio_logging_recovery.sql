@@ -38,33 +38,35 @@ SELECT '===== PARTE 1: CONFIGURACIÓN ACTUAL DE INNODB LOGGING =====' AS seccion
 
 -- Ver configuración del Redo Log
 -- EJECUTAR: Este comando muestra todas las variables de InnoDB Log
+-- Para MySQL 8.0.30+
+SHOW VARIABLES LIKE 'innodb_redo_log%';
+-- Para MySQL 8.0.29 y anteriores
 SHOW VARIABLES LIKE 'innodb_log%';
 
 -- ANOTAR: Los siguientes valores importantes:
---   - innodb_log_file_size: Tamaño de cada archivo de Redo Log
---   - innodb_log_files_in_group: Número de archivos (típicamente 2)
---   - innodb_log_buffer_size: Buffer en memoria para Redo Log
+--   MySQL 8.0.30+:
+--     - innodb_redo_log_capacity: Capacidad total del Redo Log
+--   MySQL 8.0.29 y anteriores:
+--     - innodb_log_file_size: Tamaño de cada archivo de Redo Log (DEPRECADO)
+--     - innodb_log_files_in_group: Número de archivos (DEPRECADO)
+--   Todas las versiones:
+--     - innodb_log_buffer_size: Buffer en memoria para Redo Log
 
--- Variables críticas para durabilidad
+-- Variables críticas para durabilidad (compatible con todas las versiones)
 SELECT
     '1. innodb_flush_log_at_trx_commit' AS variable,
     @@innodb_flush_log_at_trx_commit AS valor_actual,
     'Debe ser 1 para máxima durabilidad' AS recomendacion
 UNION ALL
 SELECT
-    '2. innodb_log_file_size',
-    @@innodb_log_file_size,
-    'Tamaño del archivo de Redo Log (bytes)'
-UNION ALL
-SELECT
-    '3. innodb_log_files_in_group',
-    @@innodb_log_files_in_group,
-    'Número de archivos de Redo Log (circular)'
-UNION ALL
-SELECT
-    '4. innodb_log_buffer_size',
+    '2. innodb_log_buffer_size',
     @@innodb_log_buffer_size,
-    'Buffer en memoria para Redo Log';
+    'Buffer en memoria para Redo Log'
+UNION ALL
+SELECT
+    '3. VERSION()',
+    VERSION(),
+    'Versión de MySQL (8.0.30+ usa innodb_redo_log_capacity)';
 
 -- VERIFICAR: Si innodb_flush_log_at_trx_commit NO es 1:
 -- CAMBIAR TEMPORALMENTE (solo para esta sesión):
