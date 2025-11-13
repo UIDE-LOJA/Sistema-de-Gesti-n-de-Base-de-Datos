@@ -125,7 +125,7 @@
                                     <span style="color: var(--uide-accent); font-size: 1rem; font-weight: 700;">2.25 pts</span>
                                 </div>
                                 <p style="color: #cbd5e1; font-size: 0.85rem; margin: 0; line-height: 1.4;">
-                                    Monitorear Redo Log y simular crash recovery
+                                    Verificar Binary Log y ejecutar transacciones de pago QR
                                 </p>
                             </div>
 
@@ -263,6 +263,67 @@
             </div>
         </div>
 
+        <!-- Slide 5.5: ¿Qué es InnoDB? -->
+        <div class="slide">
+            <h2><i class="fas fa-database"></i> InnoDB: El Motor de Almacenamiento de MySQL</h2>
+            <div class="quote">
+                "InnoDB es el motor de almacenamiento por defecto de MySQL, diseñado para transacciones ACID"
+            </div>
+            <div class="content-grid">
+                <div>
+                    <h3>¿Qué es un Storage Engine?</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                        MySQL es modular: el <strong>Storage Engine</strong> determina cómo se almacenan, recuperan y gestionan los datos físicamente en disco.
+                    </p>
+                    <h3>Características de InnoDB</h3>
+                    <ul>
+                        <li><span class="emphasis">Transaccional</span>: Soporte completo ACID</li>
+                        <li><span class="emphasis">Foreign Keys</span>: Integridad referencial</li>
+                        <li><span class="emphasis">Crash Recovery</span>: Recuperación automática con ARIES</li>
+                        <li><span class="emphasis">MVCC</span>: Multi-Version Concurrency Control</li>
+                        <li><span class="emphasis">Row-level Locking</span>: Bloqueos a nivel de fila</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Alternativas a InnoDB en MySQL</h3>
+                    <table style="font-size: 0.9rem;">
+                        <thead>
+                            <tr>
+                                <th>Engine</th>
+                                <th>Características</th>
+                                <th>Uso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>InnoDB</strong></td>
+                                <td>ACID, FK, Crash Recovery</td>
+                                <td>✅ Producción (default)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>MyISAM</strong></td>
+                                <td>Sin transacciones, rápido</td>
+                                <td>❌ Deprecado</td>
+                            </tr>
+                            <tr>
+                                <td><strong>MEMORY</strong></td>
+                                <td>Todo en RAM</td>
+                                <td>Cache temporal</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CSV</strong></td>
+                                <td>Almacena en CSV</td>
+                                <td>Exportación/Logs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="margin-top: 1.5rem; padding: 15px; background: rgba(233, 171, 33, 0.1); border-left: 3px solid #E9AB21; font-size: 0.95rem;">
+                        <strong><i class="fas fa-star"></i> Recomendación:</strong> Para sistemas de pagos como "¡ahorita!" usar <strong>InnoDB</strong> por su soporte ACID completo
+                    </p>
+                </div>
+            </div>
+        </div>
+
         <!-- Slide 6: InnoDB Redo Log -->
         <div class="slide">
             <h2><i class="fas fa-file-alt"></i> InnoDB Redo Log: Implementación de WAL en MySQL</h2>
@@ -292,6 +353,54 @@ innodb_flush_log_at_trx_commit = 1
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Slide 6.1: Ubicación de archivos de configuración -->
+        <div class="slide">
+            <h2><i class="fas fa-folder-open"></i> Ubicación de Archivos de Configuración MySQL</h2>
+            <div class="quote">
+                "Saber dónde está el archivo de configuración es esencial para modificar parámetros de InnoDB"
+            </div>
+            <div class="content-grid">
+                <div>
+                    <h3><i class="fab fa-windows"></i> Windows</h3>
+                    <div style="background: rgba(35, 53, 110, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 1rem;">
+                        <p style="font-size: 0.95rem; margin-bottom: 0.5rem;"><strong>Archivo:</strong> <code>my.ini</code></p>
+                        <p style="font-size: 0.9rem; line-height: 1.6;">
+                            <strong>Ubicaciones comunes:</strong><br>
+                            • <code>C:\ProgramData\MySQL\MySQL Server 8.0\my.ini</code><br>
+                            • <code>C:\Program Files\MySQL\MySQL Server 8.0\my.ini</code><br>
+                            • Directorio de instalación de MySQL
+                        </p>
+                    </div>
+                    <div style="background: rgba(145, 0, 72, 0.2); padding: 12px; border-radius: 8px; font-size: 0.85rem;">
+                        <strong><i class="fas fa-search"></i> Encontrar archivo:</strong><br>
+                        • Abrir MySQL Workbench → Server → Options File<br>
+                        • Ejecutar: <code>mysql --help</code> (buscar "Default options")
+                    </div>
+                </div>
+                <div>
+                    <h3><i class="fab fa-apple"></i> macOS / Linux</h3>
+                    <div style="background: rgba(35, 53, 110, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 1rem;">
+                        <p style="font-size: 0.95rem; margin-bottom: 0.5rem;"><strong>Archivo:</strong> <code>my.cnf</code></p>
+                        <p style="font-size: 0.9rem; line-height: 1.6;">
+                            <strong>Ubicaciones comunes:</strong><br>
+                            • <code>/etc/my.cnf</code> (global)<br>
+                            • <code>/etc/mysql/my.cnf</code> (Debian/Ubuntu)<br>
+                            • <code>/usr/local/mysql/my.cnf</code> (macOS Homebrew)<br>
+                            • <code>~/.my.cnf</code> (usuario específico)
+                        </p>
+                    </div>
+                    <div style="background: rgba(145, 0, 72, 0.2); padding: 12px; border-radius: 8px; font-size: 0.85rem;">
+                        <strong><i class="fas fa-terminal"></i> Encontrar archivo:</strong><br>
+                        <code>mysql --help | grep "Default options"</code><br>
+                        <code>sudo find / -name my.cnf 2>/dev/null</code>
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 1.5rem; padding: 15px; background: rgba(233, 171, 33, 0.1); border-left: 3px solid #E9AB21; font-size: 0.95rem;">
+                <strong><i class="fas fa-exclamation-triangle"></i> Importante:</strong> Reiniciar MySQL después de modificar el archivo de configuración: <code>systemctl restart mysql</code> (Linux) o Servicios (Windows)
+            </p>
         </div>
 
         <!-- Slide 7: Caso de Uso Real -->
@@ -778,6 +887,178 @@ innodb_io_capacity_max = 2000
             </div>
         </div>
 
+        <!-- Slide 13.1: Binary Log en MySQL -->
+        <div class="slide">
+            <h2><i class="fas fa-archive"></i> Binary Log: Diferencia con Redo Log</h2>
+            <div class="quote">
+                "El Binary Log registra cambios a nivel lógico (SQL) mientras el Redo Log lo hace a nivel físico (páginas)"
+            </div>
+            <div class="content-grid">
+                <div>
+                    <h3>¿Qué es el Binary Log?</h3>
+                    <ul>
+                        <li><span class="emphasis">Propósito</span>: Replicación, recuperación point-in-time, auditoría</li>
+                        <li><span class="emphasis">Formato</span>: Lógico (statements o row changes)</li>
+                        <li><span class="emphasis">Ámbito</span>: Todas las bases de datos en el servidor</li>
+                        <li><span class="emphasis">Ubicación</span>: mysql-bin.000001, mysql-bin.000002, etc.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Binary Log vs Redo Log</h3>
+                    <table style="font-size: 0.9rem;">
+                        <thead>
+                            <tr>
+                                <th>Aspecto</th>
+                                <th>Binary Log</th>
+                                <th>Redo Log (InnoDB)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Nivel</strong></td>
+                                <td>Servidor MySQL</td>
+                                <td>Motor InnoDB</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Formato</strong></td>
+                                <td>Lógico (SQL/Row)</td>
+                                <td>Físico (Páginas)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Uso principal</strong></td>
+                                <td>Replicación, PITR</td>
+                                <td>Crash recovery</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Rotación</strong></td>
+                                <td>Por tamaño o manual</td>
+                                <td>Circular</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13.2: Binary Log en Sistema de Pagos QR -->
+        <div class="slide">
+            <h2><i class="fas fa-mobile-alt"></i> Binary Log en Sistema de Pagos QR</h2>
+            <div class="quote">
+                "Fundamental para auditoría bancaria y cumplimiento normativo"
+            </div>
+            <div class="content-grid">
+                <div>
+                    <h3>Comandos Básicos Binary Log</h3>
+                    <div class="code-block">
+<span class="sql-comment">-- 1. Verificar si está activo</span>
+<span class="sql-keyword">SHOW VARIABLES LIKE</span> <span class="sql-string">'log_bin'</span>;
+
+<span class="sql-comment">-- 2. Ver lista de archivos</span>
+<span class="sql-keyword">SHOW BINARY LOGS</span>;
+
+<span class="sql-comment">-- 3. Ver eventos del log</span>
+<span class="sql-keyword">SHOW BINLOG EVENTS</span> LIMIT 10;
+
+<span class="sql-comment">-- 4. Ver posición actual</span>
+<span class="sql-keyword">SHOW MASTER STATUS</span>;
+                    </div>
+                </div>
+                <div>
+                    <h3>Usos en Sistema de Pagos QR</h3>
+                    <ul>
+                        <li><span class="emphasis">Recuperación</span>: Restaurar transacciones después de fallos</li>
+                        <li><span class="emphasis">Replicación</span>: Sincronizar entre sucursales del Banco de Loja</li>
+                        <li><span class="emphasis">Auditoría</span>: Cumplimiento normativo bancario</li>
+                        <li><span class="emphasis">Point-in-Time Recovery</span>: Restaurar hasta momento específico</li>
+                    </ul>
+                    <p style="margin-top: 1rem; padding: 10px; background: rgba(233, 171, 33, 0.1); border-left: 3px solid #E9AB21;">
+                        <strong><i class="fas fa-shield-alt"></i> Regulación:</strong> Los bancos deben mantener logs de todas las transacciones
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13.3: Configuración Binary Log -->
+        <div class="slide">
+            <h2><i class="fas fa-cog"></i> Configuración del Binary Log</h2>
+            <div class="content-grid">
+                <div>
+                    <h3>Habilitar Binary Log (my.cnf)</h3>
+                    <div class="code-block">
+<span class="sql-comment"># Habilitar binary log</span>
+log-bin = mysql-bin
+server-id = 1
+
+<span class="sql-comment"># Formato (ROW más seguro para replicación)</span>
+binlog-format = ROW
+
+<span class="sql-comment"># Expiración automática (días)</span>
+expire_logs_days = 7
+
+<span class="sql-comment"># Sincronización (durabilidad)</span>
+sync_binlog = 1
+                    </div>
+                </div>
+                <div>
+                    <h3>Variables Importantes</h3>
+                    <div class="code-block">
+<span class="sql-comment">-- Ver configuración</span>
+<span class="sql-keyword">SHOW VARIABLES LIKE</span> <span class="sql-string">'%binlog%'</span>;
+
+<span class="sql-comment">-- sync_binlog=1: Máxima durabilidad</span>
+<span class="sql-comment">-- sync_binlog=0: Mejor performance</span>
+
+<span class="sql-comment">-- Purgar logs antiguos</span>
+<span class="sql-keyword">PURGE BINARY LOGS BEFORE</span>
+  NOW() - <span class="sql-keyword">INTERVAL</span> 7 DAY;
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.95rem;">
+                        <strong>Recomendación:</strong> En sistemas de pago usar <code>sync_binlog=1</code> para garantizar durabilidad
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13.4: Práctica PE-1.3 Preview -->
+        <div class="slide">
+            <h2><i class="fas fa-flask"></i> PE-1.3: Laboratorio Binary Log</h2>
+            <div class="quote">
+                "Verificar logging en transacciones de pago QR usando tu cuenta personal"
+            </div>
+            <div class="feature-card" style="margin-top: 2rem;">
+                <h3>Actividades de la Práctica</h3>
+                <div class="content-grid" style="margin-top: 1.5rem;">
+                    <div>
+                        <h4>1. Verificar Binary Log</h4>
+                        <div class="code-block" style="font-size: 0.9rem;">
+<span class="sql-keyword">SHOW VARIABLES LIKE</span> <span class="sql-string">'log_bin'</span>;
+                        </div>
+                    </div>
+                    <div>
+                        <h4>2. Ejecutar Transacciones</h4>
+                        <div class="code-block" style="font-size: 0.9rem;">
+<span class="sql-keyword">USE</span> pagos_qr_sistema;
+<span class="sql-comment">-- Usar TU cuenta (ID XXX)</span>
+<span class="sql-keyword">START TRANSACTION</span>;
+<span class="sql-keyword">UPDATE</span> Cuentas <span class="sql-keyword">SET</span> saldo = saldo - 2.50
+<span class="sql-keyword">WHERE</span> id = XXX;
+<span class="sql-keyword">COMMIT</span>;
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <h4>3. Ver Binary Logs Generados</h4>
+                    <div class="code-block" style="font-size: 0.9rem;">
+<span class="sql-keyword">SHOW BINARY LOGS</span>;
+<span class="sql-keyword">SHOW BINLOG EVENTS LIMIT</span> 10;
+                    </div>
+                </div>
+                <p style="margin-top: 1.5rem; padding: 15px; background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
+                    <strong><i class="fas fa-user"></i> Importante:</strong> Cada estudiante trabaja con su cuenta asignada (ID entre 101-127)
+                </p>
+            </div>
+        </div>
+
         <!-- Slide 14: Simulación de Fallo y Recuperación -->
         <div class="slide">
             <h2><i class="fas fa-exclamation-triangle"></i> Demo: Simulación de Crash y Recuperación</h2>
@@ -996,13 +1277,13 @@ innodb_io_capacity_max = 2000
                 <div class="feature-card">
                     <h3><i class="fas fa-flask"></i> Gestión de Práctica</h3>
                     <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">PE-1.3 (2.25 puntos)</p>
-                    <p><strong>Laboratorio MySQL:</strong> Monitorear Redo Log y simular crash recovery</p>
+                    <p><strong>Laboratorio MySQL:</strong> Verificar Binary Log en transacciones de pago QR</p>
                     <ul style="margin-top: 1rem; font-size: 1rem;">
-                        <li>Configurar <code>innodb_flush_log_at_trx_commit</code></li>
-                        <li>Ejecutar pagos QR del sistema "¡ahorita!"</li>
-                        <li>Monitorear LSN y checkpoints con <code>SHOW ENGINE INNODB STATUS</code></li>
-                        <li>Simular crash y verificar recuperación automática</li>
-                        <li>Documentar comportamiento del Redo Log</li>
+                        <li>Verificar que <code>log_bin</code> esté activo</li>
+                        <li>Ejecutar 3 transacciones de pago QR con tu cuenta personal</li>
+                        <li>Consultar lista de binary logs con <code>SHOW BINARY LOGS</code></li>
+                        <li>Ver eventos del log con <code>SHOW BINLOG EVENTS</code></li>
+                        <li>Explicar la importancia del binary log en sistemas de pago</li>
                     </ul>
                 </div>
                 <div class="feature-card">
@@ -1054,7 +1335,7 @@ innodb_io_capacity_max = 2000
 
     <!-- Slide Counter -->
     <div class="slide-counter">
-        <span id="currentSlide">1</span> / <span id="totalSlides">25</span>
+        <span id="currentSlide">1</span> / <span id="totalSlides">31</span>
     </div>
 
     <!-- Progress Bar -->

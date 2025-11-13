@@ -5,7 +5,7 @@
     <title>PE-1.3 Laboratorio: WAL y Checkpoints</title>
 </head>
 <body>
-<p>Esta actividad práctica te permitirá <strong>observar el logging en MySQL</strong>. Te enfocarás en <em>verificar que el binary log esté activo</em>, <em>ejecutar transacciones simples</em>, y <em>ver los logs generados</em>.</p>
+<p>Esta actividad práctica te permitirá <strong>observar el logging en MySQL</strong> usando el <strong>Sistema de Pagos QR "¡ahorita!" del Banco de Loja</strong>. Te enfocarás en <em>verificar que el binary log esté activo</em>, <em>ejecutar transacciones de pagos</em>, y <em>ver los logs generados</em>.</p>
 
 <p><strong>¿Qué realizarás?</strong></p>
 <div class="_tableContainer_1rjym_1">
@@ -25,19 +25,19 @@
                     <td>Captura mostrando resultado.</td>
                 </tr>
                 <tr>
-                    <td>2) Crear tabla y datos</td>
-                    <td>Crea una tabla simple e inserta 3-5 registros usando transacciones.</td>
-                    <td>Script SQL ejecutado.</td>
+                    <td>2) Ejecutar transacciones de pago</td>
+                    <td>Usando la BD <code>pagos_qr_sistema</code> y <strong>tu cuenta asignada (ID entre 101-127)</strong>, ejecuta 3 transacciones de pago QR en diferentes comercios.</td>
+                    <td>Script SQL ejecutado con capturas.</td>
                 </tr>
                 <tr>
                     <td>3) Ver logs</td>
-                    <td>Ejecuta: <code>SHOW BINARY LOGS;</code> para ver los archivos de log.</td>
+                    <td>Ejecuta: <code>SHOW BINARY LOGS;</code> para ver los archivos de log generados.</td>
                     <td>Captura de lista de logs.</td>
                 </tr>
                 <tr>
                     <td>4) Explicar</td>
-                    <td>En 2-3 líneas: ¿Para qué sirve el binary log en MySQL?</td>
-                    <td>Explicación breve.</td>
+                    <td>En 2-3 líneas: ¿Para qué sirve el binary log en el Sistema de Pagos QR?</td>
+                    <td>Explicación breve contextualizada.</td>
                 </tr>
             </tbody>
         </table>
@@ -46,38 +46,68 @@
 
 <p><strong>Comandos a ejecutar en MySQL:</strong></p>
 
+<p><strong>IMPORTANTE:</strong> Reemplaza <code>XXX</code> con tu ID de cuenta asignado (entre 101 y 127).</p>
+
 <pre>
 -- 1. Verificar binary log
 SHOW VARIABLES LIKE 'log_bin';
 
--- 2. Crear tabla de prueba
-CREATE TABLE test_log (
-    id INT AUTO_INCREMENT PRIMARY KEY, 
-    dato VARCHAR(50)
-);
+-- 2. Usar la base de datos del Sistema de Pagos QR
+USE pagos_qr_sistema;
 
--- 3. Insertar datos con transacciones
+-- 3. Verificar tu saldo inicial
+-- IMPORTANTE: Reemplaza XXX con tu ID de cuenta
+SELECT id, titular, saldo, limite_diario
+FROM Cuentas
+WHERE id = XXX;
+
+-- 4. Transacción 1: Pago en Cafetería UIDE ($2.50)
 START TRANSACTION;
-INSERT INTO test_log (dato) VALUES ('registro 1');
-INSERT INTO test_log (dato) VALUES ('registro 2');
+UPDATE Cuentas SET saldo = saldo - 2.50 WHERE id = XXX;  -- Tu cuenta
+UPDATE Cuentas SET saldo = saldo + 2.50 WHERE id = 202;  -- Cafetería UIDE
+INSERT INTO Pagos_QR (payment_id, cliente_id, comercio_id, monto, descripcion, estado, metodo_pago)
+VALUES (CONCAT('PAY_PE13_', XXX, '_001'), XXX, 2, 2.50, 'PE 1.3 - Desayuno', 'CONFIRMADO', 'QR_AHORITA');
 COMMIT;
 
+-- 5. Transacción 2: Pago de transporte urbano ($0.35)
 START TRANSACTION;
-INSERT INTO test_log (dato) VALUES ('registro 3');
+UPDATE Cuentas SET saldo = saldo - 0.35 WHERE id = XXX;  -- Tu cuenta
+UPDATE Cuentas SET saldo = saldo + 0.35 WHERE id = 208;  -- Transporte
+INSERT INTO Pagos_QR (payment_id, cliente_id, comercio_id, monto, descripcion, estado, metodo_pago)
+VALUES (CONCAT('PAY_PE13_', XXX, '_002'), XXX, 8, 0.35, 'PE 1.3 - Pasaje', 'CONFIRMADO', 'QR_AHORITA');
 COMMIT;
 
--- 4. Ver lista de binary logs
+-- 6. Transacción 3: Pago en minimarket ($1.50)
+START TRANSACTION;
+UPDATE Cuentas SET saldo = saldo - 1.50 WHERE id = XXX;  -- Tu cuenta
+UPDATE Cuentas SET saldo = saldo + 1.50 WHERE id = 206;  -- Minimarket
+INSERT INTO Pagos_QR (payment_id, cliente_id, comercio_id, monto, descripcion, estado, metodo_pago)
+VALUES (CONCAT('PAY_PE13_', XXX, '_003'), XXX, 6, 1.50, 'PE 1.3 - Snacks', 'CONFIRMADO', 'QR_AHORITA');
+COMMIT;
+
+-- 7. Ver lista de binary logs
 SHOW BINARY LOGS;
 
--- 5. Ver contenido del último log (opcional)
-SHOW BINLOG EVENTS;
+-- 8. Ver contenido del último log (opcional)
+SHOW BINLOG EVENTS LIMIT 10;
+
+-- 9. Verificar tu saldo final
+SELECT id, titular, saldo
+FROM Cuentas
+WHERE id = XXX;
+
+-- 10. Ver tus transacciones
+SELECT payment_id, monto, descripcion, estado, fecha
+FROM Pagos_QR
+WHERE payment_id LIKE CONCAT('PAY_PE13_', XXX, '%')
+ORDER BY fecha;
 </pre>
 
-<p><strong>¿Para qué sirve el binary log?</strong></p>
+<p><strong>¿Para qué sirve el binary log en el Sistema de Pagos QR?</strong></p>
 <ul>
-    <li><strong>Recuperación</strong>: Permite restaurar la base de datos después de un fallo</li>
-    <li><strong>Replicación</strong>: Envía cambios a servidores réplica</li>
-    <li><strong>Auditoría</strong>: Registra todas las operaciones que modifican datos</li>
+    <li><strong>Recuperación</strong>: Permite restaurar transacciones de pago después de un fallo del servidor</li>
+    <li><strong>Replicación</strong>: Sincroniza datos entre sucursales del Banco de Loja</li>
+    <li><strong>Auditoría</strong>: Registra todas las transacciones QR para cumplimiento normativo bancario</li>
 </ul>
 
 <p><strong>Especificaciones técnicas de entrega</strong></p>
