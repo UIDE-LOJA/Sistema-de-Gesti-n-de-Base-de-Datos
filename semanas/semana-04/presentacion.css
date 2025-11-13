@@ -1,4 +1,4 @@
-/* Using system fonts for instant loading */
+/* HCI Presentation Styles - Based on Simulación Structure */
 
 * {
     margin: 0;
@@ -33,9 +33,7 @@ body {
     -ms-user-select: text;
 }
 
-/* Removed background animations completely */
-
-/* Simplified container */
+/* Container */
 .presentation-container {
     position: relative;
     width: 100%;
@@ -49,7 +47,7 @@ body {
     width: 100%;
     height: 100vh;
     padding: 80px 60px;
-    display: none; /* Start hidden */
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -62,32 +60,14 @@ body {
     -webkit-user-select: text;
     -moz-user-select: text;
     -ms-user-select: text;
+    overflow-y: auto;
 }
 
-.slide:first-child {
-    display: flex; /* Show first slide by default */
+.slide.active {
+    display: flex;
 }
-
-/* Subslide styling */
-.slide.subslide {
-    border-left: 5px solid var(--uide-accent);
-    background: linear-gradient(135deg, rgba(15, 20, 25, 0.98) 0%, rgba(35, 53, 110, 0.15) 100%);
-}
-
-.slide.subslide h2 {
-    color: var(--uide-accent);
-}
-
-.slide.subslide h2::before {
-    content: "↳ ";
-    color: var(--uide-accent);
-    margin-right: 0.5rem;
-}
-
-/* Loading styles removed - direct presentation start */
 
 /* Typography */
-/* Removed heavy CSS animations for better performance */
 .slide h1 {
     font-size: 3.5rem;
     font-weight: 700;
@@ -113,6 +93,13 @@ body {
     margin-bottom: 1rem;
 }
 
+.slide h4 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 0.8rem;
+}
+
 .slide p, .slide li {
     font-size: 1.2rem;
     line-height: 1.6;
@@ -129,19 +116,28 @@ body {
 .slide li {
     position: relative;
     padding-left: 25px;
+    margin-bottom: 0.8rem;
 }
 
 .slide li::before {
     content: "\f054";
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
-    color: var(--uide-accent);
+    color: var(--uide-primary);
     position: absolute;
     left: 0;
     top: 0;
 }
 
-/* Code Blocks - No animations */
+.slide ol {
+    padding-left: 25px;
+}
+
+.slide ol li::before {
+    display: none;
+}
+
+/* Code Blocks */
 .code-block {
     background: rgba(15, 23, 42, 0.8);
     border: 1px solid var(--border-color);
@@ -153,32 +149,10 @@ body {
     overflow-x: auto;
     white-space: pre-wrap;
     contain: layout style;
+    color: #e2e8f0;
 }
 
-/* SQL Syntax Highlighting */
-.sql-keyword {
-    color: #E9AB21; /* UIDE Gold - visible */
-    font-weight: 600;
-}
-
-.sql-comment {
-    color: #94a3b8; /* Gray - visible */
-    font-style: italic;
-}
-
-.sql-string {
-    color: #86efac; /* Light green - visible */
-}
-
-code {
-    background: rgba(233, 171, 33, 0.1);
-    padding: 2px 6px;
-    border-radius: 4px;
-    color: var(--uide-accent);
-    font-family: 'Courier New', Consolas, Monaco, monospace;
-}
-
-/* Blockquotes - No animations */
+/* Blockquotes */
 .quote {
     border-left: 4px solid var(--uide-accent);
     padding: 20px;
@@ -189,7 +163,7 @@ code {
     contain: layout style;
 }
 
-/* Tables - No animations */
+/* Tables */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -210,12 +184,13 @@ th {
 }
 
 /* Navigation */
-.nav-controls {
+.navigation {
     position: fixed;
     bottom: 30px;
     right: 30px;
     display: flex;
     gap: 15px;
+    align-items: center;
     z-index: 1000;
 }
 
@@ -233,9 +208,10 @@ th {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
 }
 
-.nav-btn:hover {
+.nav-btn:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.15);
     color: rgba(255, 255, 255, 0.9);
     border-color: rgba(255, 255, 255, 0.25);
@@ -246,17 +222,14 @@ th {
     cursor: not-allowed;
 }
 
-/* Simplified slide counter */
+/* Slide counter */
 .slide-counter {
-    position: fixed;
-    top: 30px;
-    right: 30px;
     background: rgba(26, 31, 58, 0.9);
     padding: 10px 20px;
     border-radius: 25px;
     border: 1px solid var(--border-color);
     font-weight: 600;
-    z-index: 1000;
+    font-size: 1rem;
 }
 
 /* Logo UIDE */
@@ -283,13 +256,18 @@ th {
     position: fixed;
     bottom: 0;
     left: 0;
+    width: 100%;
     height: 4px;
-    background: var(--uide-accent);
-    transition: width 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
     z-index: 1000;
 }
 
-/* All animations removed for maximum performance */
+.progress-fill {
+    height: 100%;
+    background: var(--uide-accent);
+    transition: width 0.3s ease;
+    width: 0;
+}
 
 /* Special Effects */
 .highlight {
@@ -298,7 +276,7 @@ th {
 }
 
 .emphasis {
-    color: var(--uide-accent);
+    color: var(--uide-primary);
     font-weight: 600;
 }
 
@@ -310,7 +288,7 @@ th {
 
 .content-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
     width: 100%;
     max-width: 1200px;
@@ -326,64 +304,92 @@ th {
 }
 
 .feature-card:hover {
-    transform: translate3d(0, -5px, 0) scale3d(1.02, 1.02, 1);
+    transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
     border-color: var(--uide-accent);
 }
 
-.diagram {
-    background: rgba(15, 23, 42, 0.8);
-    border: 2px solid var(--uide-secondary);
-    border-radius: 15px;
-    padding: 30px;
-    text-align: center;
-    font-family: 'Courier New', Consolas, Monaco, monospace;
-    white-space: pre-line;
+.feature-card h3 {
+    color: var(--uide-accent);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
 }
 
-/* Simplified Mermaid styling */
-
-.mermaid {
-    background: rgba(15, 23, 42, 0.8);
-    border: 2px solid var(--uide-secondary);
-    border-radius: 15px;
-    padding: 30px;
-    margin: 20px auto;
-    max-width: 800px;
-    text-align: center;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.feature-card p {
+    font-size: 1rem;
+    color: var(--text-secondary);
 }
 
-.mermaid svg {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Removed Mermaid loading states - using standard rendering */
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+/* Buttons */
+button {
+    font-family: inherit;
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+    .slide {
+        padding: 60px 40px;
+    }
+    
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 768px) {
     .slide {
-        padding: 30px 20px;
+        padding: 40px 20px;
+        margin: 10px;
     }
     
     .slide h1 { font-size: 2.5rem; }
     .slide h2 { font-size: 2rem; }
     .slide h3 { font-size: 1.5rem; }
+    .slide h4 { font-size: 1.2rem; }
     .slide p, .slide li { font-size: 1rem; }
     
-    .mermaid {
-        padding: 20px;
-        margin: 10px auto;
+    .uide-logo {
+        width: 60px;
+        height: 60px;
     }
     
-    /* Loading styles removed */
+    .uide-logo img {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .navigation {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .slide-counter {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+    }
+}
+
+/* Scrollbar styling */
+.slide::-webkit-scrollbar {
+    width: 8px;
+}
+
+.slide::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.slide::-webkit-scrollbar-thumb {
+    background: rgba(233, 171, 33, 0.5);
+    border-radius: 10px;
+}
+
+.slide::-webkit-scrollbar-thumb:hover {
+    background: rgba(233, 171, 33, 0.7);
 }

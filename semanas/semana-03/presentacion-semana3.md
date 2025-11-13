@@ -498,4 +498,4 @@ SELECT * FROM pg_stat_bgwriter;
 
 ---
 
-*Presentación basada en el Compendio Exhaustivo sobre Mecanismos de Persistencia y Recuperación: Logging, WAL, Checkpoints y ARIES - Semana 3, LTI_05A_300-SGBD-ASC*
+*Presentación basada en el Compendio Exhaustivo sobre Mecanismos de Persistencia y Recuperación: Logging, WAL, Checkpoints y ARIES - Semana 3, LTI_05A_300-SGBD*
