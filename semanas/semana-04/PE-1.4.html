@@ -1,0 +1,102 @@
+<p>Esta actividad práctica te permitirá aplicar los <strong>conceptos de optimización de consultas SQL</strong> mediante el análisis de planes de ejecución. Te enfocarás en <em>ejecutar EXPLAIN/ANALYZE</em>, <em>comparar rendimiento con y sin índices</em>, y <em>optimizar consultas</em> basándote en métricas reales.</p>
+
+<p><strong>¿Qué realizarás?</strong></p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 23.5%;" data-col-size="sm">Actividad</th>
+                    <th style="width: 47%;" data-col-size="xl">Instrucciones específicas</th>
+                    <th style="width: 29.5%;" data-col-size="md">Entregable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-col-size="sm">Preparación individual</td>
+                    <td data-col-size="xl">Revisa presentación Semana 4 sobre optimización, índices y planes de ejecución. Prepara entorno PostgreSQL con datos de prueba.</td>
+                    <td data-col-size="md">Base de datos con datos de prueba lista.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="sm">Consulta 1: SELECT simple</td>
+                    <td data-col-size="xl">Ejecuta EXPLAIN ANALYZE en consulta SELECT con WHERE. Registra: tiempo de ejecución, rows, cost. Crea índice y vuelve a ejecutar.</td>
+                    <td data-col-size="md">Métricas antes/después del índice.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="sm">Consulta 2: JOIN</td>
+                    <td data-col-size="xl">Ejecuta EXPLAIN ANALYZE en consulta con JOIN de 2 tablas. Analiza tipo de join (nested loop, hash, merge). Optimiza con índices apropiados.</td>
+                    <td data-col-size="md">Análisis de plan de ejecución de JOIN.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="sm">Consulta 3: Agregación</td>
+                    <td data-col-size="xl">Ejecuta EXPLAIN ANALYZE en consulta con GROUP BY y funciones agregadas. Identifica operaciones costosas y optimiza.</td>
+                    <td data-col-size="md">Optimización de consulta agregada.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="sm">Análisis comparativo</td>
+                    <td data-col-size="xl">Crea tabla comparativa con métricas: execution time, planning time, rows, cost, buffers (si aplica) para las 3 consultas antes/después.</td>
+                    <td data-col-size="md">Tabla comparativa completa.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="sm">Entrega final</td>
+                    <td data-col-size="xl">Compila PDF con consultas SQL, salidas de EXPLAIN ANALYZE, tabla comparativa y breve análisis (máximo 200 palabras) sobre optimizaciones aplicadas.</td>
+                    <td data-col-size="md">PDF completo con evidencias.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Ejemplo de análisis con EXPLAIN ANALYZE:</strong></p>
+<pre>
+-- Consulta sin índice
+EXPLAIN (ANALYZE, BUFFERS) 
+SELECT * FROM orders WHERE customer_id = 12345;
+
+Resultado:
+Seq Scan on orders  (cost=0.00..18334.00 rows=1 width=100) 
+                    (actual time=45.234..89.567 rows=1 loops=1)
+  Filter: (customer_id = 12345)
+  Rows Removed by Filter: 999999
+  Buffers: shared hit=8334
+Planning Time: 0.123 ms
+Execution Time: 89.678 ms
+
+-- Crear índice
+CREATE INDEX idx_orders_customer ON orders(customer_id);
+
+-- Consulta con índice
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM orders WHERE customer_id = 12345;
+
+Resultado:
+Index Scan using idx_orders_customer on orders  
+  (cost=0.42..8.44 rows=1 width=100) 
+  (actual time=0.034..0.036 rows=1 loops=1)
+  Index Cond: (customer_id = 12345)
+  Buffers: shared hit=4
+Planning Time: 0.234 ms
+Execution Time: 0.067 ms
+
+Mejora: 89.678ms → 0.067ms (1337x más rápido)
+</pre>
+
+<p><strong>Métricas clave a analizar:</strong></p>
+<ul>
+    <li><strong>Execution Time:</strong> Tiempo real de ejecución</li>
+    <li><strong>Planning Time:</strong> Tiempo de planificación de la consulta</li>
+    <li><strong>Cost:</strong> Estimación del costo (startup..total)</li>
+    <li><strong>Rows:</strong> Filas estimadas vs actuales</li>
+    <li><strong>Buffers:</strong> Accesos a disco/memoria</li>
+    <li><strong>Tipo de scan:</strong> Seq Scan, Index Scan, Bitmap Scan</li>
+</ul>
+
+<p><strong>Información importante</strong></p>
+<ul>
+    <li><p><strong>Modalidad:</strong> Laboratorio individual — <strong>2.25 pts</strong>.</p></li>
+    <li><p><strong>Duración:</strong> 90 minutos.</p></li>
+    <li><p><strong>Entrega:</strong> PDF con consultas, análisis y métricas al final de la clase.</p></li>
+    <li><p><strong>Formato:</strong> PE-1.4_ApellidoNombre_ExplainAnalyze.pdf</p></li>
+</ul>
+
+<p>Si tienes dudas durante la actividad, levanta la mano para recibir asistencia del docente.</p>

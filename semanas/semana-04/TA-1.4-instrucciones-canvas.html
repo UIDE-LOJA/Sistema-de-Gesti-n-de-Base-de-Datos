@@ -1,0 +1,157 @@
+<p>Esta actividad de trabajo autónomo te permitirá <strong>analizar y documentar decisiones de optimización de bases de datos</strong> mediante la elaboración de un informe técnico. Te enfocarás en <em>registrar métricas de rendimiento</em>, <em>justificar decisiones de indexación</em>, y <em>documentar el impacto</em> de las optimizaciones aplicadas.</p>
+
+<p><strong>¿Qué realizarás?</strong></p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 25%;" data-col-size="md">Componente</th>
+                    <th style="width: 50%;" data-col-size="xl">Instrucciones específicas</th>
+                    <th style="width: 25%;" data-col-size="md">Criterios de calidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-col-size="md">Contexto del caso</td>
+                    <td data-col-size="xl">Describe el caso de estudio: tipo de aplicación, volumen de datos, consultas críticas. Incluye esquema de base de datos relevante.</td>
+                    <td data-col-size="md">Contexto claro y relevante.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Métricas baseline</td>
+                    <td data-col-size="xl">Documenta métricas iniciales de las 3 consultas: latencia (ms), rows procesados, cost, plan de ejecución. Usa EXPLAIN ANALYZE.</td>
+                    <td data-col-size="md">Métricas precisas y completas.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Análisis de planes</td>
+                    <td data-col-size="xl">Analiza planes de ejecución identificando: tipo de scan, operaciones costosas, cuellos de botella. Explica por qué son ineficientes.</td>
+                    <td data-col-size="md">Análisis técnico fundamentado.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Decisiones de índices</td>
+                    <td data-col-size="xl">Justifica qué índices crear: tipo (B-Tree, Hash, GiST), columnas, razón técnica. Considera trade-offs (espacio, writes).</td>
+                    <td data-col-size="md">Decisiones bien justificadas.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Métricas post-optimización</td>
+                    <td data-col-size="xl">Documenta métricas después de crear índices. Calcula mejora porcentual en latencia, reducción de rows, cambio en cost.</td>
+                    <td data-col-size="md">Mejoras cuantificadas claramente.</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md">Conclusiones</td>
+                    <td data-col-size="xl">Breve análisis (máximo 150 palabras) sobre lecciones aprendidas, cuándo usar índices, y recomendaciones para casos similares.</td>
+                    <td data-col-size="md">Conclusiones fundamentadas.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Estructura del informe:</strong></p>
+<p><strong>Sección 1: Contexto y Baseline</strong></p>
+<ul>
+    <li>Descripción del caso de estudio</li>
+    <li>Esquema de tablas relevantes</li>
+    <li>Consultas críticas identificadas</li>
+    <li>Métricas baseline (tabla con: consulta, latencia, rows, cost, plan)</li>
+</ul>
+
+<p><strong>Sección 2: Análisis y Optimización</strong></p>
+<ul>
+    <li>Análisis de cada plan de ejecución</li>
+    <li>Identificación de cuellos de botella</li>
+    <li>Decisión de índices con justificación técnica</li>
+    <li>Comandos SQL de creación de índices</li>
+</ul>
+
+<p><strong>Sección 3: Resultados y Conclusiones</strong></p>
+<ul>
+    <li>Tabla comparativa: antes vs después</li>
+    <li>Cálculo de mejoras (%, factor de mejora)</li>
+    <li>Gráfico comparativo (opcional pero recomendado)</li>
+    <li>Lecciones aprendidas y recomendaciones</li>
+</ul>
+
+<p><strong>Ejemplo de tabla comparativa:</strong></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+    <thead>
+        <tr>
+            <th>Consulta</th>
+            <th>Latencia Antes</th>
+            <th>Latencia Después</th>
+            <th>Mejora</th>
+            <th>Índice Creado</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>SELECT con WHERE</td>
+            <td>89.67 ms</td>
+            <td>0.067 ms</td>
+            <td>1337x</td>
+            <td>idx_orders_customer</td>
+        </tr>
+        <tr>
+            <td>JOIN 2 tablas</td>
+            <td>234.5 ms</td>
+            <td>12.3 ms</td>
+            <td>19x</td>
+            <td>idx_products_id, idx_orders_product</td>
+        </tr>
+        <tr>
+            <td>GROUP BY agregación</td>
+            <td>456.8 ms</td>
+            <td>45.2 ms</td>
+            <td>10x</td>
+            <td>idx_sales_date_category</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><strong>Consideraciones para decisiones de índices:</strong></p>
+<ul>
+    <li><strong>Cuándo crear índice:</strong> Columnas en WHERE, JOIN, ORDER BY frecuentes</li>
+    <li><strong>Tipo de índice:</strong> B-Tree (general), Hash (igualdad), GiST (geoespacial)</li>
+    <li><strong>Trade-offs:</strong> Mejora lecturas pero ralentiza escrituras, consume espacio</li>
+    <li><strong>Índices compuestos:</strong> Orden de columnas importa (selectividad)</li>
+</ul>
+
+<p><strong>Materiales:</strong> Presentación Semana 4, documentación PostgreSQL sobre EXPLAIN, guías de optimización. <strong>Herramientas:</strong> PostgreSQL, pgAdmin, Excel para tablas.</p>
+
+<p><strong>Especificaciones técnicas de entrega</strong></p>
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 25%;" data-col-size="md">Aspecto</th>
+                    <th style="width: 75%;" data-col-size="xl">Especificación requerida</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-col-size="md"><strong>Formato de archivo</strong></td>
+                    <td data-col-size="xl">PDF únicamente. Nomenclatura: TA-1.4_ApellidoNombre_OptimizacionSQL.pdf</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md"><strong>Extensión</strong></td>
+                    <td data-col-size="xl">Máximo 3 páginas (contexto + análisis + resultados + conclusiones).</td>
+                </tr>
+                <tr>
+                    <td data-col-size="md"><strong>Originalidad</strong></td>
+                    <td data-col-size="xl">Trabajo original. Máximo 40% contenido IA. Citar fuentes consultadas.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Información importante</strong></p>
+<ul>
+    <li><p><strong>Modalidad:</strong> Trabajo autónomo individual — <strong>2.25 pts</strong>.</p></li>
+    <li><p><strong>Tiempo estimado:</strong> 3 horas de trabajo independiente.</p></li>
+    <li><p><strong>Entrega:</strong> Plataforma Canvas antes de la fecha límite especificada.</p></li>
+    <li><p><strong>Penalización por retraso:</strong> -0.25 puntos por cada día de retraso.</p></li>
+</ul>
+
+<p>Si tienes dudas, utiliza el <strong>horario de tutorías (lunes 10:00-12:00 | viernes 08:00-09:00)</strong> o envía consulta por <strong>correo institucional</strong> con tiempo de respuesta máximo 48 horas laborables.</p>
