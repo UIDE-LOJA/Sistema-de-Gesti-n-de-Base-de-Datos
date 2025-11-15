@@ -1,0 +1,73 @@
+<p>Esta semana profundizamos en <strong>Optimización de Consultas SQL</strong> con foco en <em>estadísticas y selectividad</em>, <em>índices y costo</em>, y <em>planes de ejecución</em>. Veremos cómo el optimizador de consultas toma decisiones, el uso de EXPLAIN/ANALYZE para analizar planes de ejecución, y estrategias para optimizar consultas mediante índices apropiados.</p>
+
+<p><strong>¿Qué veremos?</strong></p>
+
+<div class="_tableContainer_1rjym_1">
+    <div class="group _tableWrapper_1rjym_13 flex w-fit flex-col-reverse">
+        <table class="w-fit min-w-(--thread-content-width)" style="border-collapse: collapse; width: 100%;" border="1">
+            <thead>
+                <tr>
+                    <th style="width: 22%;">Tema</th>
+                    <th style="width: 50%;">Contenido clave</th>
+                    <th style="width: 28%;">Ejemplos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Estadísticas y Selectividad</td>
+                    <td><strong>Estadísticas:</strong> información sobre distribución de datos (cardinalidad, valores distintos, histogramas). <strong>Selectividad:</strong> fracción de filas que cumplen una condición. <strong>Uso:</strong> el optimizador usa estadísticas para estimar costos y elegir el mejor plan.</td>
+                    <td>ANALYZE table; pg_stats; selectividad alta (pocos resultados) favorece índices; selectividad baja (muchos resultados) favorece seq scan.</td>
+                </tr>
+                <tr>
+                    <td>Índices y Costo</td>
+                    <td><strong>Tipos de índices:</strong> B-Tree (general), Hash (igualdad), GiST (geoespacial), GIN (full-text). <strong>Costo:</strong> startup cost + run cost. <strong>Trade-offs:</strong> mejora lecturas pero ralentiza escrituras, consume espacio. <strong>Cuándo usar:</strong> columnas en WHERE, JOIN, ORDER BY frecuentes.</td>
+                    <td>CREATE INDEX idx_customer ON orders(customer_id); B-Tree para rangos; Hash para igualdad exacta; índices compuestos para múltiples columnas.</td>
+                </tr>
+                <tr>
+                    <td>Planes de Ejecución</td>
+                    <td><strong>EXPLAIN:</strong> muestra plan estimado sin ejecutar. <strong>ANALYZE:</strong> ejecuta y muestra tiempos reales. <strong>Operaciones:</strong> Seq Scan, Index Scan, Bitmap Scan, Nested Loop, Hash Join, Merge Join. <strong>Métricas:</strong> cost, rows, width, actual time, buffers.</td>
+                    <td>EXPLAIN (ANALYZE, BUFFERS) SELECT...; Seq Scan: recorre toda la tabla; Index Scan: usa índice; Hash Join: para joins grandes.</td>
+                </tr>
+                <tr>
+                    <td>Optimización de Consultas</td>
+                    <td><strong>Estrategias:</strong> crear índices apropiados, reescribir consultas (evitar SELECT *, usar EXISTS vs IN), optimizar JOINs (orden importa), usar LIMIT cuando sea posible. <strong>Análisis:</strong> identificar operaciones costosas (Seq Scan en tablas grandes, Nested Loop con muchas filas).</td>
+                    <td>Antes: Seq Scan 89ms → Después: Index Scan 0.06ms; reescribir subconsultas correlacionadas; usar índices compuestos para WHERE + ORDER BY.</td>
+                </tr>
+                <tr>
+                    <td>Herramientas de Análisis</td>
+                    <td><strong>EXPLAIN:</strong> plan de ejecución. <strong>pg_stat_statements:</strong> estadísticas de consultas. <strong>pgBadger:</strong> análisis de logs. <strong>Auto-explain:</strong> logging automático de consultas lentas. <strong>Métricas:</strong> execution time, planning time, buffers hit/read.</td>
+                    <td>EXPLAIN (ANALYZE, BUFFERS, VERBOSE); pg_stat_statements para top queries; auto_explain.log_min_duration = 1000ms.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>Objetivos de aprendizaje</strong></p>
+
+<p>Al finalizar la semana podrás:</p>
+
+<ul>
+    <li><p>Explicar cómo el <strong>optimizador de consultas</strong> usa estadísticas y selectividad para elegir planes de ejecución.</p></li>
+    <li><p>Analizar <strong>planes de ejecución</strong> usando EXPLAIN/ANALYZE e identificar operaciones costosas.</p></li>
+    <li><p>Optimizar consultas mediante la <strong>creación de índices apropiados</strong> y reescritura de SQL.</p></li>
+    <li><p>Investigar <strong>técnicas avanzadas de optimización</strong> y herramientas de análisis de rendimiento.</p></li>
+</ul>
+
+<p><strong>Materiales</strong></p>
+
+<ul>
+    <li><p><strong>Presentación:</strong> Semana 4 — Optimización de Consultas: Estadísticas, Índices y Planes de Ejecución.</p></li>
+    <li><p><strong>Recursos:</strong> Docente por un día, Lectura, Videos, Diapositivas, Caso de estudio, Tutor inteligente.</p></li>
+</ul>
+
+<p><strong>Actividades</strong></p>
+
+<ul>
+    <li><p><strong>Lectura guiada</strong> sobre optimización de consultas y uso de EXPLAIN/ANALYZE.</p></li>
+    <li><p><strong>PE-1.4: Ejecutar EXPLAIN/ANALYZE en 3 consultas; comparar con/sin índice</strong> — laboratorio práctico analizando planes de ejecución, creando índices y midiendo mejoras de rendimiento — <strong>2.25 pts</strong>.</p></li>
+    <li><p><strong>TA-1.4: Informe breve con métricas (latencia, rows, plan) y decisión de índice</strong> — análisis técnico documentando métricas baseline, decisiones de indexación justificadas y mejoras cuantificadas — <strong>2.25 pts</strong>.</p></li>
+    <li><p><strong>Total de la semana:</strong> <strong>4.5/30</strong> (Evaluación diagnóstica).</p></li>
+</ul>
+
+<p>Si tienes dudas, deja tu pregunta en el canal de <strong>DISCORD</strong> o envíame un mensaje por <strong>Canvas</strong>.</p>
