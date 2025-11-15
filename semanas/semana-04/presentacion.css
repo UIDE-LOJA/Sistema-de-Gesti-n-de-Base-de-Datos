@@ -167,11 +167,23 @@ body {
     color: #e2e8f0;
 }
 
-/* Syntax highlighting para código */
-.sql-comment { color: #6a9955; }
-.sql-keyword { color: #569cd6; }
-.sql-string { color: #ce9178; }
-.sql-number { color: #b5cea8; }
+/* Prism.js code blocks */
+pre {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    overflow-x: auto;
+}
+
+pre code {
+    font-family: 'Courier New', Consolas, Monaco, monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    background: transparent !important;
+    padding: 0 !important;
+}
 
 /* ============================================ */
 /* QUOTES Y DESTACADOS */

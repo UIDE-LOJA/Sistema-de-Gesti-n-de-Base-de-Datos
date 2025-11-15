@@ -9,6 +9,9 @@
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
     <link rel="stylesheet" href="presentacion.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
     <script src="presentacion.js" defer></script>
 </head>
 
@@ -421,15 +424,11 @@
                 </div>
                 <div>
                     <h3>Ejemplo Práctico</h3>
-                    <div class="code-block">
-                        <span class="sql-keyword">EXPLAIN SELECT</span> payment_id, monto, estado
-                        <span class="sql-keyword">FROM</span> Pagos_QR
-                        <span class="sql-keyword">WHERE</span> comercio_id = <span class="sql-number">202</span>
-                        <span class="sql-keyword">AND</span> fecha >= <span class="sql-keyword">NOW</span>() - <span
-                            class="sql-keyword">INTERVAL</span> <span class="sql-number">5</span> <span
-                            class="sql-keyword">MINUTE</span>
-                        <span class="sql-keyword">ORDER BY</span> fecha <span class="sql-keyword">DESC</span>;
-                    </div>
+                    <pre><code class="language-sql">EXPLAIN SELECT payment_id, monto, estado
+FROM Pagos_QR
+WHERE comercio_id = 202
+  AND fecha >= NOW() - INTERVAL 5 MINUTE
+ORDER BY fecha DESC;</code></pre>
                     <p style="font-size: 0.95rem; margin-top: 1rem;">
                         <strong>Objetivo:</strong> Verificar uso de idx_comercio_fecha, que Rows estimadas ≈ reales y
                         evitar Using temporary o filesort.
