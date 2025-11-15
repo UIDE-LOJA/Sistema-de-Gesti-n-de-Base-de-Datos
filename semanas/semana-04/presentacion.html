@@ -4,33 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistemas Gestores de Bases de Datos - Semana 4</title>
+    <title>Optimización de Consultas - Semana 4</title>
     <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📲</text></svg>">
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
     <link rel="stylesheet" href="presentacion.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- Prism.js for syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
     <script src="presentacion.js" defer></script>
 </head>
 
 <body>
+    <!-- Logo UIDE (Fijo en todas las slides) -->
     <div class="uide-logo">
         <img src="../../assets/images/Logo%20UIDE.png" alt="UIDE Logo">
     </div>
+
     <div class="presentation-container">
 
-        <!-- Slide 1: Title -->
+        <!-- ============================================ -->
+        <!-- SLIDE 1: CARÁTULA -->
+        <!-- ============================================ -->
         <div class="slide active title-slide">
             <div style="text-align: center; margin-bottom: 2rem;">
                 <h3
                     style="color: #e2e8f0; font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);">
-                    Presentación Semana 3
+                    Presentación Semana 4
                 </h3>
                 <h2 style="color: var(--uide-accent); font-size: 2.2rem; font-weight: 600; margin-bottom: 0.5rem;">
-                    Mecanismos de Persistencia y Recuperación
+                    Optimización de Consultas con Estadísticas, Índices y Planes
                 </h2>
                 <p
                     style="color: #ffffff; font-size: 1.4rem; font-weight: 500; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);">
@@ -51,21 +51,24 @@
                 </p>
             </div>
 
+
             <div
                 style="text-align: center; margin-top: 2.5rem; padding: 25px; background: rgba(15, 20, 25, 0.6); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
                 <h3 style="color: var(--uide-accent); font-size: 1.4rem; margin-bottom: 1rem; text-shadow: none;">
-                    <i class="fas fa-database"></i> Logging, WAL, Checkpoints y Algoritmo ARIES
+                    <i class="fas fa-tachometer-alt"></i> Sistema de Pagos QR "¡ahorita!"
                 </h3>
                 <p style="color: #e2e8f0; font-size: 1.1rem; line-height: 1.4; margin: 0.5rem 0;">
-                    <strong>Semana 3</strong> • Recuperación y Optimización • Unidad 2 • Persistencia de Datos
+                    <strong>Semana 4</strong> • Estadísticas • Índices • Planes de Ejecución
                 </p>
                 <p style="color: #cbd5e1; font-size: 1rem; margin-top: 1rem; font-style: italic;">
-                    Fundamentos de logging, recuperación ante fallos y algoritmos de persistencia en SGBD
+                    Optimización de consultas para transacciones en tiempo real
                 </p>
             </div>
         </div>
 
-        <!-- Slide 2: Actividades y Herramientas -->
+        <!-- ============================================ -->
+        <!-- SLIDE 2: ACTIVIDADES Y HERRAMIENTAS -->
+        <!-- ============================================ -->
         <div class="slide">
             <h2><i class="fas fa-clipboard-list"></i> Actividades Calificadas y Herramientas</h2>
 
@@ -82,33 +85,35 @@
                         </div>
 
                         <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <!-- PE-1.3 -->
+                            <!-- PE-1.4 -->
                             <div
                                 style="background: rgba(74, 222, 128, 0.15); padding: 15px; border-radius: 10px; border-left: 4px solid #4ade80;">
                                 <div
                                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                                     <span style="color: #e2e8f0; font-size: 1rem; font-weight: 600;">
-                                        <i class="fas fa-flask"></i> PE-1.3: Laboratorio MySQL
+                                        <i class="fas fa-flask"></i> PE-1.4: Optimización de Consultas
                                     </span>
-                                    <span style="color: var(--uide-accent); font-size: 1rem; font-weight: 700;">2.25 pts</span>
+                                    <span style="color: var(--uide-accent); font-size: 1rem; font-weight: 700;">2.25
+                                        pts</span>
                                 </div>
                                 <p style="color: #cbd5e1; font-size: 0.85rem; margin: 0; line-height: 1.4;">
-                                    Verificar Binary Log y ejecutar transacciones de pago QR
+                                    Análisis de planes de ejecución y optimización de índices
                                 </p>
                             </div>
 
-                            <!-- TA-1.3 -->
+                            <!-- TA-1.4 -->
                             <div
                                 style="background: rgba(233, 171, 33, 0.15); padding: 15px; border-radius: 10px; border-left: 4px solid var(--uide-accent);">
                                 <div
                                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                                     <span style="color: #e2e8f0; font-size: 1rem; font-weight: 600;">
-                                        <i class="fas fa-file-alt"></i> TA-1.3: Informe técnico
+                                        <i class="fas fa-file-alt"></i> TA-1.4: Estrategia de Índices
                                     </span>
-                                    <span style="color: var(--uide-accent); font-size: 1rem; font-weight: 700;">2.25 pts</span>
+                                    <span style="color: var(--uide-accent); font-size: 1rem; font-weight: 700;">2.25
+                                        pts</span>
                                 </div>
                                 <p style="color: #cbd5e1; font-size: 0.85rem; margin: 0; line-height: 1.4;">
-                                    Implementación de ARIES en InnoDB (1 página)
+                                    Diseño de estrategia de indexación para sistema de pagos
                                 </p>
                             </div>
 
@@ -117,14 +122,16 @@
                                 style="background: rgba(233, 171, 33, 0.2); padding: 15px; border-radius: 10px; border: 2px solid var(--uide-accent); margin-top: 5px;">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <span style="color: var(--uide-accent); font-size: 1.1rem; font-weight: 700;">
-                                        <i class="fas fa-star"></i> Total Semana 3
+                                        <i class="fas fa-star"></i> Total Semana 4
                                     </span>
-                                    <span style="color: var(--uide-accent); font-size: 1.3rem; font-weight: 700;">4.5 pts</span>
+                                    <span style="color: var(--uide-accent); font-size: 1.3rem; font-weight: 700;">4.5
+                                        pts</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Columna Derecha: Herramientas y Recursos -->
                 <div style="display: flex; flex-direction: column; gap: 15px;">
@@ -139,33 +146,21 @@
                         <div style="display: flex; flex-direction: column; gap: 12px;">
                             <div
                                 style="background: rgba(74, 222, 128, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #4ade80;">
-                                <i class="fas fa-mobile-alt" style="color: #4ade80; margin-right: 8px;"></i>
-                                <span style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">Sistema de Pagos QR "¡ahorita!"</span>
+                                <i class="fas fa-chart-line" style="color: #4ade80; margin-right: 8px;"></i>
+                                <span style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">EXPLAIN / EXPLAIN
+                                    ANALYZE</span>
                             </div>
                             <div
                                 style="background: rgba(74, 222, 128, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #4ade80;">
                                 <i class="fas fa-database" style="color: #4ade80; margin-right: 8px;"></i>
-                                <span style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">Scripts SQL de semana 2</span>
+                                <span style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">Performance
+                                    Schema</span>
                             </div>
                             <div
                                 style="background: rgba(74, 222, 128, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #4ade80;">
-                                <i class="fas fa-code" style="color: #4ade80; margin-right: 8px;"></i>
-                                <span style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">Laboratorio práctico SQL</span>
-                            </div>
-                            <div
-                                style="background: rgba(74, 222, 128, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #4ade80;">
-                                <i class="fas fa-chart-line" style="color: #4ade80; margin-right: 8px;"></i>
-                                <span style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">Comandos de monitoreo InnoDB</span>
-                            </div>
-                            <div
-                                style="background: rgba(74, 222, 128, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #4ade80;">
-                                <i class="fas fa-exclamation-triangle" style="color: #4ade80; margin-right: 8px;"></i>
-                                <span style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">Simulación de crash recovery</span>
-                            </div>
-                            <div
-                                style="background: rgba(74, 222, 128, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #4ade80;">
-                                <i class="fas fa-book" style="color: #4ade80; margin-right: 8px;"></i>
-                                <span style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">Bibliografía especializada</span>
+                                <i class="fas fa-list" style="color: #4ade80; margin-right: 8px;"></i>
+                                <span
+                                    style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">pg_stat_user_indexes</span>
                             </div>
                         </div>
                     </div>
@@ -173,1196 +168,402 @@
             </div>
         </div>
 
-        <!-- Slide 3: Objetivos -->
+        <!-- ============================================ -->
+        <!-- SLIDE 3: OBJETIVOS -->
+        <!-- ============================================ -->
         <div class="slide">
             <h2><i class="fas fa-bullseye"></i> Objetivos de la Presentación</h2>
             <ul>
-                <li>Implementar <span class="highlight">logging en MySQL/InnoDB</span> con el sistema de Pagos QR</li>
-                <li>Configurar y monitorear <span class="highlight">InnoDB Redo Log</span> y Write-Ahead Logging</li>
-                <li>Dominar <span class="highlight">checkpoints automáticos</span> y su impacto en el rendimiento</li>
-                <li>Aplicar <span class="highlight">estrategias de recuperación</span> ante fallos en transacciones de pago</li>
-                <li>Comprender <span class="highlight">ARIES en InnoDB</span> y su implementación práctica</li>
+                <li>Fortalecer el motor de "¡ahorita!" garantizando <span class="highlight">estadísticas frescas y
+                        filtros selectivos</span></li>
+                <li>Diseñar una <span class="highlight">estrategia de índices</span> que equilibre validaciones
+                    antifraude con escrituras de pagos en tiempo real</li>
+                <li>Dominar <span class="highlight">EXPLAIN / EXPLAIN ANALYZE</span> para detectar cuellos de botella
+                    durante horas pico de escaneo QR</li>
+                <li>Traducir hallazgos técnicos en <span class="highlight">tareas de mantenimiento preventivo</span>
+                    para el core transaccional</li>
+                <li>Optimizar consultas para lograr <span class="highlight">respuestas menores a 2 segundos</span> en
+                    operaciones críticas</li>
             </ul>
         </div>
 
-        <!-- Slide 4: Agenda -->
+        <!-- ============================================ -->
+        <!-- SLIDE 4: AGENDA -->
+        <!-- ============================================ -->
         <div class="slide">
             <h2><i class="fas fa-chart-line"></i> Agenda</h2>
             <div class="content-grid">
                 <div class="feature-card">
-                    <h3>1. InnoDB Redo Log</h3>
-                    <p>Implementación de WAL en MySQL</p>
+                    <h3>1. Contexto del Caso ¡ahorita!</h3>
+                    <p>Sistema de pagos QR en tiempo real y desafíos de rendimiento</p>
                 </div>
                 <div class="feature-card">
-                    <h3>2. Caso de Uso Real</h3>
-                    <p>Sistema de Pagos QR "¡ahorita!"</p>
+                    <h3>2. Estadísticas y Selectividad</h3>
+                    <p>ANALYZE y optimización del planificador de consultas</p>
                 </div>
                 <div class="feature-card">
-                    <h3>3. Checkpoints InnoDB</h3>
-                    <p>Configuración y Monitoreo</p>
+                    <h3>3. Índices: Tipos y Trade-offs</h3>
+                    <p>Estrategias de indexación y costos de mantenimiento</p>
                 </div>
                 <div class="feature-card">
-                    <h3>4. Recuperación MySQL</h3>
-                    <p>Crash Recovery y ARIES</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 5: Importancia -->
-        <div class="slide">
-            <h2><i class="fas fa-shield-alt"></i> Importancia de la Persistencia y Recuperación</h2>
-            <div class="quote">
-                "La administración de bases de datos requiere un conocimiento profundo de los mecanismos de respaldo y
-                recuperación para asegurar la continuidad del negocio"
-            </div>
-            <div class="content-grid">
-                <div>
-                    <h3>Propiedades ACID Afectadas</h3>
-                    <ul>
-                        <li><span class="emphasis">Atomicidad</span>: Transacciones completas o nada</li>
-                        <li><span class="emphasis">Durabilidad</span>: Persistencia de cambios confirmados</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Relación con Seguridad</h3>
-                    <p>La seguridad de la información está estrechamente ligada a los procesos de respaldo y
-                        recuperación</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 5.5: ¿Qué es InnoDB? -->
-        <div class="slide">
-            <h2><i class="fas fa-database"></i> InnoDB: El Motor de Almacenamiento de MySQL</h2>
-            <div class="quote">
-                "InnoDB es el motor de almacenamiento por defecto de MySQL, diseñado para transacciones ACID"
-            </div>
-            <div class="content-grid">
-                <div>
-                    <h3>¿Qué es un Storage Engine?</h3>
-                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
-                        MySQL es modular: el <strong>Storage Engine</strong> determina cómo se almacenan, recuperan y gestionan los datos físicamente en disco.
-                    </p>
-                    <h3>Características de InnoDB</h3>
-                    <ul>
-                        <li><span class="emphasis">Transaccional</span>: Soporte completo ACID</li>
-                        <li><span class="emphasis">Foreign Keys</span>: Integridad referencial</li>
-                        <li><span class="emphasis">Crash Recovery</span>: Recuperación automática con ARIES</li>
-                        <li><span class="emphasis">MVCC</span>: Multi-Version Concurrency Control</li>
-                        <li><span class="emphasis">Row-level Locking</span>: Bloqueos a nivel de fila</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Alternativas a InnoDB en MySQL</h3>
-                    <table style="font-size: 0.9rem;">
-                        <thead>
-                            <tr>
-                                <th>Engine</th>
-                                <th>Características</th>
-                                <th>Uso</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>InnoDB</strong></td>
-                                <td>ACID, FK, Crash Recovery</td>
-                                <td>✅ Producción (default)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>MyISAM</strong></td>
-                                <td>Sin transacciones, rápido</td>
-                                <td>❌ Deprecado</td>
-                            </tr>
-                            <tr>
-                                <td><strong>MEMORY</strong></td>
-                                <td>Todo en RAM</td>
-                                <td>Cache temporal</td>
-                            </tr>
-                            <tr>
-                                <td><strong>CSV</strong></td>
-                                <td>Almacena en CSV</td>
-                                <td>Exportación/Logs</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p style="margin-top: 1.5rem; padding: 15px; background: rgba(233, 171, 33, 0.1); border-left: 3px solid #E9AB21; font-size: 0.95rem;">
-                        <strong><i class="fas fa-star"></i> Recomendación:</strong> Para sistemas de pagos como "¡ahorita!" usar <strong>InnoDB</strong> por su soporte ACID completo
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 6: InnoDB Redo Log -->
-        <div class="slide">
-            <h2><i class="fas fa-file-alt"></i> InnoDB Redo Log: Implementación de WAL en MySQL</h2>
-            <div class="quote">
-                "InnoDB utiliza un Redo Log circular para implementar Write-Ahead Logging y garantizar durabilidad ACID"
-            </div>
-            <div class="content-grid">
-                <div>
-                    <h3>Archivos del Redo Log</h3>
-                    <ul>
-                        <li><span class="emphasis">#ib_redoXXX</span>: Archivos de Redo Log (MySQL 8.0.30+)</li>
-                        <li><span class="emphasis">innodb_redo_log_capacity</span>: Capacidad total del Redo Log (reemplaza innodb_log_file_size)</li>
-                        <li><span class="emphasis">Log Sequence Number (LSN)</span>: Identificador único creciente</li>
-                        <li><span class="emphasis">Ubicación</span>: Directorio <code>#innodb_redo/</code> en datadir</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Configuración Básica MySQL 8.0.30+</h3>
-                    <div class="code-block">
-<span class="sql-comment">-- Ver configuración actual</span>
-<span class="sql-keyword">SHOW VARIABLES LIKE</span> <span class="sql-string">'innodb_redo_log%'</span>;
-
-<span class="sql-comment">-- Configurar capacidad (my.cnf/my.ini)</span>
-innodb_redo_log_capacity = 512M
-innodb_flush_log_at_trx_commit = 1
-
-<span class="sql-comment">-- MySQL 8.0.29 y anteriores usaban:</span>
-<span class="sql-comment">-- innodb_log_file_size = 512M (DEPRECADO)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 6.0.5: Cambios importantes en MySQL 8.0.30+ -->
-        <div class="slide">
-            <h2><i class="fas fa-exclamation-triangle"></i> Importante: Cambios en MySQL 8.0.30+</h2>
-            <div class="quote">
-                "A partir de MySQL 8.0.30, la configuración del Redo Log cambió para simplificar su administración"
-            </div>
-            <div class="content-grid">
-                <div>
-                    <h3><i class="fas fa-times-circle" style="color: #ef4444;"></i> Deprecado (MySQL ≤ 8.0.29)</h3>
-                    <div style="background: rgba(239, 68, 68, 0.1); padding: 15px; border-radius: 10px; border-left: 3px solid #ef4444;">
-                        <div class="code-block">
-<span class="sql-comment">-- Parámetros antiguos (NO usar)</span>
-innodb_log_file_size = 512M
-innodb_log_files_in_group = 2
-
-<span class="sql-comment">-- Archivos generados:</span>
-ib_logfile0
-ib_logfile1
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h3><i class="fas fa-check-circle" style="color: #10b981;"></i> Actual (MySQL ≥ 8.0.30)</h3>
-                    <div style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 10px; border-left: 3px solid #10b981;">
-                        <div class="code-block">
-<span class="sql-comment">-- Parámetro simplificado (USAR)</span>
-innodb_redo_log_capacity = 512M
-
-<span class="sql-comment">-- Archivos generados automáticamente:</span>
-#innodb_redo/#ib_redo1
-#innodb_redo/#ib_redo2
-...
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style="margin-top: 1rem; padding: 15px; background: rgba(233, 171, 33, 0.15); border-radius: 8px; border-left: 4px solid #E9AB21;">
-                <p style="margin: 0; font-size: 0.95rem;">
-                    <strong><i class="fas fa-info-circle"></i> Compatibilidad:</strong> Verifica tu versión con <code>SELECT VERSION();</code>
-                    Si usas MySQL 8.0.30 o superior, usa <code>innodb_redo_log_capacity</code>.
-                    Si usas versión anterior, usa <code>innodb_log_file_size</code>.
-                </p>
-            </div>
-        </div>
-
-        <!-- Slide 6.1: Ubicación de archivos de configuración -->
-        <div class="slide">
-            <h2><i class="fas fa-folder-open"></i> Ubicación de Archivos de Configuración MySQL</h2>
-            <div class="quote">
-                "Saber dónde está el archivo de configuración es esencial para modificar parámetros de InnoDB"
-            </div>
-            <div class="content-grid">
-                <div>
-                    <h3><i class="fab fa-windows"></i> Windows</h3>
-                    <div style="background: rgba(35, 53, 110, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 1rem;">
-                        <p style="font-size: 0.95rem; margin-bottom: 0.5rem;"><strong>Archivo:</strong> <code>my.ini</code></p>
-                        <p style="font-size: 0.9rem; line-height: 1.6;">
-                            <strong>Ubicaciones comunes:</strong><br>
-                            • <code>C:\ProgramData\MySQL\MySQL Server 8.0\my.ini</code><br>
-                            • <code>C:\Program Files\MySQL\MySQL Server 8.0\my.ini</code><br>
-                            • Directorio de instalación de MySQL
-                        </p>
-                    </div>
-                    <div style="background: rgba(145, 0, 72, 0.2); padding: 12px; border-radius: 8px; font-size: 0.85rem;">
-                        <strong><i class="fas fa-search"></i> Encontrar archivo:</strong><br>
-                        • Abrir MySQL Workbench → Server → Options File<br>
-                        • Ejecutar: <code>mysql --help</code> (buscar "Default options")
-                    </div>
-                </div>
-                <div>
-                    <h3><i class="fab fa-apple"></i> macOS / Linux</h3>
-                    <div style="background: rgba(35, 53, 110, 0.3); padding: 15px; border-radius: 10px; margin-bottom: 1rem;">
-                        <p style="font-size: 0.95rem; margin-bottom: 0.5rem;"><strong>Archivo:</strong> <code>my.cnf</code></p>
-                        <p style="font-size: 0.9rem; line-height: 1.6;">
-                            <strong>Ubicaciones comunes:</strong><br>
-                            • <code>/etc/my.cnf</code> (global)<br>
-                            • <code>/etc/mysql/my.cnf</code> (Debian/Ubuntu)<br>
-                            • <code>/usr/local/mysql/my.cnf</code> (macOS Homebrew)<br>
-                            • <code>~/.my.cnf</code> (usuario específico)
-                        </p>
-                    </div>
-                    <div style="background: rgba(145, 0, 72, 0.2); padding: 12px; border-radius: 8px; font-size: 0.85rem;">
-                        <strong><i class="fas fa-terminal"></i> Encontrar archivo:</strong><br>
-                        <code>mysql --help | grep "Default options"</code><br>
-                        <code>sudo find / -name my.cnf 2>/dev/null</code>
-                    </div>
-                </div>
-            </div>
-            <p style="text-align: center; margin-top: 1.5rem; padding: 15px; background: rgba(233, 171, 33, 0.1); border-left: 3px solid #E9AB21; font-size: 0.95rem;">
-                <strong><i class="fas fa-exclamation-triangle"></i> Importante:</strong> Reiniciar MySQL después de modificar el archivo de configuración: <code>systemctl restart mysql</code> (Linux) o Servicios (Windows)
-            </p>
-        </div>
-
-        <!-- Slide 7: Caso de Uso Real -->
-        <div class="slide">
-            <h2><i class="fas fa-mobile-alt"></i> Caso de Uso: Sistema de Pagos QR "¡ahorita!"</h2>
-            <div class="quote">
-                "Aplicación práctica de logging y recuperación en transacciones bancarias reales"
-            </div>
-            <div class="content-grid">
-                <div>
-                    <h3>Escenario: Pago de Edgar en Cafetería UIDE</h3>
-                    <div class="code-block">
-<span class="sql-keyword">START TRANSACTION</span>;
-<span class="sql-comment">-- 1. Débito cliente (Edgar ID 101)</span>
-<span class="sql-keyword">UPDATE</span> Cuentas
-<span class="sql-keyword">SET</span> saldo = saldo - 2.50
-<span class="sql-keyword">WHERE</span> id = 101;
-
-<span class="sql-comment">-- 2. Crédito comercio (Cafetería ID 202)</span>
-<span class="sql-keyword">UPDATE</span> Cuentas
-<span class="sql-keyword">SET</span> saldo = saldo + 2.50
-<span class="sql-keyword">WHERE</span> id = 202;
-
-<span class="sql-comment">-- 3. Registrar transacción</span>
-<span class="sql-keyword">INSERT INTO</span> Pagos_QR (...)
-<span class="sql-keyword">VALUES</span> (<span class="sql-string">'PAY_20241106_101_002_T001'</span>, ...);
-
-<span class="sql-keyword">COMMIT</span>; <span class="sql-comment">-- AQUÍ se escribe al Redo Log</span>
-                    </div>
-                </div>
-                <div>
-                    <h3>Qué sucede internamente en InnoDB</h3>
-                    <ul>
-                        <li><span class="emphasis">1. Buffer Pool</span>: Cambios en memoria</li>
-                        <li><span class="emphasis">2. Redo Log Buffer</span>: Se escribe el log</li>
-                        <li><span class="emphasis">3. Flush a disco</span>: ANTES del COMMIT</li>
-                        <li><span class="emphasis">4. Dirty Pages</span>: Se marcan para flush posterior</li>
-                        <li><span class="emphasis">5. COMMIT</span>: Confirma al cliente</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 8: WAL Concept -->
-        <div class="slide">
-            <h2><i class="fas fa-rocket"></i> Write-Ahead Log (WAL): Concepto Central</h2>
-            <div class="quote">
-                "El Write-Ahead Log (WAL) es una estructura auxiliar de disco de solo anexión (append-only)"
-            </div>
-
-            <!-- Diagrama WAL con CSS puro -->
-            <div style="display: flex; align-items: center; justify-content: center; gap: 30px; margin: 3rem auto; max-width: 1100px;">
-
-                <!-- Paso 1: Modificación en Memoria -->
-                <div style="position: relative;">
-                    <div style="background: #910048; border: 3px solid #23356E; border-radius: 15px; padding: 30px 25px; min-width: 160px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
-                        <div style="font-size: 3rem; margin-bottom: 10px; color: #fff;"><i class="fas fa-brain"></i></div>
-                        <div style="font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 5px;">Modificación</div>
-                        <div style="font-size: 0.95rem; color: #fff;">en Memoria</div>
-                    </div>
-                    <div style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: #E9AB21; color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 700; font-size: 0.9rem;">PASO 1</div>
-                </div>
-
-                <!-- Flecha 1 -->
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                    <div style="font-size: 3rem; color: #E9AB21;"><i class="fas fa-arrow-right"></i></div>
-                    <div style="font-size: 0.85rem; color: #E9AB21; font-weight: 600; text-align: center;">Iniciar<br>Transacción</div>
-                </div>
-
-                <!-- Paso 2: Escritura al Log WAL -->
-                <div style="position: relative;">
-                    <div style="background: #E9AB21; border: 3px solid #23356E; border-radius: 15px; padding: 30px 25px; min-width: 160px; text-align: center; box-shadow: 0 8px 20px rgba(233,171,33,0.4);">
-                        <div style="font-size: 3rem; margin-bottom: 10px; color: #000;"><i class="fas fa-file-alt"></i></div>
-                        <div style="font-weight: 700; font-size: 1.1rem; color: #000; margin-bottom: 5px;">Escritura al</div>
-                        <div style="font-size: 0.95rem; color: #000; font-weight: 600;">Log WAL</div>
-                    </div>
-                    <div style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: #910048; color: #fff; padding: 5px 15px; border-radius: 20px; font-weight: 700; font-size: 0.9rem;">PASO 2</div>
-                    <div style="position: absolute; bottom: -45px; left: 50%; transform: translateX(-50%); background: rgba(233,171,33,0.2); color: #E9AB21; padding: 5px 10px; border-radius: 5px; font-weight: 700; font-size: 0.8rem; white-space: nowrap; border: 2px solid #E9AB21;"><i class="fas fa-exclamation-triangle"></i> OBLIGATORIO</div>
-                </div>
-
-                <!-- Flecha 2 -->
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                    <div style="font-size: 3rem; color: #E9AB21;"><i class="fas fa-arrow-right"></i></div>
-                    <div style="font-size: 0.85rem; color: #E9AB21; font-weight: 600; text-align: center;">ANTES que<br>disco</div>
-                </div>
-
-                <!-- Paso 3: Escritura a Disco -->
-                <div style="position: relative;">
-                    <div style="background: #23356E; border: 3px solid #910048; border-radius: 15px; padding: 30px 25px; min-width: 160px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
-                        <div style="font-size: 3rem; margin-bottom: 10px; color: #fff;"><i class="fas fa-hdd"></i></div>
-                        <div style="font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 5px;">Escritura a</div>
-                        <div style="font-size: 0.95rem; color: #fff;">Disco (Async)</div>
-                    </div>
-                    <div style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: #E9AB21; color: #000; padding: 5px 15px; border-radius: 20px; font-weight: 700; font-size: 0.9rem;">PASO 3</div>
-                </div>
-
-                <!-- Flecha 3 -->
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                    <div style="font-size: 3rem; color: #E9AB21;"><i class="fas fa-arrow-right"></i></div>
-                    <div style="font-size: 0.85rem; color: #E9AB21; font-weight: 600;">Confirmar</div>
-                </div>
-
-                <!-- Paso 4: Datos Persistidos -->
-                <div style="position: relative;">
-                    <div style="background: #10b981; border: 3px solid #23356E; border-radius: 15px; padding: 30px 25px; min-width: 160px; text-align: center; box-shadow: 0 8px 20px rgba(16,185,129,0.3);">
-                        <div style="font-size: 3rem; margin-bottom: 10px; color: #fff;"><i class="fas fa-check-circle"></i></div>
-                        <div style="font-weight: 700; font-size: 1.1rem; color: #fff; margin-bottom: 5px;">Datos</div>
-                        <div style="font-size: 0.95rem; color: #fff; font-weight: 600;">Persistidos</div>
-                    </div>
-                    <div style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: #10b981; color: #fff; padding: 5px 15px; border-radius: 20px; font-weight: 700; font-size: 0.9rem;">COMPLETADO</div>
-                </div>
-
-            </div>
-
-            <p style="text-align: center; margin-top: 3rem; font-size: 1.3rem;">
-                <span class="highlight">Regla Fundamental:</span> ANTES de escribir al disco, PRIMERO escribir al log
-            </p>
-        </div>
-
-        <!-- Slide 9: Monitoreo Redo Log MySQL -->
-        <div class="slide">
-            <h2><i class="fas fa-chart-line"></i> Monitoreo del Redo Log en MySQL/InnoDB</h2>
-            <div class="code-block">
-<span class="sql-comment">-- Ver estado del Redo Log</span>
-<span class="sql-keyword">SHOW ENGINE INNODB STATUS</span>\G
-
-<span class="sql-comment">-- Sección relevante: LOG</span>
-<span class="sql-comment">---
-Log sequence number          123456789
-Log buffer assigned up to    123456789
-Log buffer completed up to   123456788
-Log written up to            123456788
-Log flushed up to            123456788
-Last checkpoint at           123456700
----</span>
-            </div>
-            <div class="content-grid">
-                <div>
-                    <h3>Comandos de Monitoreo</h3>
-                    <div class="code-block">
-<span class="sql-comment">-- Ver variables de configuración</span>
-<span class="sql-keyword">SHOW VARIABLES LIKE</span> <span class="sql-string">'innodb_log%'</span>;
-
-<span class="sql-comment">-- Ver estadísticas en tiempo real</span>
-<span class="sql-keyword">SHOW STATUS LIKE</span> <span class="sql-string">'Innodb_log%'</span>;
-
-<span class="sql-comment">-- Ver bytes escritos total</span>
-<span class="sql-keyword">SHOW STATUS LIKE</span> <span class="sql-string">'Innodb_os_log_written'</span>;
-                    </div>
-                </div>
-                <div>
-                    <h3>Métricas de Performance</h3>
-                    <ul>
-                        <li><span class="emphasis">Log sequence number</span>: LSN actual</li>
-                        <li><span class="emphasis">Last checkpoint at</span>: Último checkpoint</li>
-                        <li><span class="emphasis">Checkpoint age</span>: LSN - checkpoint LSN</li>
-                        <li><span class="emphasis">Innodb_os_log_written</span>: Bytes escritos</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 8.5: Undo Log - El otro lado de la moneda -->
-        <div class="slide">
-            <h2><i class="fas fa-history"></i> Undo Log: Garantizando Atomicidad</h2>
-            <div class="quote">
-                "El Undo Log permite revertir transacciones y es fundamental para MVCC (Multi-Version Concurrency Control)"
-            </div>
-            <div class="content-grid">
-                <div>
-                    <h3>¿Qué es el Undo Log?</h3>
-                    <ul>
-                        <li><span class="emphasis">Propósito</span>: Almacenar versiones anteriores de datos</li>
-                        <li><span class="emphasis">Rollback</span>: Permite deshacer transacciones no confirmadas</li>
-                        <li><span class="emphasis">MVCC</span>: Lecturas consistentes sin bloqueos</li>
-                        <li><span class="emphasis">Ubicación</span>: System Tablespace o Undo Tablespaces dedicados</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Diferencia: Redo vs Undo</h3>
-                    <table style="font-size: 0.9rem;">
-                        <thead>
-                            <tr>
-                                <th>Aspecto</th>
-                                <th>Redo Log</th>
-                                <th>Undo Log</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Propósito</strong></td>
-                                <td>Durabilidad (REDO)</td>
-                                <td>Atomicidad (UNDO)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Tipo</strong></td>
-                                <td>Físico (cambios de página)</td>
-                                <td>Lógico (operaciones inversas)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Cuándo</strong></td>
-                                <td>Después de crash</td>
-                                <td>Durante ROLLBACK o crash</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Dirección</strong></td>
-                                <td>Forward (hacia adelante)</td>
-                                <td>Backward (hacia atrás)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 10: Ejemplo Undo Log en Sistema de Pagos QR -->
-        <div class="slide">
-            <h2><i class="fas fa-mobile-alt"></i> Ejemplo en el Sistema de Pagos QR</h2>
-            <div class="feature-card" style="margin-top: 2rem;">
-                <h3>Uso del Undo Log en una Transacción</h3>
-                <div class="code-block">
-<span class="sql-keyword">START TRANSACTION</span>;
-<span class="sql-comment">-- Undo Log guarda: saldo_anterior = 25.00</span>
-<span class="sql-keyword">UPDATE</span> Cuentas <span class="sql-keyword">SET</span> saldo = 22.50 <span class="sql-keyword">WHERE</span> id = 101;
-
-<span class="sql-comment">-- Si hay ROLLBACK o crash sin COMMIT:</span>
-<span class="sql-comment">-- Undo Log restaura: saldo = 25.00 (valor original)</span>
-
-<span class="sql-keyword">ROLLBACK</span>; <span class="sql-comment">-- Usa Undo Log para revertir</span>
-                </div>
-                <p style="margin-top: 1.5rem; font-size: 1.1rem;">
-                    <strong><i class="fas fa-thumbtack"></i> Clave:</strong> El Undo Log complementa al Redo Log para garantizar propiedades ACID completas
-                </p>
-            </div>
-        </div>
-
-        <!-- Slide 11: ARIES en InnoDB -->
-        <div class="slide">
-            <h2><i class="fas fa-cogs"></i> ARIES en InnoDB: Implementación de MySQL</h2>
-            <div class="quote">
-                "InnoDB implementa una variante optimizada de ARIES para recuperación ante fallos"
-            </div>
-            <div class="content-grid">
-                <div>
-                    <h3>Componentes InnoDB Basados en ARIES</h3>
-                    <ul>
-                        <li><span class="emphasis">LSN (Log Sequence Number)</span>: Identificador único de cambio</li>
-                        <li><span class="emphasis">Redo Log</span>: Registro físico de cambios</li>
-                        <li><span class="emphasis">Undo Log</span>: Para rollback y MVCC</li>
-                        <li><span class="emphasis">Buffer Pool</span>: Dirty Pages con LSN</li>
-                        <li><span class="emphasis">Doublewrite Buffer</span>: Protección contra partial writes</li>
-                    </ul>
+                    <h3>4. Planes de Ejecución</h3>
+                    <p>Lectura práctica de EXPLAIN y análisis de rendimiento</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Crash Recovery en InnoDB</h3>
-                    <div class="code-block">
-<span class="sql-comment">-- Al iniciar después de crash:</span>
-1. Leer último checkpoint LSN
-2. <span class="emphasis">REDO</span>: Aplicar desde checkpoint
-3. <span class="emphasis">UNDO</span>: Revertir transacciones
-   no confirmadas
-4. Purge: Limpiar versiones antiguas
-                    </div>
+                    <h3>5. Implicaciones para la Plataforma</h3>
+                    <p>Aplicación práctica en el sistema de pagos QR</p>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 12: ARIES Overview -->
+        ""
+
+        <!-- ============================================ -->
+        <!-- SLIDE 5: CASO DE USO -->
+        <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-sync-alt"></i> ARIES: Proceso Completo de Recuperación</h2>
+            <h2><i class="fas fa-mobile-alt"></i> Caso de Uso: Pagos QR en Tiempo Real</h2>
             <div class="quote">
-                "Algoritmo robusto de recuperación basado en 3 fases secuenciales"
+                "¡ahorita!" liquida miles de transacciones por minuto; un plan deficiente se traduce en pagos rechazados
+                o confirmaciones tardías.
             </div>
-
-            <!-- Diagrama de flujo horizontal -->
-            <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin: 3rem auto; max-width: 1100px;">
-                <!-- Fase 1: CRASH -->
-                <div style="background: #E9AB21; border: 3px solid #23356E; border-radius: 15px; padding: 30px 25px; min-width: 140px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px; color: #000;"><i class="fas fa-exclamation-triangle"></i></div>
-                    <div style="font-weight: 700; font-size: 1.1rem; color: #000;">CRASH</div>
-                </div>
-
-                <div style="font-size: 2rem; color: #E9AB21;"><i class="fas fa-arrow-right"></i></div>
-
-                <!-- Fase 2: ANÁLISIS -->
-                <div style="background: #910048; border: 3px solid #23356E; border-radius: 15px; padding: 30px 25px; min-width: 140px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px; color: #fff;"><i class="fas fa-search"></i></div>
-                    <div style="font-weight: 700; font-size: 1.1rem; color: #fff;">ANÁLISIS</div>
-                </div>
-
-                <div style="font-size: 2rem; color: #E9AB21;"><i class="fas fa-arrow-right"></i></div>
-
-                <!-- Fase 3: REDO -->
-                <div style="background: #23356E; border: 3px solid #910048; border-radius: 15px; padding: 30px 25px; min-width: 140px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px; color: #fff;"><i class="fas fa-redo"></i></div>
-                    <div style="font-weight: 700; font-size: 1.1rem; color: #fff;">REDO</div>
-                </div>
-
-                <div style="font-size: 2rem; color: #E9AB21;"><i class="fas fa-arrow-right"></i></div>
-
-                <!-- Fase 4: UNDO -->
-                <div style="background: #910048; border: 3px solid #23356E; border-radius: 15px; padding: 30px 25px; min-width: 140px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px; color: #fff;"><i class="fas fa-undo"></i></div>
-                    <div style="font-weight: 700; font-size: 1.1rem; color: #fff;">UNDO</div>
-                </div>
-
-                <div style="font-size: 2rem; color: #E9AB21;"><i class="fas fa-arrow-right"></i></div>
-
-                <!-- Fase 5: COMPLETADO -->
-                <div style="background: #10b981; border: 3px solid #23356E; border-radius: 15px; padding: 30px 25px; min-width: 140px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                    <div style="font-size: 2.5rem; margin-bottom: 10px; color: #fff;"><i class="fas fa-check-circle"></i></div>
-                    <div style="font-weight: 700; font-size: 1.1rem; color: #fff;">CONSISTENTE</div>
-                </div>
-            </div>
-
-            <div class="content-grid" style="margin-top: 3rem;">
-                <div class="feature-card">
-                    <h3><i class="fas fa-info-circle"></i> Las 3 Fases Principales</h3>
-                    <ul style="font-size: 1.1rem;">
-                        <li><span class="emphasis">Análisis</span>: Determinar qué pasó</li>
-                        <li><span class="emphasis">Redo</span>: Repetir toda la historia</li>
-                        <li><span class="emphasis">Undo</span>: Deshacer incompletas</li>
+            <div class="content-grid">
+                <div>
+                    <h3>Modelo de Datos (Semana 2)</h3>
+                    <ul>
+                        <li><span class="emphasis">Base:</span> pagos_qr_sistema</li>
+                        <li><span class="emphasis">Tablas:</span> Cuentas, Comercios, Pagos_QR</li>
+                        <li><span class="emphasis">Auditoría:</span> Auditoria_Transacciones</li>
+                        <li><span class="emphasis">Control:</span> Limites_Diarios</li>
+                        <li><span class="emphasis">Vistas:</span> v_transacciones_hoy, v_estadisticas_comercios</li>
                     </ul>
                 </div>
-                <div class="feature-card">
-                    <h3><i class="fas fa-bullseye"></i> Resultado</h3>
+                <div>
+                    <h3>Dolor Actual</h3>
                     <p style="font-size: 1.1rem; line-height: 1.8;">
-                        Estado consistente garantizado sin pérdida de transacciones confirmadas
+                        <span class="emphasis">Problema:</span> Conciliaciones y alertas antifraude tardan más de 5
+                        segundos durante "Cashback Cafeterías", generando timeouts en el app móvil.
+                    </p>
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
+                        <span class="highlight">Meta:</span> Respuestas menores a 2 segundos manteniendo estadísticas,
+                        índices y planes alineados.
                     </p>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 11.1: ARIES Fase 1 - Análisis (Subslide) -->
-        <div class="slide subslide">
-            <h2><i class="fas fa-search"></i> ARIES: Fase 1 - ANÁLISIS</h2>
-            <div class="quote">
-                "Determinar el estado del sistema antes del crash"
-            </div>
-
-            <div class="content-grid" style="margin-top: 2rem;">
-                <div>
-                    <h3>Objetivo Principal</h3>
-                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
-                        Reconstruir el estado del sistema al momento del fallo para determinar qué transacciones estaban activas y qué páginas fueron modificadas.
-                    </p>
-
-                    <h3>Proceso Detallado</h3>
-                    <ul style="font-size: 1.1rem; line-height: 2;">
-                        <li><span class="emphasis">Punto de partida</span>: Último checkpoint válido</li>
-                        <li><span class="emphasis">Escaneo del log</span>: Desde checkpoint hasta el final</li>
-                        <li><span class="emphasis">Identificación</span>: Transacciones confirmadas vs no confirmadas</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Estructuras Reconstruidas</h3>
-                    <div class="feature-card" style="margin-bottom: 1.5rem;">
-                        <h4><i class="fas fa-table"></i> Transaction Table</h4>
-                        <p>Lista de todas las transacciones activas al momento del crash con su estado (COMMIT/ACTIVE)</p>
-                    </div>
-                    <div class="feature-card">
-                        <h4><i class="fas fa-file-alt"></i> Dirty Page Table</h4>
-                        <p>Páginas modificadas en el Buffer Pool que no fueron escritas al disco (con su RecLSN)</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 11.2: ARIES Fase 2 - Redo (Subslide) -->
-        <div class="slide subslide">
-            <h2><i class="fas fa-redo"></i> ARIES: Fase 2 - REDO</h2>
-            <div class="quote">
-                "Repetir la historia: Rehacer TODOS los cambios desde el checkpoint"
-            </div>
-
-            <div class="content-grid" style="margin-top: 2rem;">
-                <div>
-                    <h3>Objetivo Principal</h3>
-                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
-                        Restaurar el estado exacto de la base de datos al momento inmediatamente anterior al crash, incluyendo cambios de transacciones confirmadas y no confirmadas.
-                    </p>
-
-                    <h3>Características Clave</h3>
-                    <ul style="font-size: 1.1rem; line-height: 2;">
-                        <li><span class="emphasis">Reaplicación completa</span>: TODOS los cambios desde checkpoint</li>
-                        <li><span class="emphasis">Idempotencia</span>: Usa LSN para evitar duplicados</li>
-                        <li><span class="emphasis">Sin discriminar</span>: Confirmadas Y no confirmadas</li>
-                        <li><span class="emphasis">Forward scan</span>: Lee log hacia adelante</li>
-                    </ul>
-                </div>
-                <div>
-                    <div class="feature-card" style="margin-bottom: 1.5rem;">
-                        <h3><i class="fas fa-question-circle"></i> ¿Por qué TODAS?</h3>
-                        <p style="font-size: 1.05rem; line-height: 1.7;">
-                            Algunas modificaciones de transacciones no confirmadas podrían haberse escrito al disco.
-                            REDO garantiza que el estado sea exactamente el mismo que antes del crash.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <h3><i class="fas fa-shield-alt"></i> Protección LSN</h3>
-                        <p style="font-size: 1.05rem; line-height: 1.7;">
-                            Cada página tiene un Page LSN. Solo se reaplica si Log LSN > Page LSN, evitando redundancia.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 11.3: ARIES Fase 3 - Undo (Subslide) -->
-        <div class="slide subslide">
-            <h2><i class="fas fa-undo"></i> ARIES: Fase 3 - UNDO</h2>
-            <div class="quote">
-                "Garantizar atomicidad: Revertir transacciones no confirmadas"
-            </div>
-
-            <div class="content-grid" style="margin-top: 2rem;">
-                <div>
-                    <h3>Objetivo Principal</h3>
-                    <p style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
-                        Deshacer todos los efectos de las transacciones que estaban activas al momento del crash y no alcanzaron a confirmar (COMMIT).
-                    </p>
-
-                    <h3>Proceso de Reversión</h3>
-                    <ul style="font-size: 1.1rem; line-height: 2;">
-                        <li><span class="emphasis">Orden inverso</span>: Lee Undo Log hacia atrás</li>
-                        <li><span class="emphasis">Solo no confirmadas</span>: Identificadas en fase de análisis</li>
-                        <li><span class="emphasis">CLRs</span>: Escribe Compensation Log Records</li>
-                        <li><span class="emphasis">Atomicidad</span>: Garantiza "todo o nada"</li>
-                    </ul>
-                </div>
-                <div>
-                    <div class="feature-card" style="margin-bottom: 1.5rem;">
-                        <h3><i class="fas fa-list-ol"></i> CLR: Compensation Log Records</h3>
-                        <p style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 1rem;">
-                            Registros especiales que documentan las operaciones de UNDO realizadas.
-                        </p>
-                        <ul style="font-size: 0.95rem;">
-                            <li>No se pueden deshacer (evita loops infinitos)</li>
-                            <li>Permiten recovery del recovery</li>
-                            <li>Apuntan al siguiente registro a deshacer</li>
-                        </ul>
-                    </div>
-                    <div class="feature-card">
-                        <h3><i class="fas fa-check-double"></i> Resultado Final</h3>
-                        <p style="font-size: 1.05rem; line-height: 1.7;">
-                            Sistema en estado consistente: todas las transacciones confirmadas persisten,
-                            las no confirmadas se revierten completamente.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 13: Checkpoints InnoDB -->
+        <!-- ============================================ -->
+        <!-- SLIDE 6: ESTADÍSTICAS Y SELECTIVIDAD -->
+        <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-map-marker-alt"></i> Checkpoints en InnoDB: Configuración Práctica</h2>
-            <div class="quote">
-                "InnoDB realiza checkpoints automáticos para sincronizar dirty pages del Buffer Pool con el disco"
-            </div>
+            <h2><i class="fas fa-chart-bar"></i> Estadísticas y Selectividad en Acción</h2>
             <div class="content-grid">
                 <div>
-                    <h3>Tipos de Checkpoint en InnoDB</h3>
+                    <h3>Importancia de las Estadísticas</h3>
                     <ul>
-                        <li><span class="emphasis">Sharp Checkpoint</span>: Flush todas las dirty pages (al shutdown)</li>
-                        <li><span class="emphasis">Fuzzy Checkpoint</span>: Flush parcial en background</li>
-                        <li><span class="emphasis">Async/Sync Flush</span>: Según presión del log</li>
+                        <li>El <span class="emphasis">optimizador</span> necesita estadísticas frescas sobre campos
+                            clave</li>
+                        <li>Desalineaciones entre rows estimadas y reales obligan a leer toda la tabla</li>
+                        <li>Ejemplo: Seq Scan Pagos_QR cuando bastaría el índice idx_comercio_fecha</li>
                     </ul>
                 </div>
                 <div>
-                    <h3>Configuración y Monitoreo</h3>
-                    <div class="code-block">
-<span class="sql-comment">-- Variables de checkpoint</span>
-<span class="sql-keyword">SHOW VARIABLES LIKE</span> <span class="sql-string">'innodb_io_capacity%'</span>;
-innodb_io_capacity = 200
-innodb_io_capacity_max = 2000
-
-<span class="sql-comment">-- Monitorear dirty pages</span>
-<span class="sql-keyword">SHOW STATUS LIKE</span> <span class="sql-string">'Innodb_buffer_pool_pages_dirty'</span>;
-
-<span class="sql-comment">-- Forzar checkpoint (testing)</span>
-<span class="sql-keyword">SET GLOBAL</span> innodb_fast_shutdown = 0;
-                    </div>
+                    <h3>Campos Críticos</h3>
+                    <ul>
+                        <li><span class="highlight">Pagos_QR:</span> fecha, estado, monto</li>
+                        <li><span class="highlight">Comercios:</span> ciudad</li>
+                        <li><span class="highlight">Cuentas:</span> estado</li>
+                    </ul>
                 </div>
+            </div>
+            <div
+                style="background: rgba(233, 171, 33, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-top: 20px;">
+                <h3 style="color: var(--uide-accent); margin-bottom: 1rem;">Plan para "¡ahorita!"</h3>
+                <ul style="font-size: 1rem;">
+                    <li>Automatizar ANALYZE cada madrugada y tras scripts masivos</li>
+                    <li>Monitorizar "Rows Removed by Filter" (selectividad real)</li>
+                    <li>Refrescar estadísticas cuando diferencia estimado/real sea mayor al 20%</li>
+                </ul>
             </div>
         </div>
 
-        <!-- Slide 13.1: Binary Log en MySQL -->
+        <!-- ============================================ -->
+        <!-- SLIDE 7: ÍNDICES Y SU IMPACTO -->
+        <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-archive"></i> Binary Log: Diferencia con Redo Log</h2>
-            <div class="quote">
-                "El Binary Log registra cambios a nivel lógico (SQL) mientras el Redo Log lo hace a nivel físico (páginas)"
-            </div>
+            <h2><i class="fas fa-list-ol"></i> Índices y su Impacto en el Costo</h2>
             <div class="content-grid">
                 <div>
-                    <h3>¿Qué es el Binary Log?</h3>
+                    <h3>Índices Existentes</h3>
                     <ul>
-                        <li><span class="emphasis">Propósito</span>: Replicación, recuperación point-in-time, auditoría</li>
-                        <li><span class="emphasis">Formato</span>: Lógico (statements o row changes)</li>
-                        <li><span class="emphasis">Ámbito</span>: Todas las bases de datos en el servidor</li>
-                        <li><span class="emphasis">Ubicación</span>: mysql-bin.000001, mysql-bin.000002, etc.</li>
+                        <li><span class="emphasis">idx_cliente_fecha:</span> Consultas por cliente y período</li>
+                        <li><span class="emphasis">idx_comercio_fecha:</span> Dashboards por comercio</li>
+                        <li><span class="emphasis">idx_estado:</span> Filtros por estado de transacción</li>
                     </ul>
-                </div>
-                <div>
-                    <h3>Binary Log vs Redo Log</h3>
-                    <table style="font-size: 0.9rem;">
-                        <thead>
-                            <tr>
-                                <th>Aspecto</th>
-                                <th>Binary Log</th>
-                                <th>Redo Log (InnoDB)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Nivel</strong></td>
-                                <td>Servidor MySQL</td>
-                                <td>Motor InnoDB</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Formato</strong></td>
-                                <td>Lógico (SQL/Row)</td>
-                                <td>Físico (Páginas)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Uso principal</strong></td>
-                                <td>Replicación, PITR</td>
-                                <td>Crash recovery</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Rotación</strong></td>
-                                <td>Por tamaño o manual</td>
-                                <td>Circular</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 13.2: Binary Log en Sistema de Pagos QR -->
-        <div class="slide">
-            <h2><i class="fas fa-mobile-alt"></i> Binary Log en Sistema de Pagos QR</h2>
-            <div class="quote">
-                "Fundamental para auditoría bancaria y cumplimiento normativo"
-            </div>
-            <div class="content-grid">
-                <div>
-                    <h3>Comandos Básicos Binary Log</h3>
-                    <div class="code-block">
-<span class="sql-comment">-- 1. Verificar si está activo</span>
-<span class="sql-keyword">SHOW VARIABLES LIKE</span> <span class="sql-string">'log_bin'</span>;
-
-<span class="sql-comment">-- 2. Ver lista de archivos</span>
-<span class="sql-keyword">SHOW BINARY LOGS</span>;
-
-<span class="sql-comment">-- 3. Ver eventos del log</span>
-<span class="sql-keyword">SHOW BINLOG EVENTS</span> LIMIT 10;
-
-<span class="sql-comment">-- 4. Ver posición actual</span>
-<span class="sql-keyword">SHOW MASTER STATUS</span>;
-                    </div>
-                </div>
-                <div>
-                    <h3>Usos en Sistema de Pagos QR</h3>
-                    <ul>
-                        <li><span class="emphasis">Recuperación</span>: Restaurar transacciones después de fallos</li>
-                        <li><span class="emphasis">Replicación</span>: Sincronizar entre sucursales del Banco de Loja</li>
-                        <li><span class="emphasis">Auditoría</span>: Cumplimiento normativo bancario</li>
-                        <li><span class="emphasis">Point-in-Time Recovery</span>: Restaurar hasta momento específico</li>
-                    </ul>
-                    <p style="margin-top: 1rem; padding: 10px; background: rgba(233, 171, 33, 0.1); border-left: 3px solid #E9AB21;">
-                        <strong><i class="fas fa-shield-alt"></i> Regulación:</strong> Los bancos deben mantener logs de todas las transacciones
+                    <p style="margin-top: 1rem; font-size: 1rem;">
+                        Estos índices evitan <span class="highlight">Seq Scan</span> cuando se filtra por comercio,
+                        cliente o estado.
                     </p>
                 </div>
+                <div>
+                    <h3>Ajustes Recomendados</h3>
+                    <ul>
+                        <li><span class="emphasis">Clave primaria:</span> Pagos_QR(payment_id) - mantiene trazabilidad
+                        </li>
+                        <li><span class="emphasis">Compuesto:</span> (comercio_id, fecha) - soporta dashboards</li>
+                        <li><span class="emphasis">Cubierto nuevo:</span> (cliente_id, estado, metodo_pago) INCLUDE
+                            (monto, dispositivo)</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- Slide 13.3: Configuración Binary Log -->
+        ""
+
+        <!-- ============================================ -->
+        <!-- SLIDE 8: TRADE-OFFS DE ÍNDICES -->
+        <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-cog"></i> Configuración del Binary Log</h2>
+            <h2><i class="fas fa-balance-scale"></i> Trade-offs de Índices</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Beneficio</th>
+                        <th>Costo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Lecturas</strong></td>
+                        <td>Reducción drástica de I/O en consultas</td>
+                        <td>Espacio adicional en disco</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Escrituras</strong></td>
+                        <td>N/A</td>
+                        <td>Cada índice se actualiza en INSERT/UPDATE/DELETE</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mantenimiento</strong></td>
+                        <td>Mejora rendimiento de consultas frecuentes</td>
+                        <td>Requiere monitoreo y limpieza periódica</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div
+                style="background: rgba(233, 171, 33, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-top: 20px;">
+                <h3 style="color: var(--uide-accent); margin-bottom: 1rem;"><i class="fas fa-lightbulb"></i> Guía
+                    Práctica</h3>
+                <ul style="font-size: 1rem;">
+                    <li>Revisar índices existentes antes de crear nuevos</li>
+                    <li>Consolidar índices redundantes</li>
+                    <li>Usar estadísticas de uso (pg_stat_user_indexes) para justificar cada índice</li>
+                    <li>Exceso de índices degrada el throughput de INSERT INTO Pagos_QR</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 9: COSTOS DE EJECUCIÓN -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2><i class="fas fa-dollar-sign"></i> Costos de Ejecución y E/S</h2>
             <div class="content-grid">
                 <div>
-                    <h3>Habilitar Binary Log (my.cnf)</h3>
-                    <div class="code-block">
-<span class="sql-comment"># Habilitar binary log</span>
-log-bin = mysql-bin
-server-id = 1
-
-<span class="sql-comment"># Formato (ROW más seguro para replicación)</span>
-binlog-format = ROW
-
-<span class="sql-comment"># Expiración automática (días)</span>
-expire_logs_days = 7
-
-<span class="sql-comment"># Sincronización (durabilidad)</span>
-sync_binlog = 1
-                    </div>
+                    <h3>Componentes del Costo</h3>
+                    <ul>
+                        <li><span class="emphasis">cost = inicio..total:</span> Combina CPU + I/O</li>
+                        <li>Leer el archivo de datos de Pagos_QR sigue siendo lo más caro</li>
+                        <li>Índices B+ tree reducen E/S operando sobre páginas pequeñas</li>
+                        <li>Evitan escaneos secuenciales completos</li>
+                    </ul>
                 </div>
                 <div>
-                    <h3>Variables Importantes</h3>
-                    <div class="code-block">
-<span class="sql-comment">-- Ver configuración</span>
-<span class="sql-keyword">SHOW VARIABLES LIKE</span> <span class="sql-string">'%binlog%'</span>;
-
-<span class="sql-comment">-- sync_binlog=1: Máxima durabilidad</span>
-<span class="sql-comment">-- sync_binlog=0: Mejor performance</span>
-
-<span class="sql-comment">-- Purgar logs antiguos</span>
-<span class="sql-keyword">PURGE BINARY LOGS BEFORE</span>
-  NOW() - <span class="sql-keyword">INTERVAL</span> 7 DAY;
-                    </div>
-                    <p style="margin-top: 1rem; font-size: 0.95rem;">
-                        <strong>Recomendación:</strong> En sistemas de pago usar <code>sync_binlog=1</code> para garantizar durabilidad
-                    </p>
+                    <h3>Estrategia "¡ahorita!"</h3>
+                    <ul>
+                        <li>Mantener el core OLTP con índices definidos en DDL base</li>
+                        <li>Mover reportes a réplicas (mysqldump + replica)</li>
+                        <li>Validar impacto en I/O antes de agregar índices temporales</li>
+                        <li>Usar Performance Schema / SHOW ENGINE INNODB STATUS</li>
+                    </ul>
                 </div>
             </div>
-        </div>
-
-        <!-- Slide 13.4: Práctica PE-1.3 Preview -->
-        <div class="slide">
-            <h2><i class="fas fa-flask"></i> PE-1.3: Laboratorio Binary Log</h2>
-            <div class="quote">
-                "Verificar logging en transacciones de pago QR usando tu cuenta personal"
-            </div>
-            <div class="feature-card" style="margin-top: 2rem;">
-                <h3>Actividades de la Práctica</h3>
-                <div class="content-grid" style="margin-top: 1.5rem;">
-                    <div>
-                        <h4>1. Verificar Binary Log</h4>
-                        <div class="code-block" style="font-size: 0.9rem;">
-<span class="sql-keyword">SHOW VARIABLES LIKE</span> <span class="sql-string">'log_bin'</span>;
-                        </div>
-                    </div>
-                    <div>
-                        <h4>2. Ejecutar Transacciones</h4>
-                        <div class="code-block" style="font-size: 0.9rem;">
-<span class="sql-keyword">USE</span> pagos_qr_sistema;
-<span class="sql-comment">-- Usar TU cuenta (ID XXX)</span>
-<span class="sql-keyword">START TRANSACTION</span>;
-<span class="sql-keyword">UPDATE</span> Cuentas <span class="sql-keyword">SET</span> saldo = saldo - 2.50
-<span class="sql-keyword">WHERE</span> id = XXX;
-<span class="sql-keyword">COMMIT</span>;
-                        </div>
-                    </div>
-                </div>
-                <div style="margin-top: 1.5rem;">
-                    <h4>3. Ver Binary Logs Generados</h4>
-                    <div class="code-block" style="font-size: 0.9rem;">
-<span class="sql-keyword">SHOW BINARY LOGS</span>;
-<span class="sql-keyword">SHOW BINLOG EVENTS LIMIT</span> 10;
-                    </div>
-                </div>
-                <p style="margin-top: 1.5rem; padding: 15px; background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
-                    <strong><i class="fas fa-user"></i> Importante:</strong> Cada estudiante trabaja con su cuenta asignada (ID entre 101-127)
+            <div
+                style="background: rgba(145, 0, 72, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-primary); margin-top: 20px;">
+                <p style="margin: 0; font-size: 1rem; line-height: 1.6;">
+                    <strong>Nota:</strong> Cada índice adicional se refleja en los logs binarios de la práctica (Semana
+                    3): mayor escritura en INSERT, UPDATE, DELETE.
                 </p>
             </div>
         </div>
 
-        <!-- Slide 14: Simulación de Fallo y Recuperación -->
+        <!-- ============================================ -->
+        <!-- SLIDE 10: PLANES DE EJECUCIÓN -->
+        <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-exclamation-triangle"></i> Demo: Simulación de Crash y Recuperación</h2>
-            <div class="quote">
-                "Escenario: Servidor MySQL crashea durante pago QR - ¿Se pierde el dinero?"
-            </div>
+            <h2><i class="fas fa-search"></i> Planes de Ejecución (EXPLAIN / EXPLAIN ANALYZE)</h2>
             <div class="content-grid">
                 <div>
-                    <h3>Escenario de Fallo</h3>
-                    <div class="code-block">
-<span class="sql-comment">-- T1: Pago confirmado (Edgar $2.50)</span>
-<span class="sql-keyword">START TRANSACTION</span>;
-<span class="sql-keyword">UPDATE</span> Cuentas <span class="sql-keyword">SET</span> saldo = saldo - 2.50 <span class="sql-keyword">WHERE</span> id = 101;
-<span class="sql-keyword">UPDATE</span> Cuentas <span class="sql-keyword">SET</span> saldo = saldo + 2.50 <span class="sql-keyword">WHERE</span> id = 202;
-<span class="sql-keyword">COMMIT</span>; <span class="sql-comment">-- Log escrito, OK</span>
-
-<span class="sql-comment">-- T2: Pago sin confirmar (Anyela $3.00)</span>
-<span class="sql-keyword">START TRANSACTION</span>;
-<span class="sql-keyword">UPDATE</span> Cuentas <span class="sql-keyword">SET</span> saldo = saldo - 3.00 <span class="sql-keyword">WHERE</span> id = 103;
-<span class="sql-comment">-- CRASH AQUÍ (sin COMMIT)</span>
-
-<span class="sql-comment">-- Al reiniciar MySQL:</span>
-<span class="sql-comment">-- REDO: T1 se restablece (aunque no flush a disco)</span>
-<span class="sql-comment">-- UNDO: T2 se revierte (no confirmado)</span>
-                    </div>
+                    <h3>Diferencias Clave</h3>
+                    <ul>
+                        <li><span class="emphasis">EXPLAIN:</span> Plan estimado</li>
+                        <li><span class="emphasis">EXPLAIN ANALYZE:</span> Plan + métricas reales (solo en entornos
+                            controlados)</li>
+                    </ul>
+                    <h3 style="margin-top: 1.5rem;">Elementos de Lectura</h3>
+                    <ul>
+                        <li>Nodos: Seq Scan, Index Scan, Nested Loop, Hash Join</li>
+                        <li>Rows estimadas vs. reales</li>
+                        <li>Planning Time / Execution Time</li>
+                        <li>Campo Extra: Using index condition; Using where</li>
+                    </ul>
                 </div>
                 <div>
-                    <h3>Proceso de Recuperación InnoDB</h3>
-                    <ul>
-                        <li><span class="emphasis">1. Leer checkpoint</span>: Desde ib_logfile</li>
-                        <li><span class="emphasis">2. REDO phase</span>: Replay desde checkpoint LSN</li>
-                        <li><span class="emphasis">3. UNDO phase</span>: Rollback transacciones activas</li>
-                        <li><span class="emphasis">4. Resultado</span>: Estado consistente garantizado</li>
-                    </ul>
-                    <p style="margin-top: 1rem; padding: 10px; background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981;">
-                        <strong><i class="fas fa-check-circle"></i> Garantía:</strong> El pago de Edgar persiste, el de Anyela se revierte
+                    <h3>Ejemplo Práctico</h3>
+                    <div class="code-block">
+                        <span class="sql-keyword">EXPLAIN SELECT</span> payment_id, monto, estado
+                        <span class="sql-keyword">FROM</span> Pagos_QR
+                        <span class="sql-keyword">WHERE</span> comercio_id = <span class="sql-number">202</span>
+                        <span class="sql-keyword">AND</span> fecha >= <span class="sql-keyword">NOW</span>() - <span
+                            class="sql-keyword">INTERVAL</span> <span class="sql-number">5</span> <span
+                            class="sql-keyword">MINUTE</span>
+                        <span class="sql-keyword">ORDER BY</span> fecha <span class="sql-keyword">DESC</span>;
+                    </div>
+                    <p style="font-size: 0.95rem; margin-top: 1rem;">
+                        <strong>Objetivo:</strong> Verificar uso de idx_comercio_fecha, que Rows estimadas ≈ reales y
+                        evitar Using temporary o filesort.
                     </p>
                 </div>
             </div>
         </div>
 
 
-        <!-- Slide 15: Performance Metrics MySQL -->
+        <!-- ============================================ -->
+        <!-- SLIDE 11: IMPLICACIONES PARA LA PLATAFORMA -->
+        <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-chart-bar"></i> Métricas de Rendimiento en MySQL/InnoDB</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Variable/Status</th>
-                        <th>Descripción</th>
-                        <th>Valor Recomendado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>innodb_redo_log_capacity</strong></td>
-                        <td>Capacidad total del Redo Log (MySQL 8.0.30+)</td>
-                        <td>512MB - 2GB</td>
-                    </tr>
-                    <tr>
-                        <td><strong>innodb_flush_log_at_trx_commit</strong></td>
-                        <td>Durabilidad vs Performance</td>
-                        <td>1 (producción), 2 (menos crítico)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Innodb_os_log_written</strong></td>
-                        <td>Bytes escritos al log</td>
-                        <td>Monitorear crecimiento</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Checkpoint Age</strong></td>
-                        <td>LSN - Checkpoint LSN</td>
-                        <td>&lt; 80% del log size</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Innodb_buffer_pool_pages_dirty</strong></td>
-                        <td>Páginas sucias en buffer</td>
-                        <td>&lt; 75% del pool</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Slide 16: Laboratorio Práctico -->
-        <div class="slide">
-            <h2><i class="fas fa-flask"></i> Laboratorio: Verificar Logging y Checkpoints</h2>
+            <h2><i class="fas fa-compass"></i> Implicaciones para "¡ahorita!"</h2>
             <div class="content-grid">
-                <div>
-                    <h3>Ejercicio 1: Monitorear Redo Log</h3>
-                    <div class="code-block">
-<span class="sql-comment">-- 1. Estado inicial del log</span>
-<span class="sql-keyword">SHOW ENGINE INNODB STATUS</span>\G
-
-<span class="sql-comment">-- 2. Ejecutar pago QR</span>
-<span class="sql-keyword">CALL</span> sp_procesar_pago_qr(
-  <span class="sql-string">'PAY_LAB_001'</span>, 101, 2, 2.50,
-  <span class="sql-string">'Lab logging'</span>, @resultado
-);
-
-<span class="sql-comment">-- 3. Verificar cambio en LSN</span>
-<span class="sql-keyword">SHOW ENGINE INNODB STATUS</span>\G
-<span class="sql-comment">-- Observar incremento en Log sequence number</span>
-                    </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-chart-pie"></i> 1. Gobernar Estadísticas</h3>
+                    <p>Automatizar ANALYZE sobre las tablas de Semana 2 y habilitar alertas cuando estimado vs. real
+                        divergen en planes.</p>
                 </div>
-                <div>
-                    <h3>Ejercicio 2: Forzar Checkpoint</h3>
-                    <div class="code-block">
-<span class="sql-comment">-- 1. Ver dirty pages antes</span>
-<span class="sql-keyword">SHOW STATUS LIKE</span>
-  <span class="sql-string">'Innodb_buffer_pool_pages_dirty'</span>;
-
-<span class="sql-comment">-- 2. Generar muchas transacciones</span>
-<span class="sql-keyword">-- Ejecutar varios pagos</span>
-
-<span class="sql-comment">-- 3. Observar checkpoint automático</span>
-<span class="sql-keyword">SHOW ENGINE INNODB STATUS</span>\G
-<span class="sql-comment">-- Ver "Last checkpoint at" cambiar</span>
-                    </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-list-check"></i> 2. Índices con Propósito</h3>
+                    <p>Documentar cada índice existente en el DDL y justificar los nuevos a partir de los patrones
+                        detectados en PE-1.3.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-microscope"></i> 3. Planes como Ritual</h3>
+                    <p>Ningún SQL que toque Pagos_QR, Cuentas o Auditoria_Transacciones se promueve sin EXPLAIN (y
+                        EXPLAIN ANALYZE en staging).</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-balance-scale-right"></i> 4. Balancear Lecturas/Escrituras</h3>
+                    <p>Evaluar el costo antes de agregar índices para dashboards; usar réplicas si el consumo proviene
+                        de analítica.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-shield-alt"></i> 5. Checklist de Resiliencia</h3>
+                    <p>Previo a eventos de alto tráfico, correr scripts de verificación (stats frescas, lag de réplica,
+                        planes).</p>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 17: innodb_flush_log_at_trx_commit -->
+        <!-- ============================================ -->
+        <!-- SLIDE 12: ACTIVIDADES CALIFICADAS DETALLADAS -->
+        <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-sliders-h"></i> innodb_flush_log_at_trx_commit: Trade-offs</h2>
-            <div class="quote">
-                "La configuración más crítica para balancear durabilidad vs rendimiento"
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Valor</th>
-                        <th>Comportamiento</th>
-                        <th>Durabilidad</th>
-                        <th>Performance</th>
-                        <th>Uso Recomendado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>0</strong></td>
-                        <td>Flush cada ~1 segundo</td>
-                        <td><i class="fas fa-times-circle" style="color: #ef4444;"></i> Baja</td>
-                        <td><i class="fas fa-check-circle" style="color: #10b981;"></i> Alta</td>
-                        <td>No recomendado para producción</td>
-                    </tr>
-                    <tr>
-                        <td><strong>1</strong></td>
-                        <td>Flush en cada COMMIT</td>
-                        <td><i class="fas fa-check-circle" style="color: #10b981;"></i> Máxima</td>
-                        <td><i class="fas fa-exclamation-circle" style="color: #E9AB21;"></i> Media</td>
-                        <td><strong>Sistemas financieros, pagos</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>2</strong></td>
-                        <td>Write en COMMIT, flush cada ~1s</td>
-                        <td><i class="fas fa-exclamation-circle" style="color: #E9AB21;"></i> Media</td>
-                        <td><i class="fas fa-check-circle" style="color: #10b981;"></i> Alta</td>
-                        <td>Aplicaciones menos críticas</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p style="text-align: center; margin-top: 1.5rem; padding: 15px; background: rgba(233, 171, 33, 0.1); border-radius: 8px;">
-                <strong>Sistema de Pagos QR:</strong> Usar <span class="highlight">innodb_flush_log_at_trx_commit = 1</span> para garantizar durabilidad
-            </p>
-        </div>
-
-        <!-- Slide 18: Síntesis -->
-        <div class="slide">
-            <h2><i class="fas fa-bullseye"></i> Síntesis: InnoDB Logging y Recuperación</h2>
-            <div class="content-grid">
-                <div>
-                    <h3>Garantías ACID en MySQL/InnoDB</h3>
-                    <ul>
-                        <li><span class="emphasis">Atomicidad</span>: Undo Log para rollback</li>
-                        <li><span class="emphasis">Consistency</span>: Constraints + transacciones</li>
-                        <li><span class="emphasis">Isolation</span>: MVCC + locks</li>
-                        <li><span class="emphasis">Durability</span>: Redo Log + WAL</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Checklist de Configuración</h3>
-                    <ul>
-                        <li><i class="fas fa-check-circle" style="color: #10b981;"></i> <strong>innodb_flush_log_at_trx_commit = 1</strong></li>
-                        <li><i class="fas fa-check-circle" style="color: #10b981;"></i> <strong>innodb_redo_log_capacity</strong> adecuado (512MB+, MySQL 8.0.30+)</li>
-                        <li><i class="fas fa-check-circle" style="color: #10b981;"></i> Monitorear LSN y checkpoint age</li>
-                        <li><i class="fas fa-check-circle" style="color: #10b981;"></i> Buffer pool correctamente dimensionado</li>
-                        <li><i class="fas fa-check-circle" style="color: #10b981;"></i> Testear crash recovery en desarrollo</li>
-                    </ul>
-                </div>
-            </div>
-            <p style="text-align: center; margin-top: 1.5rem; padding: 15px; background: rgba(233, 171, 33, 0.1); border-left: 4px solid #E9AB21;">
-                <strong>Aplicación Real:</strong> Sistema de Pagos QR requiere configuración óptima para garantizar que ningún pago se pierda
-            </p>
-        </div>
-
-        <!-- Slide 19: Final -->
-        <div class="slide title-slide">
-            <h1><i class="fas fa-lightbulb"></i> Reflexiones Finales</h1>
-            <div class="quote">
-                "En sistemas de pagos, cada transacción confirmada es una promesa al usuario que debe cumplirse sin importar qué falle"
-            </div>
-            <h3 style="margin-top: 2rem;">Preguntas para Considerar</h3>
-            <ul>
-                <li>¿Cómo <span class="highlight">dimensionar</span> el Redo Log para tu carga de trabajo?</li>
-                <li>¿Qué <span class="highlight">trade-offs</span> aceptar entre durabilidad y performance?</li>
-                <li>¿Cómo <span class="highlight">monitorear</span> el health del sistema de logging?</li>
-                <li>¿Cuándo es necesario <span class="highlight">testear</span> el crash recovery?</li>
-            </ul>
-        </div>
-
-        <!-- Slide 20: Actividades Calificadas -->
-        <div class="slide">
-            <h2><i class="fas fa-clipboard-check"></i> Actividades Calificadas - Semana 3</h2>
+            <h2><i class="fas fa-clipboard-check"></i> Actividades Calificadas - Semana 4</h2>
             <div class="content-grid">
                 <div class="feature-card">
                     <h3><i class="fas fa-flask"></i> Gestión de Práctica</h3>
-                    <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">PE-1.3 (2.25 puntos)</p>
-                    <p><strong>Laboratorio MySQL:</strong> Verificar Binary Log en transacciones de pago QR</p>
+                    <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">PE-1.4 (2.25 puntos)
+                    </p>
+                    <p><strong>Optimización de Consultas:</strong> Análisis de planes de ejecución y optimización de
+                        índices en el sistema de pagos QR.</p>
                     <ul style="margin-top: 1rem; font-size: 1rem;">
-                        <li>Verificar que <code>log_bin</code> esté activo</li>
-                        <li>Ejecutar 3 transacciones de pago QR con tu cuenta personal</li>
-                        <li>Consultar lista de binary logs con <code>SHOW BINARY LOGS</code></li>
-                        <li>Ver eventos del log con <code>SHOW BINLOG EVENTS</code></li>
-                        <li>Explicar la importancia del binary log en sistemas de pago</li>
+                        <li>Ejecutar EXPLAIN en consultas críticas del sistema</li>
+                        <li>Identificar cuellos de botella en planes de ejecución</li>
+                        <li>Analizar uso de índices existentes</li>
+                        <li>Proponer optimizaciones basadas en estadísticas</li>
+                        <li>Validar mejoras con EXPLAIN ANALYZE</li>
                     </ul>
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-file-alt"></i> Trabajo Autónomo</h3>
-                    <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">TA-1.3 (2.25 puntos)</p>
-                    <p><strong>Informe técnico:</strong> Implementación de ARIES en InnoDB (1 página)</p>
+                    <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">TA-1.4 (2.25 puntos)
+                    </p>
+                    <p><strong>Estrategia de Índices:</strong> Diseño de estrategia de indexación para el sistema de
+                        pagos QR.</p>
                     <ul style="margin-top: 1rem; font-size: 1rem;">
-                        <li>Componentes de InnoDB (Redo, Undo, Buffer Pool)</li>
-                        <li>Proceso de crash recovery en MySQL</li>
-                        <li>Configuración óptima para sistema de pagos</li>
-                        <li>Casos de uso del sistema "¡ahorita!" como ejemplo</li>
+                        <li>Documentar índices existentes y su propósito</li>
+                        <li>Analizar patrones de consulta del sistema</li>
+                        <li>Proponer nuevos índices justificados</li>
+                        <li>Evaluar trade-offs de cada índice propuesto</li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 21: Referencias Bibliográficas -->
+        <!-- ============================================ -->
+        <!-- SLIDE 13: BIBLIOGRAFÍA -->
+        <!-- ============================================ -->
         <div class="slide">
             <h2><i class="fas fa-book"></i> Referencias Bibliográficas</h2>
             <div style="max-width: 1000px; margin: 0 auto;">
                 <h3 style="margin-bottom: 1.5rem;">Bibliografía Básica</h3>
                 <ul style="font-size: 1rem; line-height: 1.8; margin-bottom: 2rem;">
-                    <li><strong>Núñez, R. (2023).</strong> <em>Gestión de bases de datos</em>. RA-MA Editorial. <a href="https://0310s0g1g-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/235056" style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
-                    <li><strong>López Fandiño, V. (2023).</strong> <em>Sistemas de Big Data</em>. RA-MA Editorial. <a href="https://0310s0g1g-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/235054" style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
-                    <li><strong>López Querol, J., Campos Monge, E. M. y Campos Monge, M. (2023).</strong> <em>Algoritmia y bases de datos</em>. RA-MA Editorial. <a href="https://0310s0g1a-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/230563" style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
+                    <li><strong>Núñez, R. (2023).</strong> <em>Gestión de bases de datos</em>. RA-MA Editorial. <a
+                            href="https://0310s0g1g-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/235056"
+                            style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
+                    <li><strong>López Fandiño, V. (2023).</strong> <em>Sistemas de Big Data</em>. RA-MA Editorial. <a
+                            href="https://0310s0g1g-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/235054"
+                            style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
+                    <li><strong>López Querol, J., Campos Monge, E. M. y Campos Monge, M. (2023).</strong> <em>Algoritmia
+                            y bases de datos</em>. RA-MA Editorial. <a
+                            href="https://0310s0g1a-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/230563"
+                            style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
                 </ul>
-                
+
                 <h3 style="margin-bottom: 1.5rem;">Bibliografía Complementaria</h3>
                 <ul style="font-size: 0.95rem; line-height: 1.7;">
-                    <li><strong>Coronel, C., & Morris, S. (2022).</strong> <em>Database systems: Design, implementation, & management</em> (13th ed.). Cengage Learning.</li>
+                    <li><strong>Coronel, C., & Morris, S. (2022).</strong> <em>Database systems: Design, implementation,
+                            & management</em> (13th ed.). Cengage Learning.</li>
                     <li><strong>Petrov, A. (2019).</strong> <em>Database internals</em>. O'Reilly Media.</li>
-                    <li><strong>Sadalage, P. J., & Fowler, M. (2022).</strong> <em>NoSQL distilled</em>. Addison-Wesley Professional.</li>
-                    <li><strong>Kleppmann, M. (2023).</strong> <em>Designing data-intensive applications</em>. O'Reilly Media.</li>
+                    <li><strong>Sadalage, P. J., & Fowler, M. (2022).</strong> <em>NoSQL distilled</em>. Addison-Wesley
+                        Professional.</li>
+                    <li><strong>Kleppmann, M. (2023).</strong> <em>Designing data-intensive applications</em>. O'Reilly
+                        Media.</li>
                 </ul>
-                
+
                 <h3 style="margin-bottom: 1.5rem; margin-top: 2rem;">Fuentes ASU</h3>
                 <ul style="font-size: 0.95rem; line-height: 1.7;">
-                    <li><strong>Arizona State University. (2025).</strong> <em>Understanding Data Source</em>. Information Technology Program. Online.</li>
+                    <li><strong>Arizona State University. (2025).</strong> <em>Understanding Data Source</em>.
+                        Information Technology Program. Online.</li>
                 </ul>
             </div>
         </div>
-            </div>
 
-            <div style="background: rgba(233, 171, 33, 0.15); padding: 15px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin: 20px 40px 0 40px;">
-                <p style="margin: 0; font-size: 0.95rem; line-height: 1.6; color: #e2e8f0; text-align: center; font-style: italic;">
-                    Presentación elaborada a partir del Compendio Semana 4 – Estadísticas, Índices y Planes de Ejecución.
-                </p>
-            </div>
-        </div>
+    </div>
 
-        <!-- Navigation Controls -->
-        <div class="navigation">
-            <button class="nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
-            <span class="slide-counter">
-                <span id="currentSlide">1</span> / <span id="totalSlides">10</span>
-            </span>
-            <button class="nav-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
-        </div>
+    <!-- Navigation Controls (Fijos - NO MODIFICAR) -->
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <span class="slide-counter">
+            <span id="currentSlide">1</span> / <span id="totalSlides">13</span>
+        </span>
+        <button class="nav-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+    </div>
 
-        <!-- Progress Bar -->
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressBar"></div>
-        </div>
+    <!-- Progress Bar (Fijo - NO MODIFICAR) -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
     </div>
 </body>
 
 </html>
+""

@@ -1,12 +1,17 @@
-// HCI Presentation Controller - Simple and Efficient
+/* ============================================ */
+/* TEMPLATE DE PRESENTACIÓN UIDE - CONTROLADOR */
+/* Sistema de navegación para presentaciones */
+/* ============================================ */
+
 class PresentationController {
     constructor() {
+        // Elementos del DOM
         this.slides = document.querySelectorAll('.slide');
         this.currentSlide = 0;
         this.totalSlides = this.slides.length;
         this.isTransitioning = false;
         
-        // Cache DOM elements
+        // Cache de elementos de navegación
         this.prevBtn = document.getElementById('prevBtn');
         this.nextBtn = document.getElementById('nextBtn');
         this.currentSlideEl = document.getElementById('currentSlide');
@@ -17,22 +22,22 @@ class PresentationController {
     }
 
     init() {
-        // Set total slides
+        // Establecer total de slides
         if (this.totalSlidesEl) {
             this.totalSlidesEl.textContent = this.totalSlides;
         }
         
-        // Bind events
+        // Vincular eventos
         this.bindEvents();
         
-        // Show first slide
+        // Mostrar primera slide
         this.goToSlide(0);
         
-        console.log('✅ HCI Presentation initialized with', this.totalSlides, 'slides');
+        console.log('✅ Presentación UIDE inicializada con', this.totalSlides, 'slides');
     }
 
     bindEvents() {
-        // Button navigation
+        // Navegación con botones
         if (this.prevBtn) {
             this.prevBtn.addEventListener('click', () => this.previousSlide());
         }
@@ -41,7 +46,7 @@ class PresentationController {
             this.nextBtn.addEventListener('click', () => this.nextSlide());
         }
         
-        // Keyboard navigation
+        // Navegación con teclado
         document.addEventListener('keydown', (e) => {
             if (this.isTransitioning) return;
             
@@ -68,7 +73,7 @@ class PresentationController {
             }
         });
         
-        // Touch/swipe support
+        // Soporte para gestos táctiles (swipe)
         let touchStartX = 0;
         let touchEndX = 0;
         
@@ -87,10 +92,10 @@ class PresentationController {
             
             if (Math.abs(diff) > swipeThreshold) {
                 if (diff > 0) {
-                    // Swipe left - next slide
+                    // Swipe izquierda - siguiente slide
                     this.nextSlide();
                 } else {
-                    // Swipe right - previous slide
+                    // Swipe derecha - slide anterior
                     this.previousSlide();
                 }
             }
@@ -106,40 +111,40 @@ class PresentationController {
         
         this.isTransitioning = true;
         
-        // Hide all slides
+        // Ocultar todas las slides
         this.slides.forEach(slide => {
             slide.classList.remove('active');
             slide.style.display = 'none';
         });
         
-        // Show target slide
+        // Mostrar slide objetivo
         this.slides[index].classList.add('active');
         this.slides[index].style.display = 'flex';
         
         this.currentSlide = index;
         
-        // Update UI
+        // Actualizar UI
         this.updateUI();
         
-        // Allow transitions again
+        // Permitir transiciones nuevamente
         setTimeout(() => {
             this.isTransitioning = false;
         }, 300);
     }
 
     updateUI() {
-        // Update slide counter
+        // Actualizar contador de slides
         if (this.currentSlideEl) {
             this.currentSlideEl.textContent = this.currentSlide + 1;
         }
         
-        // Update progress bar
+        // Actualizar barra de progreso
         if (this.progressBar) {
             const progress = ((this.currentSlide + 1) / this.totalSlides) * 100;
             this.progressBar.style.width = `${progress}%`;
         }
         
-        // Update button states
+        // Actualizar estado de botones
         if (this.prevBtn) {
             this.prevBtn.disabled = this.currentSlide === 0;
         }
@@ -162,9 +167,9 @@ class PresentationController {
     }
 }
 
-// Initialize when DOM is ready
+// Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     new PresentationController();
 });
 
-console.log('🚀 HCI Presentation system loaded');
+console.log('🚀 Sistema de presentación UIDE cargado');

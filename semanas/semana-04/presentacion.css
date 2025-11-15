@@ -1,4 +1,7 @@
-/* HCI Presentation Styles - Based on Simulación Structure */
+/* ============================================ */
+/* TEMPLATE DE PRESENTACIÓN UIDE */
+/* Basado en la estructura de presentaciones HCI */
+/* ============================================ */
 
 * {
     margin: 0;
@@ -11,9 +14,12 @@
 }
 
 :root {
+    /* Colores UIDE (NO MODIFICAR) */
     --uide-primary: #910048;      /* UIDE Burgundy */
     --uide-secondary: #23356E;    /* UIDE Navy */
     --uide-accent: #E9AB21;       /* UIDE Gold */
+    
+    /* Colores de fondo y texto */
     --bg-primary: #0f1419;
     --bg-secondary: #1a1f2e;
     --text-primary: #f8fafc;
@@ -33,7 +39,10 @@ body {
     -ms-user-select: text;
 }
 
-/* Container */
+/* ============================================ */
+/* CONTAINER Y SLIDES */
+/* ============================================ */
+
 .presentation-container {
     position: relative;
     width: 100%;
@@ -67,7 +76,10 @@ body {
     display: flex;
 }
 
-/* Typography */
+/* ============================================ */
+/* TIPOGRAFÍA */
+/* ============================================ */
+
 .slide h1 {
     font-size: 3.5rem;
     font-weight: 700;
@@ -137,7 +149,10 @@ body {
     display: none;
 }
 
-/* Code Blocks */
+/* ============================================ */
+/* BLOQUES DE CÓDIGO */
+/* ============================================ */
+
 .code-block {
     background: rgba(15, 23, 42, 0.8);
     border: 1px solid var(--border-color);
@@ -152,7 +167,16 @@ body {
     color: #e2e8f0;
 }
 
-/* Blockquotes */
+/* Syntax highlighting para código */
+.sql-comment { color: #6a9955; }
+.sql-keyword { color: #569cd6; }
+.sql-string { color: #ce9178; }
+.sql-number { color: #b5cea8; }
+
+/* ============================================ */
+/* QUOTES Y DESTACADOS */
+/* ============================================ */
+
 .quote {
     border-left: 4px solid var(--uide-accent);
     padding: 20px;
@@ -163,7 +187,20 @@ body {
     contain: layout style;
 }
 
-/* Tables */
+.highlight {
+    color: var(--uide-accent);
+    font-weight: 600;
+}
+
+.emphasis {
+    color: var(--uide-primary);
+    font-weight: 600;
+}
+
+/* ============================================ */
+/* TABLAS */
+/* ============================================ */
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -183,7 +220,61 @@ th {
     font-weight: 600;
 }
 
-/* Navigation */
+tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================ */
+/* GRIDS Y CARDS */
+/* ============================================ */
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.feature-card {
+    background: rgba(15, 20, 25, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 25px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    border-color: var(--uide-accent);
+}
+
+.feature-card h3 {
+    color: var(--uide-accent);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.feature-card p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+/* ============================================ */
+/* SLIDES ESPECIALES */
+/* ============================================ */
+
+.title-slide {
+    text-align: center;
+    background: rgba(145, 0, 72, 0.05);
+}
+
+/* ============================================ */
+/* NAVEGACIÓN (NO MODIFICAR) */
+/* ============================================ */
+
 .navigation {
     position: fixed;
     bottom: 30px;
@@ -222,7 +313,6 @@ th {
     cursor: not-allowed;
 }
 
-/* Slide counter */
 .slide-counter {
     background: rgba(26, 31, 58, 0.9);
     padding: 10px 20px;
@@ -232,7 +322,10 @@ th {
     font-size: 1rem;
 }
 
-/* Logo UIDE */
+/* ============================================ */
+/* LOGO UIDE (NO MODIFICAR) */
+/* ============================================ */
+
 .uide-logo {
     position: fixed;
     top: 30px;
@@ -251,7 +344,10 @@ th {
     object-fit: contain;
 }
 
-/* Progress Bar */
+/* ============================================ */
+/* BARRA DE PROGRESO (NO MODIFICAR) */
+/* ============================================ */
+
 .progress-bar {
     position: fixed;
     bottom: 0;
@@ -269,63 +365,32 @@ th {
     width: 0;
 }
 
-/* Special Effects */
-.highlight {
-    color: var(--uide-accent);
-    font-weight: 600;
+/* ============================================ */
+/* SCROLLBAR PERSONALIZADO */
+/* ============================================ */
+
+.slide::-webkit-scrollbar {
+    width: 8px;
 }
 
-.emphasis {
-    color: var(--uide-primary);
-    font-weight: 600;
+.slide::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
 }
 
-/* Slide-specific styles */
-.title-slide {
-    text-align: center;
-    background: rgba(145, 0, 72, 0.05);
+.slide::-webkit-scrollbar-thumb {
+    background: rgba(233, 171, 33, 0.5);
+    border-radius: 10px;
 }
 
-.content-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    width: 100%;
-    max-width: 1200px;
+.slide::-webkit-scrollbar-thumb:hover {
+    background: rgba(233, 171, 33, 0.7);
 }
 
-.feature-card {
-    background: rgba(15, 20, 25, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
-    padding: 25px;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
+/* ============================================ */
+/* RESPONSIVE */
+/* ============================================ */
 
-.feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-    border-color: var(--uide-accent);
-}
-
-.feature-card h3 {
-    color: var(--uide-accent);
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-}
-
-.feature-card p {
-    font-size: 1rem;
-    color: var(--text-secondary);
-}
-
-/* Buttons */
-button {
-    font-family: inherit;
-}
-
-/* Responsive */
 @media (max-width: 1024px) {
     .slide {
         padding: 60px 40px;
@@ -375,21 +440,18 @@ button {
     }
 }
 
-/* Scrollbar styling */
-.slide::-webkit-scrollbar {
-    width: 8px;
+/* ============================================ */
+/* UTILIDADES */
+/* ============================================ */
+
+button {
+    font-family: inherit;
 }
 
-.slide::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-}
-
-.slide::-webkit-scrollbar-thumb {
-    background: rgba(233, 171, 33, 0.5);
-    border-radius: 10px;
-}
-
-.slide::-webkit-scrollbar-thumb:hover {
-    background: rgba(233, 171, 33, 0.7);
+code {
+    background: rgba(233, 171, 33, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', Consolas, Monaco, monospace;
+    font-size: 0.9em;
 }
