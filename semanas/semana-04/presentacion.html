@@ -406,128 +406,232 @@ mysql -u root -p pagos_qr_sistema \
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 9: TIPOS DE ÍNDICES -->
+        <!-- SLIDE 9: TIPOS DE ÍNDICES (1/3) -->
         <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-layer-group"></i> Tipos de Índices en MySQL</h2>
+            <h2><i class="fas fa-layer-group"></i> Tipos de Índices en MySQL (1/3)</h2>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                 <!-- PRIMARY KEY -->
-                <div style="background: rgba(74, 222, 128, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #4ade80;">
-                    <h3 style="color: #4ade80; margin-bottom: 1rem;">
+                <div style="background: rgba(74, 222, 128, 0.1); padding: 25px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                    <h3 style="color: #4ade80; margin-bottom: 1.2rem; font-size: 1.3rem;">
                         <i class="fas fa-key"></i> PRIMARY KEY
                     </h3>
-                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                        Índice único que identifica cada fila. Solo uno por tabla.
+                    <p style="font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem; color: #e2e8f0;">
+                        Índice único que identifica cada fila de manera exclusiva. Solo puede haber uno por tabla.
                     </p>
-                    <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">CREATE TABLE Pagos_QR (
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 15px; border-radius: 8px; margin-bottom: 1rem;">
+                        <pre style="font-size: 0.9rem; margin: 0;"><code class="language-sql">CREATE TABLE Pagos_QR (
     payment_id INT PRIMARY KEY,
-    ...
+    monto DECIMAL(10,2),
+    fecha DATETIME
 );</code></pre>
+                    </div>
+                    <div style="background: rgba(74, 222, 128, 0.15); padding: 12px; border-radius: 6px;">
+                        <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> <strong>Características:</strong><br>
+                            • No permite NULL<br>
+                            • Valores únicos obligatorios<br>
+                            • Automáticamente indexado
+                        </p>
+                    </div>
                 </div>
 
                 <!-- UNIQUE -->
-                <div style="background: rgba(96, 165, 250, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #60a5fa;">
-                    <h3 style="color: #60a5fa; margin-bottom: 1rem;">
+                <div style="background: rgba(96, 165, 250, 0.1); padding: 25px; border-radius: 10px; border-left: 4px solid #60a5fa;">
+                    <h3 style="color: #60a5fa; margin-bottom: 1.2rem; font-size: 1.3rem;">
                         <i class="fas fa-fingerprint"></i> UNIQUE
                     </h3>
-                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                        Garantiza valores únicos. Permite NULL (a diferencia de PK).
+                    <p style="font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem; color: #e2e8f0;">
+                        Garantiza que todos los valores en la columna sean únicos. Permite valores NULL.
                     </p>
-                    <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">CREATE UNIQUE INDEX idx_email
-ON Usuarios(email);</code></pre>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 15px; border-radius: 8px; margin-bottom: 1rem;">
+                        <pre style="font-size: 0.9rem; margin: 0;"><code class="language-sql">CREATE UNIQUE INDEX idx_email
+ON Usuarios(email);
+
+-- O al crear la tabla:
+CREATE TABLE Usuarios (
+    email VARCHAR(100) UNIQUE
+);</code></pre>
+                    </div>
+                    <div style="background: rgba(96, 165, 250, 0.15); padding: 12px; border-radius: 6px;">
+                        <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                            <i class="fas fa-info-circle" style="color: #60a5fa;"></i> <strong>Diferencia con PK:</strong><br>
+                            • Permite NULL<br>
+                            • Puede haber varios UNIQUE<br>
+                            • Uso: emails, códigos, etc.
+                        </p>
+                    </div>
                 </div>
-
-                <!-- INDEX (Regular) -->
-                <div style="background: rgba(233, 171, 33, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent);">
-                    <h3 style="color: var(--uide-accent); margin-bottom: 1rem;">
-                        <i class="fas fa-list"></i> INDEX (Regular)
-                    </h3>
-                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                        Índice estándar para acelerar búsquedas. Permite duplicados.
-                    </p>
-                    <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">CREATE INDEX idx_fecha
-ON Pagos_QR(fecha);</code></pre>
-                </div>
-
-                <!-- COMPOSITE -->
-                <div style="background: rgba(145, 0, 72, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-primary);">
-                    <h3 style="color: var(--uide-primary); margin-bottom: 1rem;">
-                        <i class="fas fa-layer-group"></i> COMPOSITE (Compuesto)
-                    </h3>
-                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                        Índice sobre múltiples columnas. Orden importa.
-                    </p>
-                    <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">CREATE INDEX idx_comercio_fecha
-ON Pagos_QR(comercio_id, fecha);</code></pre>
-                </div>
-            </div>
-
-            <div style="background: rgba(168, 85, 247, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #a855f7;">
-                <h3 style="color: #a855f7; margin-bottom: 1rem;">
-                    <i class="fas fa-search"></i> FULLTEXT
-                </h3>
-                <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                    Para búsquedas de texto completo (LIKE '%palabra%' optimizado).
-                </p>
-                <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">CREATE FULLTEXT INDEX idx_descripcion
-ON Pagos_QR(descripcion);
-
--- Uso:
-SELECT * FROM Pagos_QR 
-WHERE MATCH(descripcion) AGAINST('transferencia');</code></pre>
             </div>
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 10: CÓMO Y CUÁNDO CREAR ÍNDICES -->
+        <!-- SLIDE 10: TIPOS DE ÍNDICES (2/3) -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2><i class="fas fa-layer-group"></i> Tipos de Índices en MySQL (2/3)</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <!-- INDEX (Regular) -->
+                <div style="background: rgba(233, 171, 33, 0.1); padding: 25px; border-radius: 10px; border-left: 4px solid var(--uide-accent);">
+                    <h3 style="color: var(--uide-accent); margin-bottom: 1.2rem; font-size: 1.3rem;">
+                        <i class="fas fa-list"></i> INDEX (Regular)
+                    </h3>
+                    <p style="font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem; color: #e2e8f0;">
+                        Índice estándar para acelerar búsquedas. Permite valores duplicados y NULL.
+                    </p>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 15px; border-radius: 8px; margin-bottom: 1rem;">
+                        <pre style="font-size: 0.9rem; margin: 0;"><code class="language-sql">CREATE INDEX idx_fecha
+ON Pagos_QR(fecha);
+
+-- Ver índices de una tabla:
+SHOW INDEX FROM Pagos_QR;</code></pre>
+                    </div>
+                    <div style="background: rgba(233, 171, 33, 0.15); padding: 12px; border-radius: 6px;">
+                        <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                            <i class="fas fa-lightbulb" style="color: var(--uide-accent);"></i> <strong>Uso común:</strong><br>
+                            • Columnas en WHERE<br>
+                            • Columnas en ORDER BY<br>
+                            • Columnas en JOIN
+                        </p>
+                    </div>
+                </div>
+
+                <!-- COMPOSITE -->
+                <div style="background: rgba(145, 0, 72, 0.15); padding: 25px; border-radius: 10px; border-left: 4px solid var(--uide-primary);">
+                    <h3 style="color: var(--uide-primary); margin-bottom: 1.2rem; font-size: 1.3rem;">
+                        <i class="fas fa-layer-group"></i> COMPOSITE (Compuesto)
+                    </h3>
+                    <p style="font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem; color: #e2e8f0;">
+                        Índice sobre múltiples columnas. El orden de las columnas es crucial.
+                    </p>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 15px; border-radius: 8px; margin-bottom: 1rem;">
+                        <pre style="font-size: 0.9rem; margin: 0;"><code class="language-sql">CREATE INDEX idx_comercio_fecha
+ON Pagos_QR(comercio_id, fecha);
+
+-- Funciona para:
+WHERE comercio_id = 1
+WHERE comercio_id = 1 AND fecha > '2024-01-01'
+
+-- NO funciona para:
+WHERE fecha > '2024-01-01'</code></pre>
+                    </div>
+                    <div style="background: rgba(145, 0, 72, 0.2); padding: 12px; border-radius: 6px;">
+                        <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                            <i class="fas fa-exclamation-triangle" style="color: var(--uide-primary);"></i> <strong>Regla:</strong><br>
+                            Columna más selectiva primero<br>
+                            Sigue el orden de filtros en WHERE
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 11: TIPOS DE ÍNDICES (3/3) -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2><i class="fas fa-layer-group"></i> Tipos de Índices en MySQL (3/3)</h2>
+
+            <div style="background: rgba(168, 85, 247, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #a855f7; margin-bottom: 20px;">
+                <h3 style="color: #a855f7; margin-bottom: 0.8rem; font-size: 1.2rem; text-align: center;">
+                    <i class="fas fa-search"></i> FULLTEXT
+                </h3>
+                <p style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 0; color: #e2e8f0; text-align: center;">
+                    Índice especializado para búsquedas de texto completo. Optimiza <code>LIKE '%palabra%'</code>
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div style="background: rgba(15, 20, 25, 0.7); padding: 15px; border-radius: 8px;">
+                    <h4 style="color: #a855f7; margin-bottom: 0.8rem; font-size: 1rem;">Creación:</h4>
+                    <pre style="font-size: 0.8rem; margin: 0;"><code class="language-sql">CREATE FULLTEXT INDEX idx_descripcion
+ON Pagos_QR(descripcion);</code></pre>
+                </div>
+
+                <div style="background: rgba(15, 20, 25, 0.7); padding: 15px; border-radius: 8px;">
+                    <h4 style="color: #a855f7; margin-bottom: 0.8rem; font-size: 1rem;">Uso:</h4>
+                    <pre style="font-size: 0.8rem; margin: 0;"><code class="language-sql">SELECT * FROM Pagos_QR 
+WHERE MATCH(descripcion) 
+AGAINST('transferencia');</code></pre>
+                </div>
+            </div>
+
+            <div style="background: rgba(15, 20, 25, 0.7); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="color: #a855f7; margin-bottom: 0.8rem; font-size: 1rem;">Búsqueda Booleana:</h4>
+                <pre style="font-size: 0.8rem; margin: 0;"><code class="language-sql">-- Operadores: + (debe incluir), - (excluir), * (wildcard)
+SELECT * FROM Pagos_QR 
+WHERE MATCH(descripcion) 
+AGAINST('+transferencia -efectivo' IN BOOLEAN MODE);</code></pre>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div style="background: rgba(74, 222, 128, 0.15); padding: 15px; border-radius: 8px;">
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                        <i class="fas fa-check-circle" style="color: #4ade80;"></i> <strong>Ventajas:</strong><br>
+                        • Búsquedas rápidas en texto<br>
+                        • Relevancia automática<br>
+                        • Operadores booleanos
+                    </p>
+                </div>
+                <div style="background: rgba(239, 68, 68, 0.15); padding: 15px; border-radius: 8px;">
+                    <p style="font-size: 0.9rem; margin: 0; line-height: 1.6;">
+                        <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i> <strong>Limitaciones:</strong><br>
+                        • Solo InnoDB y MyISAM<br>
+                        • Mínimo 3 caracteres<br>
+                        • Ocupa más espacio
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 12: CÓMO Y CUÁNDO CREAR ÍNDICES -->
         <!-- ============================================ -->
         <div class="slide">
             <h2><i class="fas fa-tools"></i> Cómo y Cuándo Crear Índices</h2>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 18px;">
                 <!-- Columna Izquierda: Sintaxis -->
                 <div>
-                    <h3 style="color: var(--uide-accent); margin-bottom: 1rem;">
+                    <h3 style="color: var(--uide-accent); margin-bottom: 0.8rem; font-size: 1.1rem;">
                         <i class="fas fa-code"></i> Sintaxis Básica
                     </h3>
-                    <div style="background: rgba(15, 20, 25, 0.7); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                        <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">-- Crear índice simple
-CREATE INDEX nombre_indice
-ON tabla(columna);
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 15px; border-radius: 10px;">
+                        <pre style="font-size: 0.75rem; margin: 0;"><code class="language-sql">-- Crear índice simple
+CREATE INDEX nombre_indice ON tabla(columna);
 
 -- Crear índice compuesto
-CREATE INDEX idx_multi
-ON tabla(col1, col2, col3);
+CREATE INDEX idx_multi ON tabla(col1, col2);
 
 -- Eliminar índice
 DROP INDEX nombre_indice ON tabla;
 
--- Ver índices de una tabla
+-- Ver índices
 SHOW INDEX FROM tabla;</code></pre>
                     </div>
                 </div>
 
                 <!-- Columna Derecha: Cuándo crear -->
                 <div>
-                    <h3 style="color: #4ade80; margin-bottom: 1rem;">
-                        <i class="fas fa-check-circle"></i> Cuándo SÍ Crear Índices
+                    <h3 style="color: #4ade80; margin-bottom: 0.8rem; font-size: 1.1rem;">
+                        <i class="fas fa-check-circle"></i> Cuándo SÍ Crear
                     </h3>
-                    <div style="background: rgba(74, 222, 128, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #4ade80; margin-bottom: 20px;">
-                        <ul style="font-size: 0.95rem; line-height: 1.8;">
+                    <div style="background: rgba(74, 222, 128, 0.1); padding: 12px; border-radius: 8px; border-left: 4px solid #4ade80; margin-bottom: 15px;">
+                        <ul style="font-size: 0.85rem; line-height: 1.5; margin: 0; padding-left: 20px;">
                             <li>Columnas en <code>WHERE</code> frecuentes</li>
-                            <li>Columnas en <code>JOIN</code> (FK automático)</li>
-                            <li>Columnas en <code>ORDER BY</code></li>
-                            <li>Columnas en <code>GROUP BY</code></li>
-                            <li>Alta selectividad (muchos valores únicos)</li>
+                            <li>Columnas en <code>JOIN</code></li>
+                            <li>Columnas en <code>ORDER BY</code> / <code>GROUP BY</code></li>
+                            <li>Alta selectividad (valores únicos)</li>
                         </ul>
                     </div>
 
-                    <h3 style="color: #ef4444; margin-bottom: 1rem;">
-                        <i class="fas fa-times-circle"></i> Cuándo NO Crear Índices
+                    <h3 style="color: #ef4444; margin-bottom: 0.8rem; font-size: 1.1rem;">
+                        <i class="fas fa-times-circle"></i> Cuándo NO Crear
                     </h3>
-                    <div style="background: rgba(239, 68, 68, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #ef4444;">
-                        <ul style="font-size: 0.95rem; line-height: 1.8;">
+                    <div style="background: rgba(239, 68, 68, 0.1); padding: 12px; border-radius: 8px; border-left: 4px solid #ef4444;">
+                        <ul style="font-size: 0.85rem; line-height: 1.5; margin: 0; padding-left: 20px;">
                             <li>Tablas pequeñas (&lt;1000 filas)</li>
                             <li>Columnas con pocos valores únicos</li>
                             <li>Tablas con muchas escrituras</li>
@@ -537,14 +641,14 @@ SHOW INDEX FROM tabla;</code></pre>
                 </div>
             </div>
 
-            <div style="background: rgba(233, 171, 33, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent);">
-                <h3 style="color: var(--uide-accent); margin-bottom: 1rem;">
+            <div style="background: rgba(233, 171, 33, 0.15); padding: 15px; border-radius: 10px; border-left: 4px solid var(--uide-accent);">
+                <h3 style="color: var(--uide-accent); margin-bottom: 0.8rem; font-size: 1.1rem;">
                     <i class="fas fa-calculator"></i> Regla de Selectividad
                 </h3>
-                <p style="font-size: 1rem; line-height: 1.6;">
+                <p style="font-size: 0.9rem; line-height: 1.5; margin: 0;">
                     <strong>Selectividad = Valores únicos / Total de filas</strong><br>
-                    <span class="highlight">Alta selectividad (&gt;0.5):</span> Índice muy beneficioso<br>
-                    <span class="emphasis">Baja selectividad (&lt;0.1):</span> Índice poco útil, puede ser contraproducente
+                    <span class="highlight">Alta (&gt;0.5):</span> Índice muy beneficioso | 
+                    <span class="emphasis">Baja (&lt;0.1):</span> Índice poco útil
                 </p>
             </div>
         </div>
@@ -2589,42 +2693,48 @@ ORDER BY fecha DESC;</code></pre>
         <!-- ============================================ -->
         <div class="slide">
             <h2><i class="fas fa-book"></i> Referencias Bibliográficas</h2>
-            <div style="max-width: 1000px; margin: 0 auto;">
-                <h3 style="margin-bottom: 1.5rem;">Bibliografía Básica</h3>
-                <ul style="font-size: 1rem; line-height: 1.8; margin-bottom: 2rem;">
-                    <li><strong>Núñez, R. (2023).</strong> <em>Gestión de bases de datos</em>. RA-MA Editorial. <a
-                            href="https://0310s0g1g-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/235056"
-                            style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
-                    <li><strong>López Fandiño, V. (2023).</strong> <em>Sistemas de Big Data</em>. RA-MA Editorial. <a
-                            href="https://0310s0g1g-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/235054"
-                            style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
-                    <li><strong>López Querol, J., Campos Monge, E. M. y Campos Monge, M. (2023).</strong> <em>Algoritmia
-                            y bases de datos</em>. RA-MA Editorial. <a
-                            href="https://0310s0g1a-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/230563"
-                            style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
-                </ul>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <!-- Columna Izquierda -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Bibliografía Básica</h3>
+                    <ul style="font-size: 0.85rem; line-height: 1.5; margin-bottom: 1.5rem;">
+                        <li><strong>Núñez, R. (2023).</strong> <em>Gestión de bases de datos</em>. RA-MA Editorial. <a
+                                href="https://0310s0g1g-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/235056"
+                                style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
+                        <li><strong>López Fandiño, V. (2023).</strong> <em>Sistemas de Big Data</em>. RA-MA Editorial. <a
+                                href="https://0310s0g1g-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/235054"
+                                style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
+                        <li><strong>López Querol, J., et al. (2023).</strong> <em>Algoritmia y bases de datos</em>. RA-MA Editorial. <a
+                                href="https://0310s0g1a-y-https-elibro-net.proxy.uide.edu.ec/es/lc/uide/titulos/230563"
+                                style="color: var(--uide-accent);" target="_blank">Enlace</a></li>
+                    </ul>
 
-                <h3 style="margin-bottom: 1.5rem;">Bibliografía Complementaria</h3>
-                <ul style="font-size: 0.95rem; line-height: 1.7;">
-                    <li><strong>Coronel, C., & Morris, S. (2022).</strong> <em>Database systems: Design, implementation,
-                            & management</em> (13th ed.). Cengage Learning.</li>
-                    <li><strong>Petrov, A. (2019).</strong> <em>Database internals: A deep dive into how distributed
-                            data systems work</em>. O'Reilly Media.</li>
-                    <li><strong>Sadalage, P. J., & Fowler, M. (2022).</strong> <em>NoSQL distilled: A brief guide to the
-                            emerging world of polyglot persistence</em> (Updated ed.). Addison-Wesley Professional.</li>
-                    <li><strong>Ponniah, P. (2021).</strong> <em>Data warehousing fundamentals: A comprehensive guide
-                            for IT professionals</em> (2nd ed.). Wiley.</li>
-                    <li><strong>Marz, N., & Warren, J. (2021).</strong> <em>Big data: Principles and best practices of
-                            scalable realtime data systems</em> (Updated ed.). Manning Publications.</li>
-                    <li><strong>Basta, A. (2019).</strong> <em>Database security: A practical guide</em>. Cengage
-                        Learning.</li>
-                </ul>
+                    <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Fuentes ASU</h3>
+                    <ul style="font-size: 0.85rem; line-height: 1.5;">
+                        <li><strong>Arizona State University. (2025).</strong> <em>Understanding Data Source</em>.
+                            Information Technology Program. Online.</li>
+                    </ul>
+                </div>
 
-                <h3 style="margin-bottom: 1.5rem; margin-top: 2rem;">Fuentes ASU</h3>
-                <ul style="font-size: 0.95rem; line-height: 1.7;">
-                    <li><strong>Arizona State University. (2025).</strong> <em>Understanding Data Source</em>.
-                        Information Technology Program. Online.</li>
-                </ul>
+                <!-- Columna Derecha -->
+                <div>
+                    <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Bibliografía Complementaria</h3>
+                    <ul style="font-size: 0.85rem; line-height: 1.5;">
+                        <li><strong>Coronel, C., & Morris, S. (2022).</strong> <em>Database systems: Design, implementation,
+                                & management</em> (13th ed.). Cengage Learning.</li>
+                        <li><strong>Petrov, A. (2019).</strong> <em>Database internals: A deep dive into how distributed
+                                data systems work</em>. O'Reilly Media.</li>
+                        <li><strong>Sadalage, P. J., & Fowler, M. (2022).</strong> <em>NoSQL distilled: A brief guide to the
+                                emerging world of polyglot persistence</em>. Addison-Wesley Professional.</li>
+                        <li><strong>Ponniah, P. (2021).</strong> <em>Data warehousing fundamentals: A comprehensive guide
+                                for IT professionals</em> (2nd ed.). Wiley.</li>
+                        <li><strong>Marz, N., & Warren, J. (2021).</strong> <em>Big data: Principles and best practices of
+                                scalable realtime data systems</em>. Manning Publications.</li>
+                        <li><strong>Basta, A. (2019).</strong> <em>Database security: A practical guide</em>. Cengage
+                            Learning.</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
