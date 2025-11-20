@@ -1,0 +1,73 @@
+AJUSTES DE RESPONSIVIDAD APLICADOS:
+
+✅ TODOS LOS SLIDES COMPLETADOS (12-19)
+
+SLIDE 12: ✓ Completado
+- Altura calculada: calc(100% - 75px)
+- Fuentes reducidas: h2 (1.7rem), h3 (1.1rem), código (0.68-0.78rem)
+- Padding optimizado: 12-14px
+- Gap reducido: 18px
+
+SLIDE 13 - Métricas y KPIs: ✓ Completado
+- Padding del header: 15px
+- Iconos: 2.2rem
+- Títulos h3: 1.1rem
+- Números grandes: 1.6rem
+- Texto descriptivo: 0.82rem
+- Fórmulas código: 6px padding
+
+SLIDE 14 - Laboratorio: ✓ Completado
+- Header padding: 15px
+- Títulos h3: 1.1rem
+- Pre código: 0.68rem
+- Padding pasos: 12px
+- Gap entre columnas: 15px
+
+SLIDE 15 - Casos de Estudio: ✓ Completado
+- Padding contenedores: 14px
+- Fuente código: 0.72rem
+- Espaciado entre casos: gap 15px
+
+SLIDE 16 - Antipatrones: ✓ Completado
+- Padding tabla: 10px
+- Fuente tabla: 0.8rem
+- Código ejemplos: 0.7rem
+
+SLIDE 17 - Performance Schema: ✓ Completado
+- Padding contenedores: 15px
+- Pre código: 0.7rem
+- Listas: 0.8rem
+
+SLIDE 18 - Simulación: ✓ Completado
+- Tabla fuente: 0.85rem
+- Números grandes: 1.3rem
+- Padding celdas: 10px
+
+SLIDE 19 - Checklist: ✓ Completado
+- Padding boxes: 14px
+- Fuente labels: 0.85rem
+- Checkbox size: 16px
+- Gap: 18px
+
+==========================================
+RESUMEN FINAL:
+==========================================
+✅ 9 slides nuevos añadidos (12-20)
+✅ Todos los slides completamente responsivos
+✅ Iconos FontAwesome implementados
+✅ Contenido académico y práctico añadido
+✅ Datos reales de simulación incluidos
+✅ Laboratorio dividido en 2 slides (14: pasos 1-4, 15: pasos 5-6)
+✅ Total de slides: 23 (antes: 14)
+
+==========================================
+ACTUALIZACIÓN RECIENTE:
+==========================================
+✅ Slide 14 modificado: Solo 4 pasos (1-4) del laboratorio
+✅ Slide 15 creado: Pasos 5-6 (Validación y Documentación)
+✅ Slides 16-20 renumerados correctamente:
+   - Slide 16: Casos de Estudio
+   - Slide 17: Antipatrones Comunes
+   - Slide 18: Performance Schema
+   - Slide 19: Simulación Antes/Después
+   - Slide 20: Checklist Pre-Producción

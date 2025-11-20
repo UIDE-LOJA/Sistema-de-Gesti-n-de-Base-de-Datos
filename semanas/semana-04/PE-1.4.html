@@ -14,27 +14,27 @@
             <tbody>
                 <tr>
                     <td data-col-size="sm">Preparación individual</td>
-                    <td data-col-size="xl">Revisa presentación Semana 4 sobre optimización, índices y planes de ejecución. Prepara entorno PostgreSQL con datos de prueba.</td>
-                    <td data-col-size="md">Base de datos con datos de prueba lista.</td>
+                    <td data-col-size="xl">Revisa presentación Semana 4 sobre optimización, índices y planes de ejecución. Usa la base de datos pagos_qr_sistema creada en Semana 2.</td>
+                    <td data-col-size="md">Base de datos pagos_qr_sistema lista con datos.</td>
                 </tr>
                 <tr>
                     <td data-col-size="sm">Consulta 1: SELECT simple</td>
-                    <td data-col-size="xl">Ejecuta EXPLAIN ANALYZE en consulta SELECT con WHERE. Registra: tiempo de ejecución, rows, cost. Crea índice y vuelve a ejecutar.</td>
-                    <td data-col-size="md">Métricas antes/después del índice.</td>
+                    <td data-col-size="xl">Ejecuta EXPLAIN en consulta SELECT sobre Pagos_QR con filtro WHERE. Registra: type, key, rows, filtered, Extra. Crea índice y vuelve a ejecutar.</td>
+                    <td data-col-size="md">Comparativa EXPLAIN antes/después del índice.</td>
                 </tr>
                 <tr>
                     <td data-col-size="sm">Consulta 2: JOIN</td>
-                    <td data-col-size="xl">Ejecuta EXPLAIN ANALYZE en consulta con JOIN de 2 tablas. Analiza tipo de join (nested loop, hash, merge). Optimiza con índices apropiados.</td>
+                    <td data-col-size="xl">Ejecuta EXPLAIN en consulta con JOIN entre Pagos_QR, Cuentas y Comercios. Analiza type de cada tabla y uso de índices. Optimiza si es necesario.</td>
                     <td data-col-size="md">Análisis de plan de ejecución de JOIN.</td>
                 </tr>
                 <tr>
                     <td data-col-size="sm">Consulta 3: Agregación</td>
-                    <td data-col-size="xl">Ejecuta EXPLAIN ANALYZE en consulta con GROUP BY y funciones agregadas. Identifica operaciones costosas y optimiza.</td>
+                    <td data-col-size="xl">Ejecuta EXPLAIN en consulta con GROUP BY sobre Pagos_QR (ej: suma de montos por comercio). Identifica "Using temporary" o "Using filesort" y optimiza.</td>
                     <td data-col-size="md">Optimización de consulta agregada.</td>
                 </tr>
                 <tr>
                     <td data-col-size="sm">Análisis comparativo</td>
-                    <td data-col-size="xl">Crea tabla comparativa con métricas: execution time, planning time, rows, cost, buffers (si aplica) para las 3 consultas antes/después.</td>
+                    <td data-col-size="xl">Crea tabla comparativa con métricas: type, key, rows, filtered, Extra para las 3 consultas antes/después de optimizar.</td>
                     <td data-col-size="md">Tabla comparativa completa.</td>
                 </tr>
                 <tr>
@@ -47,48 +47,48 @@
     </div>
 </div>
 
-<p><strong>Ejemplo de análisis con EXPLAIN ANALYZE:</strong></p>
+<p><strong>Ejemplo de análisis con EXPLAIN ANALYZE en MySQL 8.0:</strong></p>
 <pre>
 -- Consulta sin índice
-EXPLAIN (ANALYZE, BUFFERS) 
-SELECT * FROM orders WHERE customer_id = 12345;
+EXPLAIN SELECT payment_id, monto, estado
+FROM Pagos_QR
+WHERE cliente_id = 1001 AND fecha >= NOW() - INTERVAL 7 DAY;
 
-Resultado:
-Seq Scan on orders  (cost=0.00..18334.00 rows=1 width=100) 
-                    (actual time=45.234..89.567 rows=1 loops=1)
-  Filter: (customer_id = 12345)
-  Rows Removed by Filter: 999999
-  Buffers: shared hit=8334
-Planning Time: 0.123 ms
-Execution Time: 89.678 ms
+Resultado (sin índice):
++----+-------+----------+------+---------------------+
+| id | type  | key      | rows | filtered | Extra   |
++----+-------+----------+------+---------------------+
+|  1 | ALL   | NULL     | 5000 |    10.00 | Using where |
++----+-------+----------+------+---------------------+
+Rows examined: 5000
 
--- Crear índice
-CREATE INDEX idx_orders_customer ON orders(customer_id);
+-- Crear índice compuesto
+CREATE INDEX idx_cliente_fecha ON Pagos_QR(cliente_id, fecha);
 
 -- Consulta con índice
-EXPLAIN (ANALYZE, BUFFERS)
-SELECT * FROM orders WHERE customer_id = 12345;
+EXPLAIN SELECT payment_id, monto, estado
+FROM Pagos_QR
+WHERE cliente_id = 1001 AND fecha >= NOW() - INTERVAL 7 DAY;
 
-Resultado:
-Index Scan using idx_orders_customer on orders  
-  (cost=0.42..8.44 rows=1 width=100) 
-  (actual time=0.034..0.036 rows=1 loops=1)
-  Index Cond: (customer_id = 12345)
-  Buffers: shared hit=4
-Planning Time: 0.234 ms
-Execution Time: 0.067 ms
+Resultado (con índice):
++----+-------+------------------+------+----------+-------------+
+| id | type  | key              | rows | filtered | Extra       |
++----+-------+------------------+------+----------+-------------+
+|  1 | range | idx_cliente_fecha|   35 |   100.00 | Using index condition |
++----+-------+------------------+------+----------+-------------+
+Rows examined: 35
 
-Mejora: 89.678ms → 0.067ms (1337x más rápido)
+Mejora: type cambió de ALL a range, rows de 5000 a 35 (142x menos filas)
 </pre>
 
-<p><strong>Métricas clave a analizar:</strong></p>
+<p><strong>Métricas clave a analizar en MySQL 8.0:</strong></p>
 <ul>
-    <li><strong>Execution Time:</strong> Tiempo real de ejecución</li>
-    <li><strong>Planning Time:</strong> Tiempo de planificación de la consulta</li>
-    <li><strong>Cost:</strong> Estimación del costo (startup..total)</li>
-    <li><strong>Rows:</strong> Filas estimadas vs actuales</li>
-    <li><strong>Buffers:</strong> Accesos a disco/memoria</li>
-    <li><strong>Tipo de scan:</strong> Seq Scan, Index Scan, Bitmap Scan</li>
+    <li><strong>type:</strong> Tipo de acceso (ALL, index, range, ref, eq_ref, const)</li>
+    <li><strong>key:</strong> Índice utilizado (NULL si no usa índice)</li>
+    <li><strong>rows:</strong> Filas estimadas a examinar</li>
+    <li><strong>filtered:</strong> Porcentaje de filas que pasan el filtro WHERE</li>
+    <li><strong>Extra:</strong> Información adicional (Using where, Using index, Using temporary, Using filesort)</li>
+    <li><strong>EXPLAIN ANALYZE (8.0.18+):</strong> Incluye tiempo de ejecución real en formato TREE</li>
 </ul>
 
 <p><strong>Información importante</strong></p>

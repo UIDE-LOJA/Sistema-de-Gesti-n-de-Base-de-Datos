@@ -172,18 +172,16 @@
         <!-- SLIDE 3: OBJETIVOS -->
         <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-bullseye"></i> Objetivos de la Presentación</h2>
+            <h2><i class="fas fa-bullseye"></i> Objetivos</h2>
             <ul>
-                <li>Fortalecer el motor de "¡ahorita!" garantizando <span class="highlight">estadísticas frescas y
-                        filtros selectivos</span></li>
-                <li>Diseñar una <span class="highlight">estrategia de índices</span> que equilibre validaciones
-                    antifraude con escrituras de pagos en tiempo real</li>
-                <li>Dominar <span class="highlight">EXPLAIN / EXPLAIN ANALYZE</span> para detectar cuellos de botella
-                    durante horas pico de escaneo QR</li>
-                <li>Traducir hallazgos técnicos en <span class="highlight">tareas de mantenimiento preventivo</span>
-                    para el core transaccional</li>
-                <li>Optimizar consultas para lograr <span class="highlight">respuestas menores a 2 segundos</span> en
-                    operaciones críticas</li>
+                <li>Entender por qué las <span class="highlight">estadísticas actualizadas</span> son críticas para el
+                    optimizador de MySQL</li>
+                <li>Diseñar <span class="highlight">estrategias de indexación</span> balanceando rendimiento de lecturas
+                    vs. costo de escrituras</li>
+                <li>Usar <span class="highlight">EXPLAIN y EXPLAIN ANALYZE</span> para detectar consultas lentas</li>
+                <li>Optimizar consultas reales mediante <span class="highlight">planes de ejecución</span></li>
+                <li>Implementar prácticas de <span class="highlight">monitoreo y mantenimiento</span> en sistemas de
+                    producción</li>
             </ul>
         </div>
 
@@ -194,8 +192,8 @@
             <h2><i class="fas fa-chart-line"></i> Agenda</h2>
             <div class="content-grid">
                 <div class="feature-card">
-                    <h3>1. Contexto del Caso ¡ahorita!</h3>
-                    <p>Sistema de pagos QR en tiempo real y desafíos de rendimiento</p>
+                    <h3>1. Contexto Técnico</h3>
+                    <p>Desafíos de rendimiento en sistemas transaccionales de alta concurrencia</p>
                 </div>
                 <div class="feature-card">
                     <h3>2. Estadísticas y Selectividad</h3>
@@ -217,56 +215,135 @@
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 5: CASO DE USO -->
+        <!-- SLIDE 5: PREPARACIÓN Y DESCARGA DE DATOS -->
         <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-mobile-alt"></i> Caso de Uso: Pagos QR en Tiempo Real</h2>
+            <h2><i class="fas fa-download"></i> Antes de Empezar: Descarga de Datos</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px;">
+                <!-- Columna Izquierda: Requisitos y Contenido -->
+                <div>
+                    <div
+                        style="background: rgba(233, 171, 33, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-bottom: 20px;">
+                        <h3 style="color: var(--uide-accent); margin-bottom: 0.8rem; font-size: 1.2rem;">
+                            <i class="fas fa-exclamation-triangle"></i> Qué necesitas
+                        </h3>
+                        <ul style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                            <li>Base <code>pagos_qr_sistema</code> ya creada</li>
+                            <li>MySQL 8.0 o superior corriendo</li>
+                            <li>Permisos INSERT y ANALYZE TABLE</li>
+                            <li>Toma unos 2-3 minutos ejecutar</li>
+                        </ul>
+                    </div>
+
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                        <h3 style="color: #4ade80; margin-bottom: 0.8rem; font-size: 1.2rem;">
+                            <i class="fas fa-check-circle"></i> Qué incluye
+                        </h3>
+                        <ul style="font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                            <li>30 comercios en varias ciudades</li>
+                            <li>10,000 transacciones de 6 meses</li>
+                            <li>Datos con patrones reales</li>
+                            <li>Estadísticas precalculadas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Descarga y Ejecución -->
+                <div>
+                    <div
+                        style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 25px; border-radius: 12px; border: 2px solid var(--uide-accent); text-align: center; margin-bottom: 20px;">
+                        <i class="fas fa-file-code"
+                            style="font-size: 3rem; color: var(--uide-accent); margin-bottom: 1rem; display: block;"></i>
+                        <h3 style="color: var(--uide-accent); font-size: 1.3rem; margin-bottom: 0.8rem;">Descarga Aquí
+                        </h3>
+                        <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.2rem;">
+                            Script con datos para práctica
+                        </p>
+                        <a href="datos_comercios_transacciones.sql" download
+                            style="display: inline-block; background: var(--uide-accent); color: #0f1419; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1rem; transition: all 0.3s; box-shadow: 0 4px 15px rgba(233, 171, 33, 0.3);">
+                            <i class="fas fa-download"></i> Descargar SQL
+                        </a>
+                        <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 1rem;">
+                            <i class="fas fa-info-circle"></i> 1.5 MB | SQL UTF-8
+                        </p>
+                    </div>
+
+                    <div
+                        style="background: rgba(96, 165, 250, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #60a5fa;">
+                        <h3 style="color: #60a5fa; margin-bottom: 0.8rem; font-size: 1.2rem;">
+                            <i class="fas fa-terminal"></i> Cómo ejecutarlo
+                        </h3>
+                        <pre
+                            style="background: rgba(15, 20, 25, 0.7); padding: 12px; border-radius: 6px; font-size: 0.85rem; color: #e2e8f0; margin: 0;"><code class="language-sql">-- En Workbench: abrir archivo y Ctrl+Shift+Enter
+
+-- Por terminal:
+mysql -u root -p pagos_qr_sistema \
+  < datos_comercios_transacciones.sql</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(233, 171, 33, 0.1); padding: 15px 20px; border-radius: 8px; text-align: center;">
+                <p style="margin: 0; color: #e2e8f0; font-size: 0.95rem;">
+                    <i class="fas fa-rocket"></i> <strong>Para qué:</strong> Con este volumen vas a poder ver claramente
+                    la diferencia entre type=ALL y type=range en EXPLAIN
+                </p>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 6: CONTEXTO TÉCNICO -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2><i class="fas fa-database"></i> El Problema</h2>
             <div class="quote">
-                "¡ahorita!" liquida miles de transacciones por minuto; un plan deficiente se traduce en pagos rechazados
-                o confirmaciones tardías.
+                Cuando un sistema recibe miles de transacciones por segundo, las consultas mal optimizadas se vuelven un
+                cuello de botella crítico.
             </div>
             <div class="content-grid">
                 <div>
-                    <h3>Modelo de Datos (Semana 2)</h3>
+                    <h3>Nuestro Caso: Pagos QR</h3>
                     <ul>
                         <li><span class="emphasis">Base:</span> pagos_qr_sistema</li>
-                        <li><span class="emphasis">Tablas:</span> Cuentas, Comercios, Pagos_QR</li>
+                        <li><span class="emphasis">Core:</span> Cuentas, Comercios, Pagos_QR</li>
                         <li><span class="emphasis">Auditoría:</span> Auditoria_Transacciones</li>
                         <li><span class="emphasis">Control:</span> Limites_Diarios</li>
                         <li><span class="emphasis">Vistas:</span> v_transacciones_hoy, v_estadisticas_comercios</li>
                     </ul>
                 </div>
                 <div>
-                    <h3>Dolor Actual</h3>
+                    <h3>El Reto</h3>
                     <p style="font-size: 1.1rem; line-height: 1.8;">
-                        <span class="emphasis">Problema:</span> Conciliaciones y alertas antifraude tardan más de 5
-                        segundos durante "Cashback Cafeterías", generando timeouts en el app móvil.
+                        <span class="emphasis">Problema:</span> Consultas que tardan más de 5 segundos bajo carga. Los
+                        dashboards de comercios se vuelven lentos.
                     </p>
                     <p style="font-size: 1.1rem; line-height: 1.8; margin-top: 1rem;">
-                        <span class="highlight">Meta:</span> Respuestas menores a 2 segundos manteniendo estadísticas,
-                        índices y planes alineados.
+                        <span class="highlight">Meta:</span> Bajar a menos de 2 segundos usando estadísticas, índices y
+                        planes de ejecución.
                     </p>
                 </div>
             </div>
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 6: ESTADÍSTICAS Y SELECTIVIDAD -->
+        <!-- SLIDE 7: ESTADÍSTICAS Y SELECTIVIDAD -->
         <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-chart-bar"></i> Estadísticas y Selectividad en Acción</h2>
+            <h2><i class="fas fa-chart-bar"></i> Estadísticas: Por Qué Importan</h2>
             <div class="content-grid">
                 <div>
-                    <h3>Importancia de las Estadísticas</h3>
+                    <h3>El Optimizador Necesita Datos</h3>
                     <ul>
-                        <li>El <span class="emphasis">optimizador</span> necesita estadísticas frescas sobre campos
-                            clave</li>
-                        <li>Desalineaciones entre rows estimadas y reales obligan a leer toda la tabla</li>
-                        <li>Ejemplo: type=ALL en Pagos_QR cuando bastaría type=ref con idx_comercio_fecha</li>
+                        <li>MySQL decide qué <span class="emphasis">índice usar</span> basándose en estadísticas</li>
+                        <li>Si las stats están desactualizadas, puede escanear toda la tabla</li>
+                        <li>Ejemplo real: type=ALL cuando debería ser type=ref</li>
                     </ul>
                 </div>
                 <div>
-                    <h3>Campos Críticos</h3>
+                    <h3>Campos que Más Importan</h3>
                     <ul>
                         <li><span class="highlight">Pagos_QR:</span> fecha, estado, monto</li>
                         <li><span class="highlight">Comercios:</span> ciudad</li>
@@ -276,91 +353,91 @@
             </div>
             <div
                 style="background: rgba(233, 171, 33, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-top: 20px;">
-                <h3 style="color: var(--uide-accent); margin-bottom: 1rem;">Plan para "¡ahorita!"</h3>
+                <h3 style="color: var(--uide-accent); margin-bottom: 1rem;">Cómo Mantenerlas</h3>
                 <ul style="font-size: 1rem;">
-                    <li>Automatizar ANALYZE TABLE cada madrugada y tras scripts masivos de carga</li>
-                    <li>Monitorizar columna "filtered" en EXPLAIN (selectividad real del WHERE)</li>
-                    <li>Refrescar estadísticas cuando rows estimadas vs filtered difieran más del 20%</li>
+                    <li>Correr ANALYZE TABLE después de cargas grandes</li>
+                    <li>Revisar "filtered" en EXPLAIN para ver si las stats están ok</li>
+                    <li>Si rows estimadas vs. reales difiere >20%, es hora de actualizar</li>
                 </ul>
             </div>
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 7: ÍNDICES Y SU IMPACTO -->
+        <!-- SLIDE 8: ÍNDICES Y SU IMPACTO -->
         <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-list-ol"></i> Índices y su Impacto en el Costo</h2>
+            <h2><i class="fas fa-list-ol"></i> Índices: Qué Tenemos y Qué Falta</h2>
             <div class="content-grid">
                 <div>
-                    <h3>Índices Existentes</h3>
+                    <h3>Índices Actuales</h3>
                     <ul>
-                        <li><span class="emphasis">idx_cliente_fecha:</span> Consultas por cliente y período</li>
-                        <li><span class="emphasis">idx_comercio_fecha:</span> Dashboards por comercio</li>
-                        <li><span class="emphasis">idx_estado:</span> Filtros por estado de transacción</li>
+                        <li><span class="emphasis">idx_cliente_fecha:</span> Para historial por cliente</li>
+                        <li><span class="emphasis">idx_comercio_fecha:</span> Dashboards de comercios</li>
+                        <li><span class="emphasis">idx_estado:</span> Filtrar por estado</li>
                     </ul>
                     <p style="margin-top: 1rem; font-size: 1rem;">
-                        Estos índices evitan <span class="highlight">type=ALL</span> (escaneo completo) cuando se filtra por comercio,
-                        cliente o estado.
+                        Con estos evitamos <span class="highlight">type=ALL</span> en las consultas más comunes.
                     </p>
                 </div>
                 <div>
-                    <h3>Ajustes Recomendados</h3>
+                    <h3>Mejoras Posibles</h3>
                     <ul>
-                        <li><span class="emphasis">Clave primaria:</span> Pagos_QR(payment_id) - mantiene trazabilidad
+                        <li><span class="emphasis">PK payment_id:</span> Ya la tenemos, es obligatoria</li>
+                        <li><span class="emphasis">Índice compuesto:</span> (comercio_id, fecha) para filtros combinados
                         </li>
-                        <li><span class="emphasis">Compuesto:</span> (comercio_id, fecha) - soporta dashboards con filtros combinados</li>
-                        <li><span class="emphasis">Cubierto:</span> CREATE INDEX idx_cover ON Pagos_QR(cliente_id, estado, metodo_pago, monto, dispositivo) - Extra: "Using index"</li>
+                        <li><span class="emphasis">Covering index:</span> Incluir monto, dispositivo para evitar lookups
+                            a la tabla</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 8: TRADE-OFFS DE ÍNDICES -->
+        <!-- SLIDE 9: TRADE-OFFS DE ÍNDICES -->
         <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-balance-scale"></i> Trade-offs de Índices</h2>
+            <h2><i class="fas fa-balance-scale"></i> El Lado Oscuro de los Índices</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Aspecto</th>
-                        <th>Beneficio</th>
-                        <th>Costo</th>
+                        <th>Lo Bueno</th>
+                        <th>Lo Malo</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><strong>Lecturas</strong></td>
-                        <td>Reducción drástica de I/O en consultas</td>
-                        <td>Espacio adicional en disco</td>
+                        <td>SELECT mucho más rápidos</td>
+                        <td>Ocupan espacio en disco</td>
                     </tr>
                     <tr>
                         <td><strong>Escrituras</strong></td>
-                        <td>N/A</td>
-                        <td>Cada índice se actualiza en INSERT/UPDATE/DELETE</td>
+                        <td>—</td>
+                        <td>Cada INSERT/UPDATE/DELETE actualiza todos los índices</td>
                     </tr>
                     <tr>
                         <td><strong>Mantenimiento</strong></td>
-                        <td>Mejora rendimiento de consultas frecuentes</td>
-                        <td>Requiere monitoreo y limpieza periódica</td>
+                        <td>Consultas recurrentes vuelan</td>
+                        <td>Hay que monitorear cuáles se usan</td>
                     </tr>
                 </tbody>
             </table>
             <div
                 style="background: rgba(233, 171, 33, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-top: 20px;">
-                <h3 style="color: var(--uide-accent); margin-bottom: 1rem;"><i class="fas fa-lightbulb"></i> Guía
-                    Práctica</h3>
+                <h3 style="color: var(--uide-accent); margin-bottom: 1rem;"><i class="fas fa-lightbulb"></i> Reglas
+                    Prácticas</h3>
                 <ul style="font-size: 1rem;">
-                    <li>Revisar índices existentes antes de crear nuevos</li>
-                    <li>Consolidar índices redundantes</li>
-                    <li>Usar estadísticas de uso (sys.schema_unused_indexes) para justificar cada índice</li>
-                    <li>Exceso de índices degrada el throughput de INSERT INTO Pagos_QR</li>
+                    <li>Antes de crear uno nuevo, revisar si ya existe algo similar</li>
+                    <li>Eliminar índices que nadie usa (sys.schema_unused_indexes)</li>
+                    <li>Cada índice extra hace más lentos los INSERT</li>
+                    <li>Mejor pocos índices buenos que muchos mediocres</li>
                 </ul>
             </div>
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 9: COSTOS DE EJECUCIÓN -->
+        <!-- SLIDE 10: COSTOS DE EJECUCIÓN -->
         <!-- ============================================ -->
         <div class="slide">
             <h2><i class="fas fa-dollar-sign"></i> Costos de Ejecución y E/S</h2>
@@ -375,12 +452,12 @@
                     </ul>
                 </div>
                 <div>
-                    <h3>Estrategia "¡ahorita!"</h3>
+                    <h3>Estrategia Operacional</h3>
                     <ul>
-                        <li>Mantener el core OLTP con índices definidos en DDL base</li>
-                        <li>Mover reportes a réplicas de lectura (MySQL Replication)</li>
-                        <li>Validar impacto en I/O antes de agregar índices temporales</li>
-                        <li>Usar Performance Schema, sys schema e INFORMATION_SCHEMA</li>
+                        <li>Mantener índices del core transaccional definidos en DDL base</li>
+                        <li>Separar cargas analíticas usando réplicas de lectura (MySQL Replication)</li>
+                        <li>Evaluar impacto en I/O antes de crear índices adicionales</li>
+                        <li>Monitorear con Performance Schema, sys schema e INFORMATION_SCHEMA</li>
                     </ul>
                 </div>
             </div>
@@ -394,7 +471,7 @@
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 10: PLANES DE EJECUCIÓN -->
+        <!-- SLIDE 11: PLANES DE EJECUCIÓN -->
         <!-- ============================================ -->
         <div class="slide">
             <h2><i class="fas fa-search"></i> Planes de Ejecución (EXPLAIN / EXPLAIN ANALYZE)</h2>
@@ -403,15 +480,18 @@
                     <h3>Diferencias Clave</h3>
                     <ul>
                         <li><span class="emphasis">EXPLAIN:</span> Plan estimado con formato tradicional o TREE</li>
-                        <li><span class="emphasis">EXPLAIN ANALYZE:</span> (MySQL 8.0.18+) Ejecuta la consulta y muestra timing real, siempre formato TREE</li>
+                        <li><span class="emphasis">EXPLAIN ANALYZE:</span> (MySQL 8.0.18+) Ejecuta la consulta y muestra
+                            timing real, siempre formato TREE</li>
                     </ul>
                     <h3 style="margin-top: 1.5rem;">Elementos de Lectura (EXPLAIN tradicional)</h3>
                     <ul>
-                        <li><span class="emphasis">type:</span> system, const, eq_ref, ref, range, index, ALL (del mejor al peor)</li>
+                        <li><span class="emphasis">type:</span> system, const, eq_ref, ref, range, index, ALL (del mejor
+                            al peor)</li>
                         <li><span class="emphasis">rows:</span> Filas estimadas a examinar</li>
                         <li><span class="emphasis">filtered:</span> Porcentaje de filas filtradas por WHERE</li>
                         <li><span class="emphasis">key:</span> Índice usado (NULL si no usa índice)</li>
-                        <li><span class="emphasis">Extra:</span> Using index (cubierto), Using where, Using temporary, Using filesort</li>
+                        <li><span class="emphasis">Extra:</span> Using index (cubierto), Using where, Using temporary,
+                            Using filesort</li>
                     </ul>
                 </div>
                 <div>
@@ -422,48 +502,1825 @@ WHERE comercio_id = 202
   AND fecha >= NOW() - INTERVAL 5 MINUTE
 ORDER BY fecha DESC;</code></pre>
                     <p style="font-size: 0.95rem; margin-top: 1rem;">
-                        <strong>Objetivo:</strong> Verificar que key=idx_comercio_fecha, type=range o ref (no ALL), y Extra no contenga "Using temporary" o "Using filesort".
+                        <strong>Objetivo:</strong> Verificar que key=idx_comercio_fecha, type=range o ref (no ALL), y
+                        Extra no contenga "Using temporary" o "Using filesort".
                     </p>
                 </div>
             </div>
         </div>
 
-
         <!-- ============================================ -->
-        <!-- SLIDE 11: IMPLICACIONES PARA LA PLATAFORMA -->
+        <!-- SLIDE 12: PLAN DE EJECUCIÓN INEFICIENTE -->
         <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-compass"></i> Implicaciones para "¡ahorita!"</h2>
-            <div class="content-grid">
-                <div class="feature-card">
-                    <h3><i class="fas fa-chart-pie"></i> 1. Gobernar Estadísticas</h3>
-                    <p>Automatizar ANALYZE TABLE sobre Pagos_QR, Cuentas y Comercios. Alertar cuando columna "rows" vs "filtered" en EXPLAIN divergen más del 20%.</p>
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-times-circle"></i> Plan de Ejecución
+                Ineficiente</h2>
+
+            <div
+                style="background: rgba(239, 68, 68, 0.15); padding: 15px; border-radius: 10px; border-left: 4px solid #ef4444; margin-bottom: 18px; text-align: center;">
+                <h3 style="color: #ef4444; font-size: 1.05rem; margin-bottom: 8px;">
+                    <i class="fas fa-exclamation-triangle"></i> Problema: Sin Índices Apropiados
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.88rem; margin: 0;">
+                    MySQL debe examinar <strong>todas las filas</strong> de la tabla (Full Table Scan)
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 160px);">
+                <!-- Columna Izquierda: Consulta EXPLAIN -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-code"></i> Consulta sin Índice
+                    </h3>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 16px; border-radius: 10px; flex: 1;">
+                        <pre style="font-size: 0.82rem; margin: 0;"><code class="language-sql">EXPLAIN SELECT payment_id, monto, estado
+FROM Pagos_QR
+WHERE estado = 'CONFIRMADO'
+  AND fecha >= '2024-12-01';</code></pre>
+
+                        <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid rgba(239, 68, 68, 0.3);">
+                            <h4 style="color: #ef4444; font-size: 0.95rem; margin-bottom: 12px;">
+                                <i class="fas fa-search"></i> Qué Observar:
+                            </h4>
+                            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.8; padding-left: 20px;">
+                                <li><strong style="color: #ef4444;">type = ALL:</strong> Full table scan (lo peor)</li>
+                                <li><strong style="color: #ef4444;">key = NULL:</strong> No usa ningún índice</li>
+                                <li><strong style="color: #ef4444;">rows = 10,000:</strong> Examina todas las filas</li>
+                                <li><strong>filtered = 11.11%:</strong> Solo 11% cumple WHERE</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <h3><i class="fas fa-list-check"></i> 2. Índices con Propósito</h3>
-                    <p>Documentar cada índice existente en el DDL y justificar los nuevos a partir de los patrones
-                        detectados en PE-1.3.</p>
-                </div>
-                <div class="feature-card">
-                    <h3><i class="fas fa-microscope"></i> 3. Planes como Ritual</h3>
-                    <p>Ningún SQL que toque Pagos_QR, Cuentas o Auditoria_Transacciones se promueve sin EXPLAIN (y
-                        EXPLAIN ANALYZE en staging).</p>
-                </div>
-                <div class="feature-card">
-                    <h3><i class="fas fa-balance-scale-right"></i> 4. Balancear Lecturas/Escrituras</h3>
-                    <p>Evaluar el costo antes de agregar índices para dashboards; usar réplicas si el consumo proviene
-                        de analítica.</p>
-                </div>
-                <div class="feature-card">
-                    <h3><i class="fas fa-shield-alt"></i> 5. Checklist de Resiliencia</h3>
-                    <p>Previo a eventos de alto tráfico, correr scripts de verificación (stats frescas, lag de réplica,
-                        planes).</p>
+
+                <!-- Columna Derecha: Tabla de Resultados -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #ef4444; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-table"></i> Resultado EXPLAIN
+                    </h3>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 16px; border-radius: 10px; flex: 1;">
+                        <table style="width: 100%; font-size: 0.88rem; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 3px solid #ef4444;">
+                                    <th
+                                        style="text-align: left; padding: 10px; font-size: 0.92rem; color: var(--uide-accent);">
+                                        Campo</th>
+                                    <th
+                                        style="text-align: left; padding: 10px; font-size: 0.92rem; color: var(--uide-accent);">
+                                        Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <td style="padding: 10px;"><strong>type:</strong></td>
+                                    <td style="padding: 10px; color: #ef4444; font-weight: 700;">
+                                        <i class="fas fa-exclamation-triangle"></i> ALL
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <td style="padding: 10px;"><strong>key:</strong></td>
+                                    <td style="padding: 10px; color: #ef4444; font-weight: 700;">NULL</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <td style="padding: 10px;"><strong>rows:</strong></td>
+                                    <td style="padding: 10px; color: #ef4444; font-weight: 700;">10,000</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <td style="padding: 10px;"><strong>filtered:</strong></td>
+                                    <td style="padding: 10px;">11.11%</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px;"><strong>Extra:</strong></td>
+                                    <td style="padding: 10px; font-size: 0.82rem;">Using where</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div
+                            style="margin-top: 20px; padding: 15px; background: rgba(239, 68, 68, 0.15); border-radius: 8px; border-left: 4px solid #ef4444;">
+                            <h4 style="color: #ef4444; font-size: 0.95rem; margin-bottom: 10px;">
+                                <i class="fas fa-chart-bar"></i> Impacto en Rendimiento:
+                            </h4>
+                            <p style="margin: 8px 0; font-size: 0.9rem; line-height: 1.6;">
+                                <i class="fas fa-stopwatch"></i> <strong>Tiempo de ejecución:</strong> <span
+                                    style="color: #ef4444; font-size: 1.3rem; font-weight: 700;">~3.4s</span>
+                            </p>
+                            <p style="margin: 8px 0; font-size: 0.9rem; line-height: 1.6;">
+                                <i class="fas fa-database"></i> <strong>Filas examinadas:</strong> <span
+                                    style="color: #ef4444; font-size: 1.3rem; font-weight: 700;">10,000</span>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 12: ACTIVIDADES CALIFICADAS DETALLADAS -->
+        <!-- SLIDE 13: PLAN DE EJECUCIÓN OPTIMIZADO -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-check-circle"></i> Plan de Ejecución
+                Optimizado</h2>
+
+            <div
+                style="background: rgba(74, 222, 128, 0.15); padding: 15px; border-radius: 10px; border-left: 4px solid #4ade80; margin-bottom: 18px; text-align: center;">
+                <h3 style="color: #4ade80; font-size: 1.05rem; margin-bottom: 8px;">
+                    <i class="fas fa-bolt"></i> Solución: Índice Compuesto Apropiado
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.88rem; margin: 0;">
+                    Con el índice correcto, MySQL solo examina las <strong>filas necesarias</strong> (Index Range Scan)
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 160px);">
+                <!-- Columna Izquierda: Consulta EXPLAIN con Índice -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-code"></i> Consulta con Índice
+                    </h3>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 16px; border-radius: 10px; flex: 1;">
+                        <pre style="font-size: 0.78rem; margin: 0;"><code class="language-sql">-- Paso 1: Crear índice compuesto
+CREATE INDEX idx_estado_fecha
+ON Pagos_QR(estado, fecha);
+
+-- Paso 2: Misma consulta
+EXPLAIN SELECT payment_id, monto, estado
+FROM Pagos_QR
+WHERE estado = 'CONFIRMADO'
+  AND fecha >= '2024-12-01';</code></pre>
+
+                        <div
+                            style="margin-top: 20px; padding-top: 20px; border-top: 2px solid rgba(74, 222, 128, 0.3);">
+                            <h4 style="color: #4ade80; font-size: 0.95rem; margin-bottom: 12px;">
+                                <i class="fas fa-lightbulb"></i> Mejoras Obtenidas:
+                            </h4>
+                            <ul style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.8; padding-left: 20px;">
+                                <li><strong style="color: #4ade80;">type = range:</strong> Búsqueda eficiente por rango
+                                </li>
+                                <li><strong style="color: #4ade80;">key = idx_estado_fecha:</strong> Usa el índice</li>
+                                <li><strong style="color: #4ade80;">rows = 247:</strong> Solo examina filas relevantes
+                                </li>
+                                <li><strong>filtered = 100%:</strong> Todas las filas cumplen WHERE</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Tabla de Resultados -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-table"></i> Resultado EXPLAIN
+                    </h3>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 16px; border-radius: 10px; flex: 1;">
+                        <table style="width: 100%; font-size: 0.88rem; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 3px solid #4ade80;">
+                                    <th
+                                        style="text-align: left; padding: 10px; font-size: 0.92rem; color: var(--uide-accent);">
+                                        Campo</th>
+                                    <th
+                                        style="text-align: left; padding: 10px; font-size: 0.92rem; color: var(--uide-accent);">
+                                        Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <td style="padding: 10px;"><strong>type:</strong></td>
+                                    <td style="padding: 10px; color: #4ade80; font-weight: 700;">
+                                        <i class="fas fa-bolt"></i> range
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <td style="padding: 10px;"><strong>key:</strong></td>
+                                    <td style="padding: 10px; color: #4ade80; font-weight: 700;">idx_estado_fecha</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <td style="padding: 10px;"><strong>rows:</strong></td>
+                                    <td style="padding: 10px; color: #4ade80; font-weight: 700;">247</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <td style="padding: 10px;"><strong>filtered:</strong></td>
+                                    <td style="padding: 10px;">100.00%</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px;"><strong>Extra:</strong></td>
+                                    <td style="padding: 10px; font-size: 0.82rem;">Using index condition</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div
+                            style="margin-top: 20px; padding: 15px; background: rgba(74, 222, 128, 0.15); border-radius: 8px; border-left: 4px solid #4ade80;">
+                            <h4 style="color: #4ade80; font-size: 0.95rem; margin-bottom: 10px;">
+                                <i class="fas fa-rocket"></i> Impacto en Rendimiento:
+                            </h4>
+                            <p style="margin: 8px 0; font-size: 0.9rem; line-height: 1.6;">
+                                <i class="fas fa-stopwatch"></i> <strong>Tiempo de ejecución:</strong> <span
+                                    style="color: #4ade80; font-size: 1.3rem; font-weight: 700;">~0.12s</span>
+                            </p>
+                            <p style="margin: 8px 0; font-size: 0.9rem; line-height: 1.6;">
+                                <i class="fas fa-database"></i> <strong>Filas examinadas:</strong> <span
+                                    style="color: #4ade80; font-size: 1.3rem; font-weight: 700;">247</span>
+                            </p>
+                            <p
+                                style="margin: 12px 0 0 0; padding-top: 12px; border-top: 2px solid rgba(74, 222, 128, 0.3); font-size: 0.92rem; color: var(--uide-accent); font-weight: 600;">
+                                <i class="fas fa-chart-line"></i> <strong>Mejora Total:</strong> 96.5% más rápido |
+                                97.5% menos filas
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 14: MÉTRICAS Y KPIs DE RENDIMIENTO -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-tachometer-alt"></i> Métricas y KPIs de
+                Rendimiento</h2>
+
+            <div
+                style="background: rgba(233, 171, 33, 0.15); padding: 15px 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-bottom: 20px; text-align: center;">
+                <h3 style="color: var(--uide-accent); margin-bottom: 0.6rem; font-size: 1.15rem;">
+                    <i class="fas fa-question-circle"></i> ¿Cuándo una consulta es "lenta"?
+                </h3>
+                <p style="color: #cbd5e1; font-size: 0.88rem; margin: 0;">
+                    Definir umbrales claros ayuda a identificar cuellos de botella antes de que afecten a usuarios
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 18px;">
+                <!-- Excelente -->
+                <div
+                    style="background: rgba(74, 222, 128, 0.15); padding: 18px 15px; border-radius: 10px; border: 2px solid #4ade80; text-align: center;">
+                    <div style="font-size: 2.2rem; color: #4ade80; margin-bottom: 10px;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 8px;">Excelente</h3>
+                    <p style="font-size: 1.6rem; font-weight: 700; color: #4ade80; margin: 8px 0;">
+                        &lt; 100ms
+                    </p>
+                    <p style="color: #cbd5e1; font-size: 0.82rem; margin-top: 10px; line-height: 1.4;">
+                        Consultas transaccionales óptimas. Usuario no percibe latencia.
+                    </p>
+                </div>
+
+                <!-- Aceptable -->
+                <div
+                    style="background: rgba(233, 171, 33, 0.15); padding: 18px 15px; border-radius: 10px; border: 2px solid var(--uide-accent); text-align: center;">
+                    <div style="font-size: 2.2rem; color: var(--uide-accent); margin-bottom: 10px;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 8px;">Aceptable</h3>
+                    <p style="font-size: 1.6rem; font-weight: 700; color: var(--uide-accent); margin: 8px 0;">
+                        100-500ms
+                    </p>
+                    <p style="color: #cbd5e1; font-size: 0.82rem; margin-top: 10px; line-height: 1.4;">
+                        Aceptable para reportes. Requiere monitoreo continuo.
+                    </p>
+                </div>
+
+                <!-- Requiere Optimización -->
+                <div
+                    style="background: rgba(239, 68, 68, 0.15); padding: 18px 15px; border-radius: 10px; border: 2px solid #ef4444; text-align: center;">
+                    <div style="font-size: 2.2rem; color: #ef4444; margin-bottom: 10px;">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <h3 style="color: #ef4444; font-size: 1.1rem; margin-bottom: 8px;">Requiere Optimización</h3>
+                    <p style="font-size: 1.6rem; font-weight: 700; color: #ef4444; margin: 8px 0;">
+                        &gt; 500ms
+                    </p>
+                    <p style="color: #cbd5e1; font-size: 0.82rem; margin-top: 10px; line-height: 1.4;">
+                        Inaceptable para transacciones. Optimizar inmediatamente.
+                    </p>
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(35, 53, 110, 0.3); padding: 15px; border-radius: 10px; border-left: 4px solid #60a5fa;">
+                <h3 style="color: #60a5fa; margin-bottom: 0.8rem; font-size: 1.05rem;">
+                    <i class="fas fa-calculator"></i> Fórmulas de Evaluación
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 0.85rem;">
+                    <div>
+                        <p style="margin: 5px 0;"><strong>Selectividad:</strong></p>
+                        <code
+                            style="background: rgba(15, 20, 25, 0.7); padding: 6px 10px; border-radius: 5px; display: inline-block; font-size: 0.8rem;">
+                            Selectividad = Valores únicos / Total de filas
+                        </code>
+                    </div>
+                    <div>
+                        <p style="margin: 5px 0;"><strong>Costo I/O:</strong></p>
+                        <code
+                            style="background: rgba(15, 20, 25, 0.7); padding: 6px 10px; border-radius: 5px; display: inline-block; font-size: 0.8rem;">
+                            Costo I/O = (Páginas leídas × 16KB) / Buffer Pool
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 15: LABORATORIO - PASO 1 -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-flask"></i> Laboratorio Paso 1:
+                Ejecutar Consulta Lenta</h2>
+
+            <div
+                style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 16px; border-radius: 10px; border-left: 4px solid #60a5fa; margin-bottom: 20px; text-align: center;">
+                <h3 style="color: #60a5fa; font-size: 1.1rem; margin-bottom: 8px;">
+                    <i class="fas fa-target"></i> Objetivo del Laboratorio
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.92rem; margin: 0;">
+                    Optimizar consulta del dashboard de comercio que consulta transacciones de las últimas 24 horas
+                </p>
+                <p style="color: #94a3b8; font-size: 0.82rem; margin-top: 8px;">
+                    <i class="fas fa-clock"></i> Tiempo estimado total: 15 minutos | <strong>Paso 1 de 6</strong>
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 200px);">
+                <!-- Columna Izquierda: Instrucciones -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #60a5fa; font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-play-circle"></i> Tarea: Ejecutar la Consulta
+                    </h3>
+                    <div
+                        style="background: rgba(15, 20, 25, 0.7); padding: 18px; border-radius: 10px; border-left: 4px solid #60a5fa; margin-bottom: 20px;">
+                        <pre style="font-size: 0.9rem; margin: 0;"><code class="language-sql">SELECT p.payment_id, p.monto,
+       p.fecha, c.nombre as comercio
+FROM Pagos_QR p
+JOIN Comercios c ON p.comercio_id = c.id
+WHERE p.fecha >= NOW() - INTERVAL 24 HOUR
+ORDER BY p.fecha DESC;</code></pre>
+                    </div>
+
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-clipboard-list"></i> Instrucciones
+                    </h3>
+                    <div style="background: rgba(35, 53, 110, 0.3); padding: 16px; border-radius: 10px;">
+                        <ol style="font-size: 0.92rem; color: #cbd5e1; line-height: 1.8; padding-left: 20px;">
+                            <li>Copiar la consulta en tu cliente MySQL</li>
+                            <li>Ejecutar sin modificaciones</li>
+                            <li>Anotar el <strong style="color: #60a5fa;">tiempo de ejecución</strong></li>
+                            <li>Observar cuántas filas retorna</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Qué Observar -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #ef4444; font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-eye"></i> ¿Qué Observar?
+                    </h3>
+                    <div
+                        style="background: rgba(239, 68, 68, 0.15); padding: 18px; border-radius: 10px; border-left: 4px solid #ef4444; margin-bottom: 20px;">
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-stopwatch"></i> <strong style="color: #ef4444;">Tiempo de
+                                respuesta:</strong><br>
+                            <span style="margin-left: 24px;">• ¿Cuántos segundos tarda?</span><br>
+                            <span style="margin-left: 24px;">• ¿Es aceptable para un dashboard en tiempo real?</span>
+                        </p>
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-database"></i> <strong style="color: #ef4444;">Cantidad de
+                                datos:</strong><br>
+                            <span style="margin-left: 24px;">• ¿Cuántas filas retorna?</span><br>
+                            <span style="margin-left: 24px;">• ¿Es proporcional al tiempo?</span>
+                        </p>
+                    </div>
+
+                    <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-lightbulb"></i> Resultado Esperado
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 16px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> La consulta debería ejecutarse
+                            <strong>LENTA</strong>
+                        </p>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> Esto nos da la <strong>línea
+                                base</strong> para comparar después
+                        </p>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> Típico: <strong
+                                style="color: #ef4444;">2-5 segundos</strong> sin índices
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 16: LABORATORIO - PASO 2 -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-flask"></i> Laboratorio Paso 2:
+                Analizar con EXPLAIN</h2>
+
+            <div
+                style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 16px; border-radius: 10px; border-left: 4px solid #f59e0b; margin-bottom: 20px; text-align: center;">
+                <h3 style="color: #f59e0b; font-size: 1.1rem; margin-bottom: 8px;">
+                    <i class="fas fa-search"></i> Entender el Plan de Ejecución
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.92rem; margin: 0;">
+                    Usar EXPLAIN para ver cómo MySQL ejecuta la consulta sin índices
+                </p>
+                <p style="color: #94a3b8; font-size: 0.82rem; margin-top: 8px;">
+                    <i class="fas fa-clock"></i> <strong>Paso 2 de 6</strong>
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 200px);">
+                <!-- Columna Izquierda: Comando EXPLAIN -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #f59e0b; font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-terminal"></i> Ejecutar EXPLAIN
+                    </h3>
+                    <div
+                        style="background: rgba(15, 20, 25, 0.7); padding: 18px; border-radius: 10px; border-left: 4px solid #f59e0b; margin-bottom: 20px;">
+                        <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">EXPLAIN
+SELECT p.payment_id, p.monto,
+       p.fecha, c.nombre as comercio
+FROM Pagos_QR p
+JOIN Comercios c ON p.comercio_id = c.id
+WHERE p.fecha >= NOW() - INTERVAL 24 HOUR
+ORDER BY p.fecha DESC;</code></pre>
+                    </div>
+
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-clipboard-list"></i> Instrucciones
+                    </h3>
+                    <div style="background: rgba(35, 53, 110, 0.3); padding: 16px; border-radius: 10px;">
+                        <ol style="font-size: 0.92rem; color: #cbd5e1; line-height: 1.8; padding-left: 20px;">
+                            <li>Agregar <code>EXPLAIN</code> antes de la consulta</li>
+                            <li>Ejecutar y revisar el plan de ejecución</li>
+                            <li>Anotar los valores de <strong>type</strong>, <strong>rows</strong> y
+                                <strong>key</strong>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Qué Buscar -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #ef4444; font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-exclamation-triangle"></i> Problemas a Identificar
+                    </h3>
+                    <div
+                        style="background: rgba(239, 68, 68, 0.15); padding: 18px; border-radius: 10px; border-left: 4px solid #ef4444; margin-bottom: 20px;">
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-times-circle"></i> <strong style="color: #ef4444;">type: ALL</strong><br>
+                            <span style="margin-left: 24px;">• Escaneo completo de tabla (Full Table Scan)</span><br>
+                            <span style="margin-left: 24px;">• Examina TODAS las filas</span>
+                        </p>
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-times-circle"></i> <strong style="color: #ef4444;">key: NULL</strong><br>
+                            <span style="margin-left: 24px;">• No está usando ningún índice</span>
+                        </p>
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-times-circle"></i> <strong style="color: #ef4444;">rows:
+                                ~10,000</strong><br>
+                            <span style="margin-left: 24px;">• Estimación de filas a examinar</span>
+                        </p>
+                    </div>
+
+                    <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-lightbulb"></i> Conclusión
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 16px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> Confirma que la consulta es
+                            <strong>ineficiente</strong>
+                        </p>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> Necesitamos crear un
+                            <strong>índice</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 17: LABORATORIO - PASO 3 -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-flask"></i> Laboratorio Paso 3:
+                Actualizar Estadísticas</h2>
+
+            <div
+                style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 16px; border-radius: 10px; border-left: 4px solid #8b5cf6; margin-bottom: 20px; text-align: center;">
+                <h3 style="color: #8b5cf6; font-size: 1.1rem; margin-bottom: 8px;">
+                    <i class="fas fa-chart-bar"></i> Preparar las Estadísticas
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.92rem; margin: 0;">
+                    Actualizar estadísticas de la tabla para que el optimizador tome mejores decisiones
+                </p>
+                <p style="color: #94a3b8; font-size: 0.82rem; margin-top: 8px;">
+                    <i class="fas fa-clock"></i> <strong>Paso 3 de 6</strong>
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 200px);">
+                <!-- Columna Izquierda: Comando ANALYZE TABLE -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #8b5cf6; font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-terminal"></i> Ejecutar ANALYZE TABLE
+                    </h3>
+                    <div
+                        style="background: rgba(15, 20, 25, 0.7); padding: 18px; border-radius: 10px; border-left: 4px solid #8b5cf6; margin-bottom: 20px;">
+                        <pre
+                            style="font-size: 0.95rem; margin: 0;"><code class="language-sql">ANALYZE TABLE Pagos_QR;</code></pre>
+                    </div>
+
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-clipboard-list"></i> Instrucciones
+                    </h3>
+                    <div style="background: rgba(35, 53, 110, 0.3); padding: 16px; border-radius: 10px;">
+                        <ol style="font-size: 0.92rem; color: #cbd5e1; line-height: 1.8; padding-left: 20px;">
+                            <li>Ejecutar el comando ANALYZE TABLE</li>
+                            <li>Esperar confirmación (Status: OK)</li>
+                            <li>Verificar que las estadísticas se actualizaron</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Por Qué es Importante -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #8b5cf6; font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-question-circle"></i> ¿Por Qué es Importante?
+                    </h3>
+                    <div
+                        style="background: rgba(139, 92, 246, 0.15); padding: 18px; border-radius: 10px; border-left: 4px solid #8b5cf6; margin-bottom: 20px;">
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-brain"></i> <strong style="color: #8b5cf6;">Optimizador
+                                inteligente:</strong><br>
+                            <span style="margin-left: 24px;">• MySQL usa estadísticas para elegir índices</span><br>
+                            <span style="margin-left: 24px;">• Stats desactualizadas = malas decisiones</span>
+                        </p>
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-database"></i> <strong style="color: #8b5cf6;">Cardinalidad:</strong><br>
+                            <span style="margin-left: 24px;">• Número de valores únicos por columna</span><br>
+                            <span style="margin-left: 24px;">• Afecta la selectividad del índice</span>
+                        </p>
+                    </div>
+
+                    <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-lightbulb"></i> Resultado Esperado
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 16px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> Mensaje: <code
+                                style="font-size: 0.85rem;">Table Op Msg_type Msg_text</code>
+                        </p>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> Status: <strong
+                                style="color: #4ade80;">OK</strong>
+                        </p>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> Tiempo: <strong>~1-2
+                                segundos</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 18: LABORATORIO - PASO 4 -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-flask"></i> Laboratorio Paso 4: Crear
+                Índice Optimizado</h2>
+
+            <div
+                style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 16px; border-radius: 10px; border-left: 4px solid #4ade80; margin-bottom: 20px; text-align: center;">
+                <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 8px;">
+                    <i class="fas fa-plus-circle"></i> Crear el Índice Compuesto
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.92rem; margin: 0;">
+                    Crear un índice que optimice el filtrado por fecha en la consulta del dashboard
+                </p>
+                <p style="color: #94a3b8; font-size: 0.82rem; margin-top: 8px;">
+                    <i class="fas fa-clock"></i> <strong>Paso 4 de 6</strong>
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 200px);">
+                <!-- Columna Izquierda: Crear Índice -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #4ade80; font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-terminal"></i> Comando SQL
+                    </h3>
+                    <div
+                        style="background: rgba(15, 20, 25, 0.7); padding: 18px; border-radius: 10px; border-left: 4px solid #4ade80; margin-bottom: 20px;">
+                        <pre style="font-size: 0.9rem; margin: 0;"><code class="language-sql">CREATE INDEX idx_fecha
+ON Pagos_QR(fecha);</code></pre>
+                    </div>
+
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-clipboard-list"></i> Instrucciones
+                    </h3>
+                    <div
+                        style="background: rgba(35, 53, 110, 0.3); padding: 16px; border-radius: 10px; margin-bottom: 15px;">
+                        <ol style="font-size: 0.92rem; color: #cbd5e1; line-height: 1.8; padding-left: 20px;">
+                            <li>Ejecutar el comando CREATE INDEX</li>
+                            <li>Esperar confirmación de creación</li>
+                            <li>Verificar que el índice existe</li>
+                        </ol>
+                    </div>
+
+                    <h3 style="color: #60a5fa; font-size: 1rem; margin-bottom: 12px;">
+                        <i class="fas fa-info-circle"></i> Verificar Índice
+                    </h3>
+                    <div
+                        style="background: rgba(96, 165, 250, 0.1); padding: 14px; border-radius: 10px; border-left: 4px solid #60a5fa;">
+                        <pre
+                            style="font-size: 0.85rem; margin: 0;"><code class="language-sql">SHOW INDEX FROM Pagos_QR;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Explicación -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #4ade80; font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-lightbulb"></i> ¿Por Qué Este Índice?
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.15); padding: 18px; border-radius: 10px; border-left: 4px solid #4ade80; margin-bottom: 20px;">
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-calendar"></i> <strong style="color: #4ade80;">Columna fecha:</strong><br>
+                            <span style="margin-left: 24px;">• Usada en WHERE con rango (>=)</span><br>
+                            <span style="margin-left: 24px;">• Consulta frecuente (cada 30s)</span><br>
+                            <span style="margin-left: 24px;">• Alta selectividad temporal</span>
+                        </p>
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-bolt"></i> <strong style="color: #4ade80;">Beneficio esperado:</strong><br>
+                            <span style="margin-left: 24px;">• type: ALL → range</span><br>
+                            <span style="margin-left: 24px;">• Reducción de filas examinadas</span><br>
+                            <span style="margin-left: 24px;">• Tiempo de respuesta &lt; 200ms</span>
+                        </p>
+                    </div>
+
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-exclamation-triangle"></i> Consideraciones
+                    </h3>
+                    <div
+                        style="background: rgba(233, 171, 33, 0.15); padding: 16px; border-radius: 10px; border-left: 4px solid var(--uide-accent);">
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-clock"></i> Creación puede tardar según tamaño de tabla
+                        </p>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-pen"></i> Impacto mínimo en INSERT (1 columna)
+                        </p>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-database"></i> Espacio adicional en disco
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 19: LABORATORIO - PASO 5 -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-flask"></i> Laboratorio Paso 5:
+                Verificar Mejora con EXPLAIN</h2>
+
+            <div
+                style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 16px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-bottom: 20px; text-align: center;">
+                <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 8px;">
+                    <i class="fas fa-chart-line"></i> Comparar Antes vs Después
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.92rem; margin: 0;">
+                    Ejecutar nuevamente EXPLAIN para verificar que MySQL usa el nuevo índice
+                </p>
+                <p style="color: #94a3b8; font-size: 0.82rem; margin-top: 8px;">
+                    <i class="fas fa-clock"></i> <strong>Paso 5 de 6</strong>
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 200px);">
+                <!-- Columna Izquierda: Comando -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: var(--uide-accent); font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-terminal"></i> Ejecutar EXPLAIN Nuevamente
+                    </h3>
+                    <div
+                        style="background: rgba(15, 20, 25, 0.7); padding: 18px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-bottom: 20px;">
+                        <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">EXPLAIN
+SELECT p.payment_id, p.monto,
+       p.fecha, c.nombre as comercio
+FROM Pagos_QR p
+JOIN Comercios c ON p.comercio_id = c.id
+WHERE p.fecha >= NOW() - INTERVAL 24 HOUR
+ORDER BY p.fecha DESC;</code></pre>
+                    </div>
+
+                    <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-check-circle"></i> Qué Buscar
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 16px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                        <ul style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.7; padding-left: 20px;">
+                            <li><strong style="color: #4ade80;">key:</strong> idx_fecha (usa el índice)</li>
+                            <li><strong style="color: #4ade80;">type:</strong> range (búsqueda por rango)</li>
+                            <li><strong style="color: #4ade80;">rows:</strong> Mucho menor (~300-500)</li>
+                            <li><strong style="color: #4ade80;">Extra:</strong> Using index condition</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Comparación -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #60a5fa; font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-balance-scale"></i> Tabla Comparativa
+                    </h3>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 18px; border-radius: 10px;">
+                        <table style="width: 100%; font-size: 0.85rem; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--uide-accent);">
+                                    <th style="text-align: left; padding: 8px; color: var(--uide-accent);">Métrica</th>
+                                    <th style="text-align: center; padding: 8px; color: #ef4444;">Antes</th>
+                                    <th style="text-align: center; padding: 8px; color: #4ade80;">Después</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <td style="padding: 8px;"><strong>type</strong></td>
+                                    <td style="text-align: center; padding: 8px; color: #ef4444;">ALL</td>
+                                    <td style="text-align: center; padding: 8px; color: #4ade80;">range</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <td style="padding: 8px;"><strong>key</strong></td>
+                                    <td style="text-align: center; padding: 8px; color: #ef4444;">NULL</td>
+                                    <td style="text-align: center; padding: 8px; color: #4ade80;">idx_fecha</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <td style="padding: 8px;"><strong>rows</strong></td>
+                                    <td style="text-align: center; padding: 8px; color: #ef4444;">~10,000</td>
+                                    <td style="text-align: center; padding: 8px; color: #4ade80;">~400</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px;"><strong>Tiempo</strong></td>
+                                    <td style="text-align: center; padding: 8px; color: #ef4444;">~3-5s</td>
+                                    <td style="text-align: center; padding: 8px; color: #4ade80;">~0.15s</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div
+                        style="background: rgba(74, 222, 128, 0.15); padding: 15px; border-radius: 10px; border-left: 4px solid #4ade80; margin-top: 15px; text-align: center;">
+                        <p style="margin: 0; font-size: 1rem; color: #4ade80; font-weight: 700;">
+                            <i class="fas fa-rocket"></i> Mejora: ~95% más rápido
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 20: LABORATORIO - PASO 6 -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-flask"></i> Laboratorio Paso 6: Medir
+                Rendimiento Real</h2>
+
+            <div
+                style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 16px; border-radius: 10px; border-left: 4px solid #a855f7; margin-bottom: 20px; text-align: center;">
+                <h3 style="color: #a855f7; font-size: 1.1rem; margin-bottom: 8px;">
+                    <i class="fas fa-stopwatch"></i> Validar con EXPLAIN ANALYZE
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.92rem; margin: 0;">
+                    Usar EXPLAIN ANALYZE para obtener tiempos reales de ejecución (MySQL 8.0.18+)
+                </p>
+                <p style="color: #94a3b8; font-size: 0.82rem; margin-top: 8px;">
+                    <i class="fas fa-clock"></i> <strong>Paso 6 de 6</strong>
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 200px);">
+                <!-- Columna Izquierda: Comando -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #a855f7; font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-terminal"></i> Ejecutar EXPLAIN ANALYZE
+                    </h3>
+                    <div
+                        style="background: rgba(15, 20, 25, 0.7); padding: 18px; border-radius: 10px; border-left: 4px solid #a855f7; margin-bottom: 20px;">
+                        <pre style="font-size: 0.82rem; margin: 0;"><code class="language-sql">EXPLAIN ANALYZE
+SELECT p.payment_id, p.monto,
+       p.fecha, c.nombre as comercio
+FROM Pagos_QR p
+JOIN Comercios c ON p.comercio_id = c.id
+WHERE p.fecha >= NOW() - INTERVAL 24 HOUR
+ORDER BY p.fecha DESC\G</code></pre>
+                    </div>
+
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-clipboard-list"></i> Instrucciones
+                    </h3>
+                    <div style="background: rgba(35, 53, 110, 0.3); padding: 16px; border-radius: 10px;">
+                        <ol style="font-size: 0.92rem; color: #cbd5e1; line-height: 1.8; padding-left: 20px;">
+                            <li>Ejecutar el comando completo</li>
+                            <li>Observar el formato TREE con tiempos</li>
+                            <li>Buscar "actual time" en la salida</li>
+                            <li>Comparar "rows" estimadas vs reales</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Interpretación -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #a855f7; font-size: 1.2rem; margin-bottom: 15px;">
+                        <i class="fas fa-search"></i> Qué Analizar
+                    </h3>
+                    <div
+                        style="background: rgba(168, 85, 247, 0.15); padding: 18px; border-radius: 10px; border-left: 4px solid #a855f7; margin-bottom: 20px;">
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-clock"></i> <strong style="color: #a855f7;">actual time:</strong><br>
+                            <span style="margin-left: 24px;">• Tiempo real de ejecución en ms</span><br>
+                            <span style="margin-left: 24px;">• Primera fila vs última fila</span>
+                        </p>
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-database"></i> <strong style="color: #a855f7;">rows:</strong><br>
+                            <span style="margin-left: 24px;">• Filas realmente procesadas</span><br>
+                            <span style="margin-left: 24px;">• Comparar con estimación</span>
+                        </p>
+                        <p style="font-size: 0.95rem; color: #cbd5e1; margin: 10px 0; line-height: 1.7;">
+                            <i class="fas fa-bolt"></i> <strong style="color: #a855f7;">loops:</strong><br>
+                            <span style="margin-left: 24px;">• Veces que se ejecutó cada operación</span>
+                        </p>
+                    </div>
+
+                    <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-trophy"></i> Resultado Exitoso
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 16px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> Tiempo total &lt; 200ms
+                        </p>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> Usa índice idx_fecha
+                        </p>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0; line-height: 1.6;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> Estimación cercana a realidad
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 21: CASO DE ESTUDIO A - DASHBOARD -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-chart-line"></i> Caso de Estudio A:
+                Dashboard de Comercio</h2>
+
+            <div
+                style="background: rgba(35, 53, 110, 0.3); padding: 16px; border-radius: 10px; border-left: 4px solid #60a5fa; margin-bottom: 20px; text-align: center;">
+                <h3 style="color: #60a5fa; font-size: 1.1rem; margin-bottom: 8px;">
+                    <i class="fas fa-info-circle"></i> Contexto del Problema
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.92rem; margin: 0;">
+                    Dashboard que muestra transacciones en tiempo real de las <strong>últimas 24 horas</strong> para
+                    cada comercio
+                </p>
+                <p style="color: #94a3b8; font-size: 0.82rem; margin-top: 8px;">
+                    <i class="fas fa-database"></i> Dataset: 10,000 transacciones | 30 comercios | Consulta ejecutada
+                    cada 30s
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 200px);">
+                <!-- Columna Izquierda: Consulta y Análisis -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-code"></i> Consulta SQL
+                    </h3>
+                    <div
+                        style="background: rgba(15, 20, 25, 0.7); padding: 16px; border-radius: 10px; margin-bottom: 18px;">
+                        <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">SELECT COUNT(*) as total_transacciones,
+       SUM(monto) as ingresos
+FROM Pagos_QR
+WHERE comercio_id = 11
+  AND fecha >= NOW() - INTERVAL 24 HOUR;</code></pre>
+                    </div>
+
+                    <h3 style="color: #60a5fa; font-size: 1rem; margin-bottom: 12px;">
+                        <i class="fas fa-wrench"></i> Solución Aplicada
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 14px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                        <pre style="font-size: 0.8rem; margin: 0;"><code class="language-sql">CREATE INDEX idx_comercio_fecha
+ON Pagos_QR(comercio_id, fecha);</code></pre>
+                        <p style="margin-top: 12px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.6;">
+                            <i class="fas fa-lightbulb"></i> <strong>Por qué funciona:</strong> Índice compuesto permite
+                            filtrado eficiente por ambos campos en el WHERE
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Comparación Antes/Después -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #ef4444; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-times-circle"></i> Antes de la Optimización
+                    </h3>
+                    <div
+                        style="background: rgba(239, 68, 68, 0.15); padding: 16px; border-radius: 10px; border-left: 4px solid #ef4444; margin-bottom: 18px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <div>
+                                <p style="color: #94a3b8; font-size: 0.82rem; margin: 4px 0;">
+                                    <strong style="color: #ef4444;">type:</strong>
+                                </p>
+                                <p style="font-size: 1.3rem; font-weight: 700; color: #ef4444; margin: 0;">ALL</p>
+                            </div>
+                            <div>
+                                <p style="color: #94a3b8; font-size: 0.82rem; margin: 4px 0;">
+                                    <strong style="color: #ef4444;">rows:</strong>
+                                </p>
+                                <p style="font-size: 1.3rem; font-weight: 700; color: #ef4444; margin: 0;">10,000</p>
+                            </div>
+                        </div>
+                        <p
+                            style="text-align: center; font-size: 1.1rem; margin: 12px 0 0 0; padding-top: 12px; border-top: 2px solid rgba(239, 68, 68, 0.3);">
+                            <i class="fas fa-stopwatch"></i> <strong>Tiempo:</strong> <span
+                                style="color: #ef4444; font-size: 1.5rem; font-weight: 700;">4.2s</span>
+                        </p>
+                    </div>
+
+                    <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-check-circle"></i> Después de la Optimización
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.15); padding: 16px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <div>
+                                <p style="color: #94a3b8; font-size: 0.82rem; margin: 4px 0;">
+                                    <strong style="color: #4ade80;">type:</strong>
+                                </p>
+                                <p style="font-size: 1.3rem; font-weight: 700; color: #4ade80; margin: 0;">range</p>
+                            </div>
+                            <div>
+                                <p style="color: #94a3b8; font-size: 0.82rem; margin: 4px 0;">
+                                    <strong style="color: #4ade80;">rows:</strong>
+                                </p>
+                                <p style="font-size: 1.3rem; font-weight: 700; color: #4ade80; margin: 0;">245</p>
+                            </div>
+                        </div>
+                        <p
+                            style="text-align: center; font-size: 1.1rem; margin: 12px 0 0 0; padding-top: 12px; border-top: 2px solid rgba(74, 222, 128, 0.3);">
+                            <i class="fas fa-rocket"></i> <strong>Tiempo:</strong> <span
+                                style="color: #4ade80; font-size: 1.5rem; font-weight: 700;">0.08s</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(233, 171, 33, 0.15); padding: 12px; border-radius: 10px; border-left: 4px solid var(--uide-accent); text-align: center; margin-top: 20px;">
+                <p style="margin: 0; font-size: 1.05rem; color: var(--uide-accent); font-weight: 700;">
+                    <i class="fas fa-chart-line"></i> <strong>Mejora Total:</strong> 98.1% más rápido | 97.5% menos
+                    filas examinadas
+                </p>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 18: CASO DE ESTUDIO B - REPORTE -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-map-marker-alt"></i> Caso de Estudio B:
+                Reporte por Ciudad</h2>
+
+            <div
+                style="background: rgba(145, 0, 72, 0.2); padding: 16px; border-radius: 10px; border-left: 4px solid var(--uide-primary); margin-bottom: 20px; text-align: center;">
+                <h3 style="color: var(--uide-primary); font-size: 1.1rem; margin-bottom: 8px;">
+                    <i class="fas fa-info-circle"></i> Contexto del Problema
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.92rem; margin: 0;">
+                    Reporte gerencial que agrupa transacciones <strong>por ciudad</strong> con análisis estadístico
+                </p>
+                <p style="color: #94a3b8; font-size: 0.82rem; margin-top: 8px;">
+                    <i class="fas fa-database"></i> Problema: JOIN sin índice + GROUP BY + Tablas temporales
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 200px);">
+                <!-- Columna Izquierda: Consulta y Análisis -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-code"></i> Consulta SQL
+                    </h3>
+                    <div
+                        style="background: rgba(15, 20, 25, 0.7); padding: 16px; border-radius: 10px; margin-bottom: 18px;">
+                        <pre style="font-size: 0.82rem; margin: 0;"><code class="language-sql">SELECT c.ciudad,
+       COUNT(p.payment_id) as total,
+       AVG(p.monto) as promedio
+FROM Pagos_QR p
+JOIN Comercios c ON p.comercio_id = c.id
+WHERE p.fecha >= '2024-12-01'
+GROUP BY c.ciudad;</code></pre>
+                    </div>
+
+                    <h3 style="color: #60a5fa; font-size: 1rem; margin-bottom: 12px;">
+                        <i class="fas fa-wrench"></i> Solución Aplicada
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 14px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                        <p style="font-size: 0.88rem; color: #cbd5e1; margin: 0 0 12px 0; line-height: 1.6;">
+                            <i class="fas fa-key"></i> <strong>Foreign Key ya indexada automáticamente:</strong>
+                        </p>
+                        <pre style="font-size: 0.8rem; margin: 0;"><code class="language-sql">-- El FK ya crea índice automático
+FOREIGN KEY (comercio_id)
+  REFERENCES Comercios(id)</code></pre>
+                        <p style="margin-top: 12px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.6;">
+                            <i class="fas fa-lightbulb"></i> <strong>Adicional:</strong> Índice en p.fecha para
+                            optimizar el WHERE
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Comparación Antes/Después -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #ef4444; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-times-circle"></i> Antes de la Optimización
+                    </h3>
+                    <div
+                        style="background: rgba(239, 68, 68, 0.15); padding: 16px; border-radius: 10px; border-left: 4px solid #ef4444; margin-bottom: 18px;">
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0;">
+                            <strong style="color: #ef4444;">JOIN type:</strong> ALL en Comercios
+                        </p>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0;">
+                            <strong style="color: #ef4444;">Extra:</strong> Using temporary; Using filesort
+                        </p>
+                        <p
+                            style="text-align: center; font-size: 1.1rem; margin: 16px 0 0 0; padding-top: 16px; border-top: 2px solid rgba(239, 68, 68, 0.3);">
+                            <i class="fas fa-stopwatch"></i> <strong>Tiempo:</strong> <span
+                                style="color: #ef4444; font-size: 1.5rem; font-weight: 700;">2.8s</span>
+                        </p>
+                        <p
+                            style="margin-top: 12px; font-size: 0.82rem; color: #94a3b8; text-align: center; line-height: 1.5;">
+                            <i class="fas fa-exclamation-triangle"></i> Tabla temporal necesaria para GROUP BY
+                        </p>
+                    </div>
+
+                    <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-check-circle"></i> Después de la Optimización
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.15); padding: 16px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0;">
+                            <strong style="color: #4ade80;">JOIN type:</strong> eq_ref (óptimo)
+                        </p>
+                        <p style="font-size: 0.9rem; color: #cbd5e1; margin: 8px 0;">
+                            <strong style="color: #4ade80;">Extra:</strong> Using index
+                        </p>
+                        <p
+                            style="text-align: center; font-size: 1.1rem; margin: 16px 0 0 0; padding-top: 16px; border-top: 2px solid rgba(74, 222, 128, 0.3);">
+                            <i class="fas fa-rocket"></i> <strong>Tiempo:</strong> <span
+                                style="color: #4ade80; font-size: 1.5rem; font-weight: 700;">0.15s</span>
+                        </p>
+                        <p
+                            style="margin-top: 12px; font-size: 0.82rem; color: #94a3b8; text-align: center; line-height: 1.5;">
+                            <i class="fas fa-check"></i> JOIN eficiente sin tabla temporal
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(233, 171, 33, 0.15); padding: 12px; border-radius: 10px; border-left: 4px solid var(--uide-accent); text-align: center; margin-top: 20px;">
+                <p style="margin: 0; font-size: 1.05rem; color: var(--uide-accent); font-weight: 700;">
+                    <i class="fas fa-chart-line"></i> <strong>Mejora Total:</strong> 94.6% más rápido | Eliminada tabla
+                    temporal
+                </p>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 19: CASO DE ESTUDIO C - AUDITORÍA -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-exclamation-triangle"></i> Caso de
+                Estudio C: Auditoría de Transacciones Fallidas</h2>
+
+            <div
+                style="background: rgba(233, 171, 33, 0.15); padding: 16px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-bottom: 20px; text-align: center;">
+                <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 8px;">
+                    <i class="fas fa-info-circle"></i> Contexto del Problema
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.92rem; margin: 0;">
+                    Sistema de auditoría que consulta transacciones <strong>FALLIDAS</strong> y
+                    <strong>REVERTIDAS</strong> para análisis de fraude
+                </p>
+                <p style="color: #94a3b8; font-size: 0.82rem; margin-top: 8px;">
+                    <i class="fas fa-search"></i> Análisis de selectividad necesario para determinar si índice es
+                    beneficioso
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 200px);">
+                <!-- Columna Izquierda: Consulta y Análisis de Selectividad -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-code"></i> Consulta SQL
+                    </h3>
+                    <div
+                        style="background: rgba(15, 20, 25, 0.7); padding: 16px; border-radius: 10px; margin-bottom: 18px;">
+                        <pre style="font-size: 0.82rem; margin: 0;"><code class="language-sql">SELECT payment_id, cliente_id,
+       monto, fecha, descripcion
+FROM Pagos_QR
+WHERE estado IN ('FALLIDO', 'REVERTIDO')
+ORDER BY fecha DESC
+LIMIT 100;</code></pre>
+                    </div>
+
+                    <h3 style="color: #60a5fa; font-size: 1rem; margin-bottom: 12px;">
+                        <i class="fas fa-calculator"></i> Análisis de Selectividad
+                    </h3>
+                    <div
+                        style="background: rgba(35, 53, 110, 0.3); padding: 14px; border-radius: 10px; border-left: 4px solid #60a5fa;">
+                        <p style="font-size: 0.88rem; color: #cbd5e1; margin: 8px 0; line-height: 1.7;">
+                            <i class="fas fa-percentage"></i> <strong>Distribución de datos:</strong><br>
+                            <span style="margin-left: 20px;">• CONFIRMADO: 82%</span><br>
+                            <span style="margin-left: 20px;">• PENDIENTE: 10%</span><br>
+                            <span style="margin-left: 20px; color: #ef4444;">• FALLIDO: 6%</span><br>
+                            <span style="margin-left: 20px; color: #ef4444;">• REVERTIDO: 2%</span>
+                        </p>
+                        <div
+                            style="margin-top: 14px; padding-top: 14px; border-top: 2px solid rgba(96, 165, 250, 0.3);">
+                            <p style="font-size: 0.88rem; color: #cbd5e1; margin: 4px 0;">
+                                <i class="fas fa-chart-bar"></i> <strong>Selectividad:</strong>
+                            </p>
+                            <p style="font-size: 0.85rem; color: #94a3b8; margin: 4px 0 4px 20px;">
+                                Valores únicos / Total = 2 / 3 = <strong style="color: #4ade80;">0.67</strong>
+                            </p>
+                            <p style="font-size: 0.85rem; color: #4ade80; margin: 12px 0 4px 0; font-weight: 600;">
+                                <i class="fas fa-check-circle"></i> Alta selectividad → Índice beneficioso
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Solución y Resultados -->
+                <div style="display: flex; flex-direction: column;">
+                    <h3 style="color: #60a5fa; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-wrench"></i> Solución Aplicada
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 14px; border-radius: 10px; border-left: 4px solid #4ade80; margin-bottom: 18px;">
+                        <pre style="font-size: 0.8rem; margin: 0;"><code class="language-sql">CREATE INDEX idx_estado
+ON Pagos_QR(estado);</code></pre>
+                        <p style="margin-top: 12px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.6;">
+                            <i class="fas fa-lightbulb"></i> <strong>Por qué funciona:</strong> Solo 8% de filas
+                            coinciden con el filtro, selectividad alta
+                        </p>
+                    </div>
+
+                    <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-chart-bar"></i> Resultados de la Optimización
+                    </h3>
+                    <div
+                        style="background: rgba(74, 222, 128, 0.15); padding: 16px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                            <div style="text-align: center;">
+                                <p style="color: #94a3b8; font-size: 0.78rem; margin: 4px 0;">ANTES</p>
+                                <p style="font-size: 1.2rem; font-weight: 700; color: #ef4444; margin: 4px 0;">10,000
+                                </p>
+                                <p style="font-size: 0.75rem; color: #94a3b8; margin: 0;">filas</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <p style="color: #94a3b8; font-size: 0.78rem; margin: 4px 0;">DESPUÉS</p>
+                                <p style="font-size: 1.2rem; font-weight: 700; color: #4ade80; margin: 4px 0;">800</p>
+                                <p style="font-size: 0.75rem; color: #94a3b8; margin: 0;">filas</p>
+                            </div>
+                        </div>
+                        <p
+                            style="text-align: center; font-size: 1rem; padding-top: 14px; border-top: 2px solid rgba(74, 222, 128, 0.3);">
+                            <i class="fas fa-rocket"></i> <strong>Reducción:</strong> <span
+                                style="color: #4ade80; font-size: 1.4rem; font-weight: 700;">92%</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(233, 171, 33, 0.15); padding: 12px; border-radius: 10px; border-left: 4px solid var(--uide-accent); text-align: center; margin-top: 20px;">
+                <p style="margin: 0; font-size: 1.05rem; color: var(--uide-accent); font-weight: 700;">
+                    <i class="fas fa-lightbulb"></i> <strong>Lección:</strong> Siempre calcular selectividad antes de
+                    crear índices
+                </p>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 21: ANTIPATRÓN 1 - SELECT * -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-ban"></i> Antipatrón 1: SELECT *</h2>
+
+            <div
+                style="background: rgba(239, 68, 68, 0.15); padding: 16px; border-radius: 10px; border-left: 4px solid #ef4444; margin-bottom: 25px; text-align: center;">
+                <p style="color: #ef4444; font-size: 1rem; font-weight: 600; margin: 0;">
+                    <i class="fas fa-exclamation-triangle"></i> en tablas grandes
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                <!-- Columna Izquierda: Por qué es malo -->
+                <div>
+                    <h3 style="color: #ef4444; font-size: 1.3rem; margin-bottom: 15px;">
+                        <i class="fas fa-warning"></i> Por qué es malo
+                    </h3>
+                    <div
+                        style="background: rgba(239, 68, 68, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid #ef4444;">
+                        <p style="font-size: 1.1rem; margin: 0; line-height: 1.6; color: #e2e8f0;">
+                            Trae columnas innecesarias, consume más memoria. Impide covering indexes.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Solución -->
+                <div>
+                    <h3 style="color: #4ade80; font-size: 1.3rem; margin-bottom: 15px;">
+                        <i class="fas fa-check-circle"></i> Solución
+                    </h3>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 20px; border-radius: 10px;">
+                        <pre style="font-size: 0.95rem; margin: 0;"><code class="language-sql">-- Malo
+SELECT * FROM Pagos_QR;
+
+-- Bueno
+SELECT payment_id, monto FROM Pagos_QR;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 22: ANTIPATRÓN 2 - FUNCIONES WHERE -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-ban"></i> Antipatrón 2: Funciones WHERE
+            </h2>
+
+            <div
+                style="background: rgba(239, 68, 68, 0.15); padding: 16px; border-radius: 10px; border-left: 4px solid #ef4444; margin-bottom: 25px; text-align: center;">
+                <p style="color: #ef4444; font-size: 1rem; font-weight: 600; margin: 0;">
+                    <i class="fas fa-exclamation-triangle"></i> sobre índices
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                <!-- Columna Izquierda: Por qué es malo -->
+                <div>
+                    <h3 style="color: #ef4444; font-size: 1.3rem; margin-bottom: 15px;">
+                        <i class="fas fa-warning"></i> Por qué es malo
+                    </h3>
+                    <div
+                        style="background: rgba(239, 68, 68, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid #ef4444;">
+                        <p style="font-size: 1.1rem; margin: 0; line-height: 1.6; color: #e2e8f0;">
+                            Rompe el índice. MySQL no puede usarlo si hay función.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Solución -->
+                <div>
+                    <h3 style="color: #4ade80; font-size: 1.3rem; margin-bottom: 15px;">
+                        <i class="fas fa-check-circle"></i> Solución
+                    </h3>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 20px; border-radius: 10px;">
+                        <pre style="font-size: 0.95rem; margin: 0;"><code class="language-sql">-- Malo
+WHERE DATE(fecha) = '2024-12-01'
+
+-- Bueno
+WHERE fecha >= '2024-12-01'
+  AND fecha < '2024-12-02'</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 23: ANTIPATRÓN 3 - OR MÚLTIPLE -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.7rem; margin-bottom: 1rem;"><i class="fas fa-ban"></i> Antipatrón 3: OR múltiple
+            </h2>
+
+            <div
+                style="background: rgba(239, 68, 68, 0.15); padding: 16px; border-radius: 10px; border-left: 4px solid #ef4444; margin-bottom: 25px; text-align: center;">
+                <p style="color: #ef4444; font-size: 1rem; font-weight: 600; margin: 0;">
+                    <i class="fas fa-exclamation-triangle"></i> en columnas diferentes
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                <!-- Columna Izquierda: Por qué es malo -->
+                <div>
+                    <h3 style="color: #ef4444; font-size: 1.3rem; margin-bottom: 15px;">
+                        <i class="fas fa-warning"></i> Por qué es malo
+                    </h3>
+                    <div
+                        style="background: rgba(239, 68, 68, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid #ef4444;">
+                        <p style="font-size: 1.1rem; margin: 0; line-height: 1.6; color: #e2e8f0;">
+                            MySQL no puede usar índices eficientemente con OR en columnas diferentes.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Solución -->
+                <div>
+                    <h3 style="color: #4ade80; font-size: 1.3rem; margin-bottom: 15px;">
+                        <i class="fas fa-check-circle"></i> Solución
+                    </h3>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 20px; border-radius: 10px;">
+                        <pre style="font-size: 0.95rem; margin: 0;"><code class="language-sql">-- Malo
+WHERE estado = 'PENDIENTE' 
+   OR monto > 1000
+
+-- Bueno: Usar UNION
+SELECT * FROM Pagos_QR WHERE estado = 'PENDIENTE'
+UNION
+SELECT * FROM Pagos_QR WHERE monto > 1000;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 20: PERFORMANCE SCHEMA -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.6rem; margin-bottom: 0.9rem;"><i class="fas fa-chart-pie"></i> Monitoreo con
+                Performance Schema</h2>
+
+            <div
+                style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 12px 18px; border-radius: 10px; border: 2px solid var(--uide-accent); margin-bottom: 15px;">
+                <h3 style="color: var(--uide-accent); font-size: 1.05rem; margin-bottom: 8px; text-align: center;">
+                    <i class="fas fa-info-circle"></i> ¿Qué es Performance Schema?
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.85rem; text-align: center; margin: 0;">
+                    Motor de almacenamiento que captura métricas de rendimiento en tiempo real. Disponible en MySQL 5.7+
+                    (mejorado en 8.0).
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+                <!-- Columna Izquierda: Consultas más lentas -->
+                <div>
+                    <div
+                        style="background: rgba(239, 68, 68, 0.15); padding: 14px; border-radius: 10px; border-left: 4px solid #ef4444; margin-bottom: 15px;">
+                        <h3 style="color: #ef4444; margin-bottom: 0.7rem; font-size: 1rem;">
+                            <i class="fas fa-stopwatch"></i> Top 10 Consultas Lentas
+                        </h3>
+                        <pre style="font-size: 0.68rem; margin: 0;"><code class="language-sql">SELECT
+    SUBSTRING(digest_text, 1, 60) as query,
+    count_star as exec_count,
+    ROUND(avg_timer_wait/1000000000000, 2)
+        as avg_seconds,
+    ROUND(sum_timer_wait/1000000000000, 2)
+        as total_seconds
+FROM performance_schema.
+     events_statements_summary_by_digest
+WHERE schema_name = 'pagos_qr_sistema'
+ORDER BY avg_timer_wait DESC
+LIMIT 10;</code></pre>
+                    </div>
+
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #4ade80;">
+                        <p style="color: #4ade80; font-weight: 600; margin: 0 0 8px 0; font-size: 0.85rem;">
+                            <i class="fas fa-lightbulb"></i> Uso Práctico
+                        </p>
+                        <ul
+                            style="font-size: 0.78rem; color: #cbd5e1; margin: 0; padding-left: 18px; line-height: 1.5;">
+                            <li>Identificar consultas a optimizar</li>
+                            <li>Priorizar por tiempo total (impacto global)</li>
+                            <li>Comparar avg_seconds con KPIs</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Índices no utilizados -->
+                <div>
+                    <div
+                        style="background: rgba(233, 171, 33, 0.15); padding: 14px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-bottom: 15px;">
+                        <h3 style="color: var(--uide-accent); margin-bottom: 0.7rem; font-size: 1rem;">
+                            <i class="fas fa-trash-alt"></i> Índices No Utilizados
+                        </h3>
+                        <pre style="font-size: 0.68rem; margin: 0;"><code class="language-sql">SELECT
+    object_schema as db_name,
+    object_name as table_name,
+    index_name
+FROM sys.schema_unused_indexes
+WHERE object_schema = 'pagos_qr_sistema'
+ORDER BY object_name, index_name;</code></pre>
+                    </div>
+
+                    <div
+                        style="background: rgba(239, 68, 68, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #ef4444;">
+                        <p style="color: #ef4444; font-weight: 600; margin: 0 0 8px 0; font-size: 0.85rem;">
+                            <i class="fas fa-exclamation-triangle"></i> Acción Requerida
+                        </p>
+                        <ul
+                            style="font-size: 0.78rem; color: #cbd5e1; margin: 0; padding-left: 18px; line-height: 1.5;">
+                            <li>Evaluar si es realmente innecesario</li>
+                            <li>Considerar eliminar índices no usados</li>
+                            <li>Reducir overhead en INSERT/UPDATE/DELETE</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(35, 53, 110, 0.3); padding: 14px; border-radius: 10px; border-left: 4px solid #60a5fa; margin-top: 18px;">
+                <h3 style="color: #60a5fa; margin-bottom: 0.8rem; font-size: 0.95rem;">
+                    <i class="fas fa-table"></i> Otras Vistas Útiles del sys Schema
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.78rem;">
+                    <div>
+                        <p style="margin: 4px 0;"><code
+                                style="background: rgba(15, 20, 25, 0.7); padding: 3px 6px; border-radius: 4px; font-size: 0.72rem;">sys.statements_with_full_table_scans</code>
+                        </p>
+                        <p style="color: #94a3b8; font-size: 0.72rem; margin: 2px 0 0 8px;">Consultas con table scans
+                        </p>
+                    </div>
+                    <div>
+                        <p style="margin: 4px 0;"><code
+                                style="background: rgba(15, 20, 25, 0.7); padding: 3px 6px; border-radius: 4px; font-size: 0.72rem;">sys.statements_with_temp_tables</code>
+                        </p>
+                        <p style="color: #94a3b8; font-size: 0.72rem; margin: 2px 0 0 8px;">Tablas temporales</p>
+                    </div>
+                    <div>
+                        <p style="margin: 4px 0;"><code
+                                style="background: rgba(15, 20, 25, 0.7); padding: 3px 6px; border-radius: 4px; font-size: 0.72rem;">sys.statements_with_sorting</code>
+                        </p>
+                        <p style="color: #94a3b8; font-size: 0.72rem; margin: 2px 0 0 8px;">Consultas con filesort</p>
+                    </div>
+                    <div>
+                        <p style="margin: 4px 0;"><code
+                                style="background: rgba(15, 20, 25, 0.7); padding: 3px 6px; border-radius: 4px; font-size: 0.72rem;">sys.schema_table_statistics</code>
+                        </p>
+                        <p style="color: #94a3b8; font-size: 0.72rem; margin: 2px 0 0 8px;">Estadísticas I/O por tabla
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 22: SIMULACIÓN ANTES/DESPUÉS -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.8rem;"><i class="fas fa-chart-column"></i> Simulación:
+                Impacto de la Optimización</h2>
+
+            <div
+                style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 10px 15px; border-radius: 10px; border: 2px solid var(--uide-accent); margin-bottom: 12px; text-align: center;">
+                <h3 style="color: var(--uide-accent); font-size: 1rem; margin-bottom: 5px;">
+                    <i class="fas fa-database"></i> Dataset de Prueba
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.82rem; margin: 0;">
+                    10,000 transacciones | 30 comercios | 6 meses de datos (Sep 2024 - Feb 2025)
+                </p>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <h3 style="color: var(--uide-accent); margin-bottom: 10px; text-align: center; font-size: 0.95rem;">
+                    <i class="fas fa-flask"></i> Consulta de Prueba: Dashboard de Transacciones Recientes
+                </h3>
+                <pre style="font-size: 0.72rem; text-align: center;"><code class="language-sql">SELECT payment_id, monto, estado, fecha
+FROM Pagos_QR
+WHERE estado = 'CONFIRMADO' AND fecha >= '2024-12-01'
+ORDER BY fecha DESC;</code></pre>
+            </div>
+
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                <thead>
+                    <tr style="background: rgba(35, 53, 110, 0.4); border-bottom: 2px solid var(--uide-accent);">
+                        <th style="text-align: left; padding: 8px; font-size: 0.88rem;">
+                            <i class="fas fa-chart-bar"></i> Métrica
+                        </th>
+                        <th style="text-align: center; padding: 8px; font-size: 0.88rem;">
+                            <i class="fas fa-times-circle" style="color: #ef4444;"></i> Sin Optimizar
+                        </th>
+                        <th style="text-align: center; padding: 8px; font-size: 0.88rem;">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i> Con Índices
+                        </th>
+                        <th style="text-align: center; padding: 8px; font-size: 0.88rem;">
+                            <i class="fas fa-arrow-trend-up"></i> Mejora
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 8px; font-weight: 600; font-size: 0.82rem;">
+                            <i class="fas fa-stopwatch"></i> Tiempo
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(239, 68, 68, 0.1);">
+                            <span style="font-size: 1.3rem; font-weight: 700; color: #ef4444;">3.4s</span>
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(74, 222, 128, 0.1);">
+                            <span style="font-size: 1.3rem; font-weight: 700; color: #4ade80;">0.12s</span>
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(233, 171, 33, 0.1);">
+                            <span style="font-size: 1.1rem; font-weight: 700; color: var(--uide-accent);">
+                                <i class="fas fa-arrow-up"></i> 96.5%
+                            </span>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 8px; font-weight: 600; font-size: 0.82rem;">
+                            <i class="fas fa-database"></i> Rows
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(239, 68, 68, 0.1);">
+                            <span style="font-size: 1.3rem; font-weight: 700; color: #ef4444;">10,000</span>
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(74, 222, 128, 0.1);">
+                            <span style="font-size: 1.3rem; font-weight: 700; color: #4ade80;">247</span>
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(233, 171, 33, 0.1);">
+                            <span style="font-size: 1.1rem; font-weight: 700; color: var(--uide-accent);">
+                                <i class="fas fa-arrow-down"></i> 97.5%
+                            </span>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 8px; font-weight: 600; font-size: 0.82rem;">
+                            <i class="fas fa-filter"></i> Type
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(239, 68, 68, 0.1);">
+                            <code
+                                style="background: rgba(239, 68, 68, 0.3); padding: 6px 12px; border-radius: 5px; font-size: 0.9rem; color: #ef4444;">ALL</code>
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(74, 222, 128, 0.1);">
+                            <code
+                                style="background: rgba(74, 222, 128, 0.3); padding: 6px 12px; border-radius: 5px; font-size: 0.9rem; color: #4ade80;">range</code>
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(233, 171, 33, 0.1);">
+                            <i class="fas fa-check" style="font-size: 1.3rem; color: #4ade80;"></i>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <td style="padding: 8px; font-weight: 600; font-size: 0.82rem;">
+                            <i class="fas fa-key"></i> Key
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(239, 68, 68, 0.1);">
+                            <code
+                                style="background: rgba(239, 68, 68, 0.3); padding: 6px 12px; border-radius: 5px; font-size: 0.9rem; color: #ef4444;">NULL</code>
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(74, 222, 128, 0.1);">
+                            <code
+                                style="background: rgba(74, 222, 128, 0.3); padding: 6px 12px; border-radius: 5px; font-size: 0.8rem; color: #4ade80;">idx_estado_fecha</code>
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(233, 171, 33, 0.1);">
+                            <i class="fas fa-check" style="font-size: 1.3rem; color: #4ade80;"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; font-weight: 600; font-size: 0.82rem;">
+                            <i class="fas fa-memory"></i> Extra
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(239, 68, 68, 0.1);">
+                            <span style="font-size: 0.78rem; color: #cbd5e1;">Using where</span>
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(74, 222, 128, 0.1);">
+                            <span style="font-size: 0.78rem; color: #4ade80;">Using index condition</span>
+                        </td>
+                        <td style="padding: 8px; text-align: center; background: rgba(233, 171, 33, 0.1);">
+                            <i class="fas fa-check" style="font-size: 1.3rem; color: #4ade80;"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div
+                style="background: rgba(74, 222, 128, 0.15); padding: 12px; border-radius: 10px; border-left: 4px solid #4ade80; text-align: center;">
+                <p style="margin: 0; font-size: 0.9rem; color: #e2e8f0;">
+                    <i class="fas fa-lightbulb"></i> <strong>Conclusión:</strong> Crear índice compuesto
+                    <code
+                        style="background: rgba(74, 222, 128, 0.2); padding: 4px 8px; border-radius: 4px; font-size: 0.82rem;">idx_estado_fecha</code>
+                    reduce el tiempo en <strong style="color: #4ade80;">28 veces</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 23: CHECKLIST DE OPTIMIZACIÓN -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.7rem;"><i class="fas fa-clipboard-check"></i> Checklist de
+                Optimización Pre-Producción</h2>
+
+            <div
+                style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 10px 15px; border-radius: 10px; border: 2px solid var(--uide-accent); margin-bottom: 12px; text-align: center;">
+                <h3 style="color: var(--uide-accent); font-size: 1rem; margin-bottom: 5px;">
+                    <i class="fas fa-shield-alt"></i> Protocolo de Validación Obligatorio
+                </h3>
+                <p style="color: #e2e8f0; font-size: 0.8rem; margin: 0;">
+                    Lista de verificación antes de promover cambios a producción
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <!-- Columna Izquierda -->
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Checklist 1: Estadísticas -->
+                    <div
+                        style="background: rgba(35, 53, 110, 0.3); padding: 12px; border-radius: 8px; border-left: 4px solid #60a5fa;">
+                        <h3 style="color: #60a5fa; margin-bottom: 8px; font-size: 0.9rem;">
+                            <i class="fas fa-chart-bar"></i> 1. Estadísticas
+                        </h3>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Ejecutar <code
+                                    style="font-size: 0.72rem;">ANALYZE TABLE</code></label>
+                        </div>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Verificar fecha de stats</label>
+                        </div>
+                        <div style="display: flex; align-items: start;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Estimaciones vs reales (&lt;20%)</label>
+                        </div>
+                    </div>
+
+                    <!-- Checklist 2: Planes de Ejecución -->
+                    <div
+                        style="background: rgba(74, 222, 128, 0.1); padding: 12px; border-radius: 8px; border-left: 4px solid #4ade80;">
+                        <h3 style="color: #4ade80; margin-bottom: 8px; font-size: 0.9rem;">
+                            <i class="fas fa-search"></i> 2. Análisis de Planes
+                        </h3>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;"><code
+                                    style="font-size: 0.72rem;">EXPLAIN</code> top 10 consultas</label>
+                        </div>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Ninguna <code
+                                    style="font-size: 0.72rem;">type=ALL</code></label>
+                        </div>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Índices apropiados (key != NULL)</label>
+                        </div>
+                        <div style="display: flex; align-items: start;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Sin "Using temporary" innecesario</label>
+                        </div>
+                    </div>
+
+                    <!-- Checklist 3: Índices -->
+                    <div
+                        style="background: rgba(233, 171, 33, 0.15); padding: 12px; border-radius: 8px; border-left: 4px solid var(--uide-accent);">
+                        <h3 style="color: var(--uide-accent); margin-bottom: 8px; font-size: 0.9rem;">
+                            <i class="fas fa-list-check"></i> 3. Gestión de Índices
+                        </h3>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Revisar índices no usados</label>
+                        </div>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Documentar propósito</label>
+                        </div>
+                        <div style="display: flex; align-items: start;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Evitar duplicados</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha -->
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Checklist 4: Impacto en Escrituras -->
+                    <div
+                        style="background: rgba(239, 68, 68, 0.15); padding: 12px; border-radius: 8px; border-left: 4px solid #ef4444;">
+                        <h3 style="color: #ef4444; margin-bottom: 8px; font-size: 0.9rem;">
+                            <i class="fas fa-pen-to-square"></i> 4. Impacto Escrituras
+                        </h3>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Medir tiempo INSERT antes/después</label>
+                        </div>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Overhead &lt; 10% cargas masivas</label>
+                        </div>
+                        <div style="display: flex; align-items: start;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Considerar réplicas para reportes</label>
+                        </div>
+                    </div>
+
+                    <!-- Checklist 5: Preparación de Carga -->
+                    <div
+                        style="background: rgba(145, 0, 72, 0.2); padding: 12px; border-radius: 8px; border-left: 4px solid var(--uide-primary);">
+                        <h3 style="color: var(--uide-primary); margin-bottom: 8px; font-size: 0.9rem;">
+                            <i class="fas fa-rocket"></i> 5. Preparación Picos
+                        </h3>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Buffer pool suficiente (&gt;70%)</label>
+                        </div>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Lag de réplicas (&lt; 1s)</label>
+                        </div>
+                        <div style="display: flex; align-items: start;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Planes bajo carga simulada</label>
+                        </div>
+                    </div>
+
+                    <!-- Checklist 6: Monitoreo -->
+                    <div
+                        style="background: rgba(168, 85, 247, 0.15); padding: 12px; border-radius: 8px; border-left: 4px solid #a855f7;">
+                        <h3 style="color: #a855f7; margin-bottom: 8px; font-size: 0.9rem;">
+                            <i class="fas fa-bell"></i> 6. Monitoreo Continuo
+                        </h3>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Alertas para consultas &gt; 500ms</label>
+                        </div>
+                        <div style="display: flex; align-items: start; margin-bottom: 6px;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Performance Schema semanal</label>
+                        </div>
+                        <div style="display: flex; align-items: start;">
+                            <input type="checkbox"
+                                style="margin-right: 8px; margin-top: 2px; width: 14px; height: 14px;">
+                            <label style="font-size: 0.78rem; color: #e2e8f0;">Slow query log mensual</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 24: IMPLICACIONES PARA LA PLATAFORMA -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2><i class="fas fa-compass"></i> Aplicación Práctica en Sistemas Transaccionales</h2>
+            <div class="content-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-chart-pie"></i> 1. Gobierno de Estadísticas</h3>
+                    <p>Automatizar ANALYZE TABLE sobre tablas críticas. Implementar alertas cuando las estimaciones del
+                        optimizador difieran significativamente de los valores reales.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-list-check"></i> 2. Gestión de Índices</h3>
+                    <p>Documentar el propósito de cada índice en el DDL. Justificar nuevos índices con análisis de
+                        patrones de consulta y métricas de uso.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-microscope"></i> 3. Análisis Obligatorio de Planes</h3>
+                    <p>Establecer como práctica estándar el análisis con EXPLAIN antes de promover consultas a
+                        producción. Usar EXPLAIN ANALYZE en entornos de prueba.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-balance-scale-right"></i> 4. Balance Read/Write</h3>
+                    <p>Evaluar el impacto en escrituras antes de crear índices para consultas analíticas. Considerar
+                        réplicas de lectura para reportes.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-shield-alt"></i> 5. Preparación para Picos de Carga</h3>
+                    <p>Validar estadísticas actualizadas, revisar lag de réplicas y verificar planes de ejecución antes
+                        de eventos de alto tráfico.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 13: ACTIVIDADES CALIFICADAS DETALLADAS -->
         <!-- ============================================ -->
         <div class="slide">
             <h2><i class="fas fa-clipboard-check"></i> Actividades Calificadas - Semana 4</h2>
@@ -472,34 +2329,36 @@ ORDER BY fecha DESC;</code></pre>
                     <h3><i class="fas fa-flask"></i> Gestión de Práctica</h3>
                     <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">PE-1.4 (2.25 puntos)
                     </p>
-                    <p><strong>Optimización de Consultas:</strong> Análisis de planes de ejecución y optimización de
-                        índices en el sistema de pagos QR.</p>
+                    <p><strong>Optimización de Consultas:</strong> Análisis de planes de ejecución mediante EXPLAIN
+                        sobre consultas transaccionales.</p>
                     <ul style="margin-top: 1rem; font-size: 1rem;">
-                        <li>Ejecutar EXPLAIN en consultas críticas del sistema</li>
-                        <li>Identificar cuellos de botella en planes de ejecución</li>
-                        <li>Analizar uso de índices existentes</li>
-                        <li>Proponer optimizaciones basadas en estadísticas</li>
-                        <li>Validar mejoras con EXPLAIN ANALYZE</li>
+                        <li>Analizar consultas SELECT simples: evaluar type, key, rows y filtered</li>
+                        <li>Examinar JOINs entre tablas relacionadas: verificar uso efectivo de FK</li>
+                        <li>Estudiar agregaciones con GROUP BY: identificar Extra ("Using temporary", "Using filesort")
+                        </li>
+                        <li>Comparar métricas antes y después de crear índices</li>
+                        <li>Documentar hallazgos y mejoras aplicadas</li>
                     </ul>
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-file-alt"></i> Trabajo Autónomo</h3>
                     <p style="color: var(--uide-accent); font-weight: 600; margin-bottom: 1rem;">TA-1.4 (2.25 puntos)
                     </p>
-                    <p><strong>Estrategia de Índices:</strong> Diseño de estrategia de indexación para el sistema de
-                        pagos QR.</p>
+                    <p><strong>Estrategia de Índices:</strong> Diseño documentado de estrategia de indexación para
+                        sistema transaccional.</p>
                     <ul style="margin-top: 1rem; font-size: 1rem;">
-                        <li>Documentar índices existentes y su propósito</li>
-                        <li>Analizar patrones de consulta del sistema</li>
-                        <li>Proponer nuevos índices justificados</li>
-                        <li>Evaluar trade-offs de cada índice propuesto</li>
+                        <li>Inventariar índices del DDL base (primarios, compuestos, simples)</li>
+                        <li>Identificar patrones de consulta frecuentes (filtros, joins, ordenamiento)</li>
+                        <li>Justificar índices nuevos con análisis de selectividad</li>
+                        <li>Documentar trade-offs: beneficio en lecturas vs costo en escrituras</li>
+                        <li>Considerar índices cubiertos para consultas específicas</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 13: BIBLIOGRAFÍA -->
+        <!-- SLIDE 25: BIBLIOGRAFÍA -->
         <!-- ============================================ -->
         <div class="slide">
             <h2><i class="fas fa-book"></i> Referencias Bibliográficas</h2>
@@ -520,12 +2379,18 @@ ORDER BY fecha DESC;</code></pre>
 
                 <h3 style="margin-bottom: 1.5rem;">Bibliografía Complementaria</h3>
                 <ul style="font-size: 0.95rem; line-height: 1.7;">
-                    <li><strong>Coronel, C., & Morris, S. (2022).</strong> <em>Database systems: Design, implementation, & management</em> (13th ed.). Cengage Learning.</li>
-                    <li><strong>Petrov, A. (2019).</strong> <em>Database internals: A deep dive into how distributed data systems work</em>. O'Reilly Media.</li>
-                    <li><strong>Sadalage, P. J., & Fowler, M. (2022).</strong> <em>NoSQL distilled: A brief guide to the emerging world of polyglot persistence</em> (Updated ed.). Addison-Wesley Professional.</li>
-                    <li><strong>Ponniah, P. (2021).</strong> <em>Data warehousing fundamentals: A comprehensive guide for IT professionals</em> (2nd ed.). Wiley.</li>
-                    <li><strong>Marz, N., & Warren, J. (2021).</strong> <em>Big data: Principles and best practices of scalable realtime data systems</em> (Updated ed.). Manning Publications.</li>
-                    <li><strong>Basta, A. (2019).</strong> <em>Database security: A practical guide</em>. Cengage Learning.</li>
+                    <li><strong>Coronel, C., & Morris, S. (2022).</strong> <em>Database systems: Design, implementation,
+                            & management</em> (13th ed.). Cengage Learning.</li>
+                    <li><strong>Petrov, A. (2019).</strong> <em>Database internals: A deep dive into how distributed
+                            data systems work</em>. O'Reilly Media.</li>
+                    <li><strong>Sadalage, P. J., & Fowler, M. (2022).</strong> <em>NoSQL distilled: A brief guide to the
+                            emerging world of polyglot persistence</em> (Updated ed.). Addison-Wesley Professional.</li>
+                    <li><strong>Ponniah, P. (2021).</strong> <em>Data warehousing fundamentals: A comprehensive guide
+                            for IT professionals</em> (2nd ed.). Wiley.</li>
+                    <li><strong>Marz, N., & Warren, J. (2021).</strong> <em>Big data: Principles and best practices of
+                            scalable realtime data systems</em> (Updated ed.). Manning Publications.</li>
+                    <li><strong>Basta, A. (2019).</strong> <em>Database security: A practical guide</em>. Cengage
+                        Learning.</li>
                 </ul>
 
                 <h3 style="margin-bottom: 1.5rem; margin-top: 2rem;">Fuentes ASU</h3>
@@ -542,7 +2407,7 @@ ORDER BY fecha DESC;</code></pre>
     <div class="navigation">
         <button class="nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
         <span class="slide-counter">
-            <span id="currentSlide">1</span> / <span id="totalSlides">13</span>
+            <span id="currentSlide">1</span> / <span id="totalSlides">26</span>
         </span>
         <button class="nav-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
     </div>
