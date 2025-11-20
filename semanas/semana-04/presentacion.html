@@ -57,9 +57,6 @@
 
             <div
                 style="text-align: center; margin-top: 2.5rem; padding: 25px; background: rgba(15, 20, 25, 0.6); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
-                <h3 style="color: var(--uide-accent); font-size: 1.4rem; margin-bottom: 1rem; text-shadow: none;">
-                    <i class="fas fa-tachometer-alt"></i> Sistema de Pagos QR "¡ahorita!"
-                </h3>
                 <p style="color: #e2e8f0; font-size: 1.1rem; line-height: 1.4; margin: 0.5rem 0;">
                     <strong>Semana 4</strong> • Estadísticas • Índices • Planes de Ejecución
                 </p>
@@ -163,7 +160,7 @@
                                 style="background: rgba(74, 222, 128, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #4ade80;">
                                 <i class="fas fa-list" style="color: #4ade80; margin-right: 8px;"></i>
                                 <span
-                                    style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">pg_stat_user_indexes</span>
+                                    style="color: #e2e8f0; font-size: 0.95rem; font-weight: 500;">sys.schema_unused_indexes</span>
                             </div>
                         </div>
                     </div>
@@ -202,7 +199,7 @@
                 </div>
                 <div class="feature-card">
                     <h3>2. Estadísticas y Selectividad</h3>
-                    <p>ANALYZE y optimización del planificador de consultas</p>
+                    <p>ANALYZE TABLE y optimización del optimizador de MySQL 8.0</p>
                 </div>
                 <div class="feature-card">
                     <h3>3. Índices: Tipos y Trade-offs</h3>
@@ -218,8 +215,6 @@
                 </div>
             </div>
         </div>
-
-        ""
 
         <!-- ============================================ -->
         <!-- SLIDE 5: CASO DE USO -->
@@ -267,7 +262,7 @@
                         <li>El <span class="emphasis">optimizador</span> necesita estadísticas frescas sobre campos
                             clave</li>
                         <li>Desalineaciones entre rows estimadas y reales obligan a leer toda la tabla</li>
-                        <li>Ejemplo: Seq Scan Pagos_QR cuando bastaría el índice idx_comercio_fecha</li>
+                        <li>Ejemplo: type=ALL en Pagos_QR cuando bastaría type=ref con idx_comercio_fecha</li>
                     </ul>
                 </div>
                 <div>
@@ -283,9 +278,9 @@
                 style="background: rgba(233, 171, 33, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-top: 20px;">
                 <h3 style="color: var(--uide-accent); margin-bottom: 1rem;">Plan para "¡ahorita!"</h3>
                 <ul style="font-size: 1rem;">
-                    <li>Automatizar ANALYZE cada madrugada y tras scripts masivos</li>
-                    <li>Monitorizar "Rows Removed by Filter" (selectividad real)</li>
-                    <li>Refrescar estadísticas cuando diferencia estimado/real sea mayor al 20%</li>
+                    <li>Automatizar ANALYZE TABLE cada madrugada y tras scripts masivos de carga</li>
+                    <li>Monitorizar columna "filtered" en EXPLAIN (selectividad real del WHERE)</li>
+                    <li>Refrescar estadísticas cuando rows estimadas vs filtered difieran más del 20%</li>
                 </ul>
             </div>
         </div>
@@ -304,7 +299,7 @@
                         <li><span class="emphasis">idx_estado:</span> Filtros por estado de transacción</li>
                     </ul>
                     <p style="margin-top: 1rem; font-size: 1rem;">
-                        Estos índices evitan <span class="highlight">Seq Scan</span> cuando se filtra por comercio,
+                        Estos índices evitan <span class="highlight">type=ALL</span> (escaneo completo) cuando se filtra por comercio,
                         cliente o estado.
                     </p>
                 </div>
@@ -313,15 +308,12 @@
                     <ul>
                         <li><span class="emphasis">Clave primaria:</span> Pagos_QR(payment_id) - mantiene trazabilidad
                         </li>
-                        <li><span class="emphasis">Compuesto:</span> (comercio_id, fecha) - soporta dashboards</li>
-                        <li><span class="emphasis">Cubierto nuevo:</span> (cliente_id, estado, metodo_pago) INCLUDE
-                            (monto, dispositivo)</li>
+                        <li><span class="emphasis">Compuesto:</span> (comercio_id, fecha) - soporta dashboards con filtros combinados</li>
+                        <li><span class="emphasis">Cubierto:</span> CREATE INDEX idx_cover ON Pagos_QR(cliente_id, estado, metodo_pago, monto, dispositivo) - Extra: "Using index"</li>
                     </ul>
                 </div>
             </div>
         </div>
-
-        ""
 
         <!-- ============================================ -->
         <!-- SLIDE 8: TRADE-OFFS DE ÍNDICES -->
@@ -361,7 +353,7 @@
                 <ul style="font-size: 1rem;">
                     <li>Revisar índices existentes antes de crear nuevos</li>
                     <li>Consolidar índices redundantes</li>
-                    <li>Usar estadísticas de uso (pg_stat_user_indexes) para justificar cada índice</li>
+                    <li>Usar estadísticas de uso (sys.schema_unused_indexes) para justificar cada índice</li>
                     <li>Exceso de índices degrada el throughput de INSERT INTO Pagos_QR</li>
                 </ul>
             </div>
@@ -376,19 +368,19 @@
                 <div>
                     <h3>Componentes del Costo</h3>
                     <ul>
-                        <li><span class="emphasis">cost = inicio..total:</span> Combina CPU + I/O</li>
-                        <li>Leer el archivo de datos de Pagos_QR sigue siendo lo más caro</li>
-                        <li>Índices B+ tree reducen E/S operando sobre páginas pequeñas</li>
-                        <li>Evitan escaneos secuenciales completos</li>
+                        <li><span class="emphasis">cost:</span> Estimación relativa que combina CPU + I/O de disco</li>
+                        <li>Leer el archivo de datos de Pagos_QR (tabla completa) sigue siendo lo más caro</li>
+                        <li>Índices B-tree de InnoDB reducen E/S operando sobre páginas de 16KB</li>
+                        <li>Evitan escaneos secuenciales completos (type: ALL)</li>
                     </ul>
                 </div>
                 <div>
                     <h3>Estrategia "¡ahorita!"</h3>
                     <ul>
                         <li>Mantener el core OLTP con índices definidos en DDL base</li>
-                        <li>Mover reportes a réplicas (mysqldump + replica)</li>
+                        <li>Mover reportes a réplicas de lectura (MySQL Replication)</li>
                         <li>Validar impacto en I/O antes de agregar índices temporales</li>
-                        <li>Usar Performance Schema / SHOW ENGINE INNODB STATUS</li>
+                        <li>Usar Performance Schema, sys schema e INFORMATION_SCHEMA</li>
                     </ul>
                 </div>
             </div>
@@ -410,16 +402,16 @@
                 <div>
                     <h3>Diferencias Clave</h3>
                     <ul>
-                        <li><span class="emphasis">EXPLAIN:</span> Plan estimado</li>
-                        <li><span class="emphasis">EXPLAIN ANALYZE:</span> Plan + métricas reales (solo en entornos
-                            controlados)</li>
+                        <li><span class="emphasis">EXPLAIN:</span> Plan estimado con formato tradicional o TREE</li>
+                        <li><span class="emphasis">EXPLAIN ANALYZE:</span> (MySQL 8.0.18+) Ejecuta la consulta y muestra timing real, siempre formato TREE</li>
                     </ul>
-                    <h3 style="margin-top: 1.5rem;">Elementos de Lectura</h3>
+                    <h3 style="margin-top: 1.5rem;">Elementos de Lectura (EXPLAIN tradicional)</h3>
                     <ul>
-                        <li>Nodos: Seq Scan, Index Scan, Nested Loop, Hash Join</li>
-                        <li>Rows estimadas vs. reales</li>
-                        <li>Planning Time / Execution Time</li>
-                        <li>Campo Extra: Using index condition; Using where</li>
+                        <li><span class="emphasis">type:</span> system, const, eq_ref, ref, range, index, ALL (del mejor al peor)</li>
+                        <li><span class="emphasis">rows:</span> Filas estimadas a examinar</li>
+                        <li><span class="emphasis">filtered:</span> Porcentaje de filas filtradas por WHERE</li>
+                        <li><span class="emphasis">key:</span> Índice usado (NULL si no usa índice)</li>
+                        <li><span class="emphasis">Extra:</span> Using index (cubierto), Using where, Using temporary, Using filesort</li>
                     </ul>
                 </div>
                 <div>
@@ -430,8 +422,7 @@ WHERE comercio_id = 202
   AND fecha >= NOW() - INTERVAL 5 MINUTE
 ORDER BY fecha DESC;</code></pre>
                     <p style="font-size: 0.95rem; margin-top: 1rem;">
-                        <strong>Objetivo:</strong> Verificar uso de idx_comercio_fecha, que Rows estimadas ≈ reales y
-                        evitar Using temporary o filesort.
+                        <strong>Objetivo:</strong> Verificar que key=idx_comercio_fecha, type=range o ref (no ALL), y Extra no contenga "Using temporary" o "Using filesort".
                     </p>
                 </div>
             </div>
@@ -446,8 +437,7 @@ ORDER BY fecha DESC;</code></pre>
             <div class="content-grid">
                 <div class="feature-card">
                     <h3><i class="fas fa-chart-pie"></i> 1. Gobernar Estadísticas</h3>
-                    <p>Automatizar ANALYZE sobre las tablas de Semana 2 y habilitar alertas cuando estimado vs. real
-                        divergen en planes.</p>
+                    <p>Automatizar ANALYZE TABLE sobre Pagos_QR, Cuentas y Comercios. Alertar cuando columna "rows" vs "filtered" en EXPLAIN divergen más del 20%.</p>
                 </div>
                 <div class="feature-card">
                     <h3><i class="fas fa-list-check"></i> 2. Índices con Propósito</h3>
@@ -564,4 +554,3 @@ ORDER BY fecha DESC;</code></pre>
 </body>
 
 </html>
-""
