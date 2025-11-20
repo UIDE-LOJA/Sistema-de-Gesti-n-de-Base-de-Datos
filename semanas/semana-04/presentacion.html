@@ -363,10 +363,197 @@ mysql -u root -p pagos_qr_sistema \
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 8: ÍNDICES Y SU IMPACTO -->
+        <!-- SLIDE 8: ¿QUÉ ES UN ÍNDICE? -->
         <!-- ============================================ -->
         <div class="slide">
-            <h2><i class="fas fa-list-ol"></i> Índices: Qué Tenemos y Qué Falta</h2>
+            <h2><i class="fas fa-book-open"></i> ¿Qué es un Índice?</h2>
+            
+            <div class="quote" style="margin-bottom: 2rem;">
+                Un índice es una estructura de datos que mejora la velocidad de las operaciones de búsqueda en una tabla, similar al índice de un libro.
+            </div>
+
+            <div class="content-grid">
+                <div>
+                    <h3>Analogía del Libro</h3>
+                    <div style="background: rgba(96, 165, 250, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #60a5fa;">
+                        <p style="font-size: 1rem; line-height: 1.8; margin-bottom: 1rem;">
+                            <span class="emphasis">Sin índice:</span> Leer página por página hasta encontrar el tema (Full Table Scan)
+                        </p>
+                        <p style="font-size: 1rem; line-height: 1.8;">
+                            <span class="highlight">Con índice:</span> Ir directo a la página indicada en el índice alfabético
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <h3>En MySQL</h3>
+                    <ul style="font-size: 1rem; line-height: 1.8;">
+                        <li><span class="emphasis">Estructura:</span> Árbol B-tree (balanceado) en InnoDB</li>
+                        <li><span class="emphasis">Almacenamiento:</span> Archivo separado de la tabla</li>
+                        <li><span class="emphasis">Contenido:</span> Columna(s) indexada(s) + puntero a la fila</li>
+                        <li><span class="emphasis">Beneficio:</span> Reduce búsquedas de O(n) a O(log n)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: rgba(233, 171, 33, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-top: 20px;">
+                <h3 style="color: var(--uide-accent); margin-bottom: 1rem;"><i class="fas fa-lightbulb"></i> Ejemplo Práctico</h3>
+                <p style="font-size: 1rem; line-height: 1.6;">
+                    Buscar <code>WHERE payment_id = 12345</code> en 10,000 registros:<br>
+                    <span class="emphasis" style="color: #ef4444;">Sin índice:</span> 10,000 comparaciones<br>
+                    <span class="highlight" style="color: #4ade80;">Con índice:</span> ~13 comparaciones (log₂ 10000)
+                </p>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 9: TIPOS DE ÍNDICES -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2><i class="fas fa-layer-group"></i> Tipos de Índices en MySQL</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px;">
+                <!-- PRIMARY KEY -->
+                <div style="background: rgba(74, 222, 128, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                    <h3 style="color: #4ade80; margin-bottom: 1rem;">
+                        <i class="fas fa-key"></i> PRIMARY KEY
+                    </h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Índice único que identifica cada fila. Solo uno por tabla.
+                    </p>
+                    <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">CREATE TABLE Pagos_QR (
+    payment_id INT PRIMARY KEY,
+    ...
+);</code></pre>
+                </div>
+
+                <!-- UNIQUE -->
+                <div style="background: rgba(96, 165, 250, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #60a5fa;">
+                    <h3 style="color: #60a5fa; margin-bottom: 1rem;">
+                        <i class="fas fa-fingerprint"></i> UNIQUE
+                    </h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Garantiza valores únicos. Permite NULL (a diferencia de PK).
+                    </p>
+                    <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">CREATE UNIQUE INDEX idx_email
+ON Usuarios(email);</code></pre>
+                </div>
+
+                <!-- INDEX (Regular) -->
+                <div style="background: rgba(233, 171, 33, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent);">
+                    <h3 style="color: var(--uide-accent); margin-bottom: 1rem;">
+                        <i class="fas fa-list"></i> INDEX (Regular)
+                    </h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Índice estándar para acelerar búsquedas. Permite duplicados.
+                    </p>
+                    <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">CREATE INDEX idx_fecha
+ON Pagos_QR(fecha);</code></pre>
+                </div>
+
+                <!-- COMPOSITE -->
+                <div style="background: rgba(145, 0, 72, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-primary);">
+                    <h3 style="color: var(--uide-primary); margin-bottom: 1rem;">
+                        <i class="fas fa-layer-group"></i> COMPOSITE (Compuesto)
+                    </h3>
+                    <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Índice sobre múltiples columnas. Orden importa.
+                    </p>
+                    <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">CREATE INDEX idx_comercio_fecha
+ON Pagos_QR(comercio_id, fecha);</code></pre>
+                </div>
+            </div>
+
+            <div style="background: rgba(168, 85, 247, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #a855f7;">
+                <h3 style="color: #a855f7; margin-bottom: 1rem;">
+                    <i class="fas fa-search"></i> FULLTEXT
+                </h3>
+                <p style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
+                    Para búsquedas de texto completo (LIKE '%palabra%' optimizado).
+                </p>
+                <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">CREATE FULLTEXT INDEX idx_descripcion
+ON Pagos_QR(descripcion);
+
+-- Uso:
+SELECT * FROM Pagos_QR 
+WHERE MATCH(descripcion) AGAINST('transferencia');</code></pre>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 10: CÓMO Y CUÁNDO CREAR ÍNDICES -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2><i class="fas fa-tools"></i> Cómo y Cuándo Crear Índices</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px;">
+                <!-- Columna Izquierda: Sintaxis -->
+                <div>
+                    <h3 style="color: var(--uide-accent); margin-bottom: 1rem;">
+                        <i class="fas fa-code"></i> Sintaxis Básica
+                    </h3>
+                    <div style="background: rgba(15, 20, 25, 0.7); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <pre style="font-size: 0.85rem; margin: 0;"><code class="language-sql">-- Crear índice simple
+CREATE INDEX nombre_indice
+ON tabla(columna);
+
+-- Crear índice compuesto
+CREATE INDEX idx_multi
+ON tabla(col1, col2, col3);
+
+-- Eliminar índice
+DROP INDEX nombre_indice ON tabla;
+
+-- Ver índices de una tabla
+SHOW INDEX FROM tabla;</code></pre>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Cuándo crear -->
+                <div>
+                    <h3 style="color: #4ade80; margin-bottom: 1rem;">
+                        <i class="fas fa-check-circle"></i> Cuándo SÍ Crear Índices
+                    </h3>
+                    <div style="background: rgba(74, 222, 128, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #4ade80; margin-bottom: 20px;">
+                        <ul style="font-size: 0.95rem; line-height: 1.8;">
+                            <li>Columnas en <code>WHERE</code> frecuentes</li>
+                            <li>Columnas en <code>JOIN</code> (FK automático)</li>
+                            <li>Columnas en <code>ORDER BY</code></li>
+                            <li>Columnas en <code>GROUP BY</code></li>
+                            <li>Alta selectividad (muchos valores únicos)</li>
+                        </ul>
+                    </div>
+
+                    <h3 style="color: #ef4444; margin-bottom: 1rem;">
+                        <i class="fas fa-times-circle"></i> Cuándo NO Crear Índices
+                    </h3>
+                    <div style="background: rgba(239, 68, 68, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #ef4444;">
+                        <ul style="font-size: 0.95rem; line-height: 1.8;">
+                            <li>Tablas pequeñas (&lt;1000 filas)</li>
+                            <li>Columnas con pocos valores únicos</li>
+                            <li>Tablas con muchas escrituras</li>
+                            <li>Columnas que nunca se consultan</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: rgba(233, 171, 33, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent);">
+                <h3 style="color: var(--uide-accent); margin-bottom: 1rem;">
+                    <i class="fas fa-calculator"></i> Regla de Selectividad
+                </h3>
+                <p style="font-size: 1rem; line-height: 1.6;">
+                    <strong>Selectividad = Valores únicos / Total de filas</strong><br>
+                    <span class="highlight">Alta selectividad (&gt;0.5):</span> Índice muy beneficioso<br>
+                    <span class="emphasis">Baja selectividad (&lt;0.1):</span> Índice poco útil, puede ser contraproducente
+                </p>
+            </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 11: ÍNDICES Y SU IMPACTO -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2><i class="fas fa-list-ol"></i> Índices: Qué Tenemos y Qué Falta</h2>""
             <div class="content-grid">
                 <div>
                     <h3>Índices Actuales</h3>
@@ -1856,32 +2043,32 @@ SELECT * FROM Pagos_QR WHERE monto > 1000;</code></pre>
         </div>
 
         <!-- ============================================ -->
-        <!-- SLIDE 20: PERFORMANCE SCHEMA -->
+        <!-- SLIDE 24: PERFORMANCE SCHEMA - PARTE 1 -->
         <!-- ============================================ -->
         <div class="slide">
             <h2 style="font-size: 1.6rem; margin-bottom: 0.9rem;"><i class="fas fa-chart-pie"></i> Monitoreo con
-                Performance Schema</h2>
+                Performance Schema (1/2)</h2>
 
             <div
-                style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 12px 18px; border-radius: 10px; border: 2px solid var(--uide-accent); margin-bottom: 15px;">
+                style="background: linear-gradient(135deg, rgba(35, 53, 110, 0.3) 0%, rgba(145, 0, 72, 0.2) 100%); padding: 12px 18px; border-radius: 10px; border: 2px solid var(--uide-accent); margin-bottom: 20px;">
                 <h3 style="color: var(--uide-accent); font-size: 1.05rem; margin-bottom: 8px; text-align: center;">
                     <i class="fas fa-info-circle"></i> ¿Qué es Performance Schema?
                 </h3>
-                <p style="color: #e2e8f0; font-size: 0.85rem; text-align: center; margin: 0;">
+                <p style="color: #e2e8f0; font-size: 0.9rem; text-align: center; margin: 0;">
                     Motor de almacenamiento que captura métricas de rendimiento en tiempo real. Disponible en MySQL 5.7+
                     (mejorado en 8.0).
                 </p>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
                 <!-- Columna Izquierda: Consultas más lentas -->
                 <div>
                     <div
-                        style="background: rgba(239, 68, 68, 0.15); padding: 14px; border-radius: 10px; border-left: 4px solid #ef4444; margin-bottom: 15px;">
-                        <h3 style="color: #ef4444; margin-bottom: 0.7rem; font-size: 1rem;">
+                        style="background: rgba(239, 68, 68, 0.15); padding: 18px; border-radius: 10px; border-left: 4px solid #ef4444; margin-bottom: 20px;">
+                        <h3 style="color: #ef4444; margin-bottom: 1rem; font-size: 1.1rem;">
                             <i class="fas fa-stopwatch"></i> Top 10 Consultas Lentas
                         </h3>
-                        <pre style="font-size: 0.68rem; margin: 0;"><code class="language-sql">SELECT
+                        <pre style="font-size: 0.75rem; margin: 0;"><code class="language-sql">SELECT
     SUBSTRING(digest_text, 1, 60) as query,
     count_star as exec_count,
     ROUND(avg_timer_wait/1000000000000, 2)
@@ -1896,12 +2083,12 @@ LIMIT 10;</code></pre>
                     </div>
 
                     <div
-                        style="background: rgba(74, 222, 128, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #4ade80;">
-                        <p style="color: #4ade80; font-weight: 600; margin: 0 0 8px 0; font-size: 0.85rem;">
+                        style="background: rgba(74, 222, 128, 0.1); padding: 16px; border-radius: 8px; border-left: 3px solid #4ade80;">
+                        <p style="color: #4ade80; font-weight: 600; margin: 0 0 10px 0; font-size: 0.95rem;">
                             <i class="fas fa-lightbulb"></i> Uso Práctico
                         </p>
                         <ul
-                            style="font-size: 0.78rem; color: #cbd5e1; margin: 0; padding-left: 18px; line-height: 1.5;">
+                            style="font-size: 0.85rem; color: #cbd5e1; margin: 0; padding-left: 20px; line-height: 1.7;">
                             <li>Identificar consultas a optimizar</li>
                             <li>Priorizar por tiempo total (impacto global)</li>
                             <li>Comparar avg_seconds con KPIs</li>
@@ -1912,11 +2099,11 @@ LIMIT 10;</code></pre>
                 <!-- Columna Derecha: Índices no utilizados -->
                 <div>
                     <div
-                        style="background: rgba(233, 171, 33, 0.15); padding: 14px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-bottom: 15px;">
-                        <h3 style="color: var(--uide-accent); margin-bottom: 0.7rem; font-size: 1rem;">
+                        style="background: rgba(233, 171, 33, 0.15); padding: 18px; border-radius: 10px; border-left: 4px solid var(--uide-accent); margin-bottom: 20px;">
+                        <h3 style="color: var(--uide-accent); margin-bottom: 1rem; font-size: 1.1rem;">
                             <i class="fas fa-trash-alt"></i> Índices No Utilizados
                         </h3>
-                        <pre style="font-size: 0.68rem; margin: 0;"><code class="language-sql">SELECT
+                        <pre style="font-size: 0.75rem; margin: 0;"><code class="language-sql">SELECT
     object_schema as db_name,
     object_name as table_name,
     index_name
@@ -1926,12 +2113,12 @@ ORDER BY object_name, index_name;</code></pre>
                     </div>
 
                     <div
-                        style="background: rgba(239, 68, 68, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid #ef4444;">
-                        <p style="color: #ef4444; font-weight: 600; margin: 0 0 8px 0; font-size: 0.85rem;">
+                        style="background: rgba(239, 68, 68, 0.1); padding: 16px; border-radius: 8px; border-left: 3px solid #ef4444;">
+                        <p style="color: #ef4444; font-weight: 600; margin: 0 0 10px 0; font-size: 0.95rem;">
                             <i class="fas fa-exclamation-triangle"></i> Acción Requerida
                         </p>
                         <ul
-                            style="font-size: 0.78rem; color: #cbd5e1; margin: 0; padding-left: 18px; line-height: 1.5;">
+                            style="font-size: 0.85rem; color: #cbd5e1; margin: 0; padding-left: 20px; line-height: 1.7;">
                             <li>Evaluar si es realmente innecesario</li>
                             <li>Considerar eliminar índices no usados</li>
                             <li>Reducir overhead en INSERT/UPDATE/DELETE</li>
@@ -1939,39 +2126,79 @@ ORDER BY object_name, index_name;</code></pre>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!-- SLIDE 25: PERFORMANCE SCHEMA - PARTE 2 -->
+        <!-- ============================================ -->
+        <div class="slide">
+            <h2 style="font-size: 1.6rem; margin-bottom: 1rem;"><i class="fas fa-table"></i> Vistas Útiles del sys Schema (2/2)</h2>
 
             <div
-                style="background: rgba(35, 53, 110, 0.3); padding: 14px; border-radius: 10px; border-left: 4px solid #60a5fa; margin-top: 18px;">
-                <h3 style="color: #60a5fa; margin-bottom: 0.8rem; font-size: 0.95rem;">
-                    <i class="fas fa-table"></i> Otras Vistas Útiles del sys Schema
+                style="background: rgba(35, 53, 110, 0.3); padding: 20px; border-radius: 10px; border-left: 4px solid #60a5fa; margin-bottom: 25px; text-align: center;">
+                <h3 style="color: #60a5fa; margin-bottom: 10px; font-size: 1.1rem;">
+                    <i class="fas fa-info-circle"></i> sys Schema
                 </h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.78rem;">
-                    <div>
-                        <p style="margin: 4px 0;"><code
-                                style="background: rgba(15, 20, 25, 0.7); padding: 3px 6px; border-radius: 4px; font-size: 0.72rem;">sys.statements_with_full_table_scans</code>
-                        </p>
-                        <p style="color: #94a3b8; font-size: 0.72rem; margin: 2px 0 0 8px;">Consultas con table scans
-                        </p>
-                    </div>
-                    <div>
-                        <p style="margin: 4px 0;"><code
-                                style="background: rgba(15, 20, 25, 0.7); padding: 3px 6px; border-radius: 4px; font-size: 0.72rem;">sys.statements_with_temp_tables</code>
-                        </p>
-                        <p style="color: #94a3b8; font-size: 0.72rem; margin: 2px 0 0 8px;">Tablas temporales</p>
-                    </div>
-                    <div>
-                        <p style="margin: 4px 0;"><code
-                                style="background: rgba(15, 20, 25, 0.7); padding: 3px 6px; border-radius: 4px; font-size: 0.72rem;">sys.statements_with_sorting</code>
-                        </p>
-                        <p style="color: #94a3b8; font-size: 0.72rem; margin: 2px 0 0 8px;">Consultas con filesort</p>
-                    </div>
-                    <div>
-                        <p style="margin: 4px 0;"><code
-                                style="background: rgba(15, 20, 25, 0.7); padding: 3px 6px; border-radius: 4px; font-size: 0.72rem;">sys.schema_table_statistics</code>
-                        </p>
-                        <p style="color: #94a3b8; font-size: 0.72rem; margin: 2px 0 0 8px;">Estadísticas I/O por tabla
-                        </p>
-                    </div>
+                <p style="color: #e2e8f0; font-size: 0.95rem; margin: 0; line-height: 1.6;">
+                    Conjunto de vistas que simplifican el acceso a Performance Schema con información procesada y legible
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <!-- Vista 1 -->
+                <div style="background: rgba(96, 165, 250, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #60a5fa;">
+                    <h3 style="color: #60a5fa; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-search"></i> statements_with_full_table_scans
+                    </h3>
+                    <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 15px; line-height: 1.6;">
+                        Identifica consultas que hacen escaneos completos de tabla (type: ALL)
+                    </p>
+                    <pre style="font-size: 0.75rem; margin: 0;"><code class="language-sql">SELECT * FROM sys.
+  statements_with_full_table_scans
+WHERE db = 'pagos_qr_sistema'
+LIMIT 10;</code></pre>
+                </div>
+
+                <!-- Vista 2 -->
+                <div style="background: rgba(233, 171, 33, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-accent);">
+                    <h3 style="color: var(--uide-accent); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-database"></i> statements_with_temp_tables
+                    </h3>
+                    <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 15px; line-height: 1.6;">
+                        Consultas que crean tablas temporales (costoso en disco)
+                    </p>
+                    <pre style="font-size: 0.75rem; margin: 0;"><code class="language-sql">SELECT * FROM sys.
+  statements_with_temp_tables
+WHERE db = 'pagos_qr_sistema'
+LIMIT 10;</code></pre>
+                </div>
+
+                <!-- Vista 3 -->
+                <div style="background: rgba(145, 0, 72, 0.15); padding: 20px; border-radius: 10px; border-left: 4px solid var(--uide-primary);">
+                    <h3 style="color: var(--uide-primary); font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-sort"></i> statements_with_sorting
+                    </h3>
+                    <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 15px; line-height: 1.6;">
+                        Consultas con filesort (ORDER BY sin índice)
+                    </p>
+                    <pre style="font-size: 0.75rem; margin: 0;"><code class="language-sql">SELECT * FROM sys.
+  statements_with_sorting
+WHERE db = 'pagos_qr_sistema'
+LIMIT 10;</code></pre>
+                </div>
+
+                <!-- Vista 4 -->
+                <div style="background: rgba(74, 222, 128, 0.1); padding: 20px; border-radius: 10px; border-left: 4px solid #4ade80;">
+                    <h3 style="color: #4ade80; font-size: 1.1rem; margin-bottom: 12px;">
+                        <i class="fas fa-chart-bar"></i> schema_table_statistics
+                    </h3>
+                    <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 15px; line-height: 1.6;">
+                        Estadísticas de I/O por tabla (lecturas, escrituras)
+                    </p>
+                    <pre style="font-size: 0.75rem; margin: 0;"><code class="language-sql">SELECT * FROM sys.
+  schema_table_statistics
+WHERE table_schema = 'pagos_qr_sistema'
+ORDER BY total_latency DESC;</code></pre>
                 </div>
             </div>
         </div>
