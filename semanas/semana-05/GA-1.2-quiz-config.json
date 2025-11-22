@@ -1,0 +1,24 @@
+{
+  "quiz": {
+    "title": "GA-1.2 — Evaluación Teórica: Fundamentos de SGBD (Semanas 1-4)",
+    "description": "<p><strong>Evaluación Teórica sobre Fundamentos de Sistemas de Gestión de Bases de Datos</strong></p><p>Esta evaluación cubre los contenidos de las semanas 1 a 4:</p><ul><li><strong>Semana 1:</strong> Arquitectura ANSI-SPARC, Componentes del SGBD y Modelos de Datos</li><li><strong>Semana 2:</strong> Transacciones, Propiedades ACID y Control de Concurrencia</li><li><strong>Semana 3:</strong> Logging, WAL, Checkpoints y Recuperación (ARIES)</li><li><strong>Semana 4:</strong> Optimización de Consultas, Índices y Planes de Ejecución</li></ul><p><strong>Instrucciones:</strong></p><ul><li>Lea cuidadosamente cada pregunta antes de responder</li><li>Algunas preguntas tienen múltiples respuestas correctas</li><li>El examen tiene un valor total de 4 puntos</li><li>Tiempo límite: 60 minutos</li></ul>",
+    "quiz_type": "assignment",
+    "time_limit": 60,
+    "allowed_attempts": 1,
+    "scoring_policy": "keep_highest",
+    "cant_go_back": false,
+    "shuffle_answers": true,
+    "show_correct_answers": "always",
+    "show_correct_answers_last_attempt": false,
+    "one_question_at_a_time": false,
+    "require_lockdown_browser": false,
+    "require_lockdown_browser_for_results": false,
+    "access_code": "",
+    "ip_filter": "",
+    "due_at": null,
+    "lock_at": null,
+    "unlock_at": null,
+    "published": false,
+    "points_possible": 4
+  }
+}

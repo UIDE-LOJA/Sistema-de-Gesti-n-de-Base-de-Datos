@@ -1,0 +1,452 @@
+[
+  {
+    "question": {
+      "question_name": "Transacción en Pagos QR",
+      "question_text": "<p>En el sistema de Pagos QR &quot;¡ahorita!&quot;, ¿qué describe mejor a una <strong>transacción</strong> de pago?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Una unidad lógica de trabajo que agrupa varias operaciones sobre la base de datos y que debe ejecutarse completa o no ejecutarse",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! Una transacción es una unidad de ejecución que agrupa varias operaciones (lecturas, actualizaciones, inserciones) que deben verse como una sola unidad atómica."
+        },
+        {
+          "answer_text": "Cualquier consulta SELECT que se ejecute sobre la tabla Pagos_QR",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Una transacción puede contener SELECT, pero también modificaciones; además, es una unidad lógica completa, no una sola instrucción."
+        },
+        {
+          "answer_text": "Un solo UPDATE que modifica el saldo de una cuenta, sin importar el resto de operaciones",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Una transacción puede incluir varios UPDATE y otras instrucciones, no se limita a una sola operación."
+        },
+        {
+          "answer_text": "Cualquier operación que se ejecute fuera de START TRANSACTION y COMMIT",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Normalmente una transacción explícita se marca con BEGIN/START TRANSACTION y finaliza con COMMIT o ROLLBACK."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Comandos de Control de Transacciones",
+      "question_text": "<p>En MySQL, ¿qué comando se utiliza para <strong>confirmar</strong> de forma permanente todos los cambios realizados por una transacción?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "COMMIT",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! COMMIT confirma los cambios de la transacción y los hace permanentes en la base de datos."
+        },
+        {
+          "answer_text": "ROLLBACK",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. ROLLBACK deshace los cambios de la transacción y la aborta."
+        },
+        {
+          "answer_text": "START TRANSACTION",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. START TRANSACTION o BEGIN marca el inicio de la transacción, no su confirmación."
+        },
+        {
+          "answer_text": "SAVEPOINT",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. SAVEPOINT crea un punto de restauración dentro de la transacción, pero no la confirma."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Estados de una Transacción",
+      "question_text": "<p>En el contexto del sistema de Pagos QR, cuando la app muestra <em>\"¡Pago exitoso!\"</em> y el SGBD ha ejecutado COMMIT, ¿en qué estado se encuentra la transacción?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Confirmada",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! Tras un COMMIT exitoso la transacción pasa al estado confirmada."
+        },
+        {
+          "answer_text": "Activa",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Una transacción activa aún está ejecutando operaciones."
+        },
+        {
+          "answer_text": "Abortada",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Una transacción abortada es aquella en la que se ejecutó un ROLLBACK."
+        },
+        {
+          "answer_text": "En preparación",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Aunque algunos protocolos avanzados manejan fases de preparación, en la presentación se enfatizan los estados activa, confirmada y abortada."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Propiedad ACID: Atomicidad",
+      "question_text": "<p>En un pago QR, ¿qué propiedad ACID garantiza que <strong>no pueda quedar a medias</strong> (se debita al cliente pero no se acredita al comercio)?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Atomicidad",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! La atomicidad asegura que la transacción se ejecute completamente o no se ejecute en absoluto."
+        },
+        {
+          "answer_text": "Consistencia",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La consistencia se refiere a que la transacción lleva a la BD de un estado válido a otro, pero no es la propiedad que enfatiza el todo-o-nada."
+        },
+        {
+          "answer_text": "Aislamiento",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. El aislamiento se centra en la ejecución concurrente de transacciones."
+        },
+        {
+          "answer_text": "Durabilidad",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La durabilidad garantiza que los cambios confirmados persistan ante fallos."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Propiedad ACID: Durabilidad",
+      "question_text": "<p>En la arquitectura de persistencia vista en clase, ¿qué propiedad ACID asegura que, una vez confirmado un pago QR, el registro <strong>sobreviva a un reinicio del servidor</strong>?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Durabilidad",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! La durabilidad garantiza que los cambios confirmados se mantengan incluso ante fallos o reinicios del sistema."
+        },
+        {
+          "answer_text": "Atomicidad",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La atomicidad se enfoca en el todo-o-nada, no en la persistencia posterior al fallo."
+        },
+        {
+          "answer_text": "Aislamiento",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. El aislamiento trata sobre cómo se comportan transacciones concurrentes."
+        },
+        {
+          "answer_text": "Consistencia",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La consistencia se relaciona con mantener las reglas y restricciones de la base de datos."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Fenómenos de Concurrencia",
+      "question_text": "<p>Cuando dos estudiantes intentan pagar al mismo tiempo con saldo justo en la misma cuenta y una mala gestión de concurrencia permite que <strong>ambos pagos se confirmen</strong>, ¿qué fenómeno se está produciendo?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Actualización perdida / condición de carrera sobre el saldo",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! Sin un adecuado control de concurrencia se pueden producir actualizaciones perdidas o condiciones de carrera en saldos compartidos."
+        },
+        {
+          "answer_text": "Lectura sucia (dirty read)",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La lectura sucia se refiere a leer datos modificados por una transacción que aún no se ha confirmado."
+        },
+        {
+          "answer_text": "Lectura no repetible",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La lectura no repetible ocurre cuando una misma consulta devuelve resultados distintos dentro de la misma transacción."
+        },
+        {
+          "answer_text": "Lectura fantasma",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Las lecturas fantasma se relacionan con filas nuevas que aparecen entre dos lecturas de un rango."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Control de Concurrencia",
+      "question_text": "<p>¿Qué técnica de control de concurrencia es típica en SGBD como MySQL/InnoDB para evitar inconsistencias en pagos simultáneos sobre la misma fila de la tabla <code>Cuentas</code>?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Bloqueos (locks) a nivel de fila",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! InnoDB utiliza bloqueos a nivel de fila para coordinar el acceso concurrente y evitar inconsistencias."
+        },
+        {
+          "answer_text": "Eliminar la tabla antes de cada pago",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Esto no es una técnica de control de concurrencia y rompería el sistema."
+        },
+        {
+          "answer_text": "Solo permitir consultas SELECT",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Los sistemas transaccionales necesitan INSERT, UPDATE y DELETE, no solo lecturas."
+        },
+        {
+          "answer_text": "Reiniciar el servidor cada vez que hay demasiados pagos",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Reiniciar el servidor no es una estrategia de control de concurrencia."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Deadlocks en Pagos QR",
+      "question_text": "<p>En los ejemplos de clase se mencionó que dos transacciones pueden quedar esperando indefinidamente una a la otra al intentar actualizar recursos en distinto orden. ¿Cómo se llama este problema?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Interbloqueo (deadlock)",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! Un deadlock ocurre cuando dos o más transacciones se bloquean mutuamente esperando recursos que la otra no libera."
+        },
+        {
+          "answer_text": "Lectura fantasma",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La lectura fantasma es un fenómeno distinto, relacionado con filas que aparecen o desaparecen entre lecturas."
+        },
+        {
+          "answer_text": "Desnormalización",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La desnormalización es una decisión de diseño de esquema, no un problema de bloqueo."
+        },
+        {
+          "answer_text": "Cardinalidad baja",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La cardinalidad describe la cantidad de valores distintos de una columna."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Write-Ahead Logging (WAL)",
+      "question_text": "<p>En los mecanismos de persistencia, ¿qué establece la regla de <strong>Write-Ahead Logging (WAL)</strong> en sistemas como InnoDB?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Que los cambios de una transacción deben escribirse en el log de recuperación <em>antes</em> de escribirse en las páginas de datos",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! WAL exige que el registro en el log se haga primero, permitiendo rehacer cambios confirmados tras un fallo."
+        },
+        {
+          "answer_text": "Que los datos se escriben directamente en disco sin pasar por memoria intermedia",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. El uso de buffers en memoria es parte normal del funcionamiento del SGBD."
+        },
+        {
+          "answer_text": "Que no se necesita ningún log si la base de datos es pequeña",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. El logging es fundamental para la recuperación, independientemente del tamaño de la base."
+        },
+        {
+          "answer_text": "Que solo se registran en el log las consultas SELECT",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. El log registra principalmente cambios (INSERT, UPDATE, DELETE) relevantes para la recuperación."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Checkpoints",
+      "question_text": "<p>En la sesión de Persistencia y Recuperación, se habló de <strong>checkpoints</strong>. ¿Cuál es su objetivo principal en un SGBD?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Reducir el tiempo de recuperación tras un fallo registrando un punto consistente en el log",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! Los checkpoints permiten que el proceso de recuperación empiece desde un punto conocido, acortando el tiempo de rehacer y deshacer."
+        },
+        {
+          "answer_text": "Eliminar automáticamente todas las transacciones antiguas",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Los checkpoints no eliminan transacciones, sino que marcan un estado consistente."
+        },
+        {
+          "answer_text": "Deshabilitar temporalmente el logging para mejorar el rendimiento",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. El logging sigue siendo necesario incluso cuando se realizan checkpoints."
+        },
+        {
+          "answer_text": "Aumentar el tamaño del buffer pool en memoria",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Los checkpoints no modifican directamente el tamaño del buffer pool."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Algoritmo ARIES",
+      "question_text": "<p>De acuerdo con la presentación de ARIES, ¿cuál es el <strong>orden correcto</strong> de las fases de recuperación ante fallos?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Análisis, Redo, Undo",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! ARIES realiza primero el análisis, luego el rehacer (redo) de operaciones confirmadas y finalmente el deshacer (undo) de las no confirmadas."
+        },
+        {
+          "answer_text": "Redo, Análisis, Undo",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. El análisis debe hacerse antes de rehacer."
+        },
+        {
+          "answer_text": "Undo, Redo, Análisis",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. No corresponde al flujo correcto de ARIES."
+        },
+        {
+          "answer_text": "Solo Redo y Undo, sin Análisis",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La fase de análisis es fundamental para construir las estructuras necesarias para la recuperación."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Índices y Rendimiento",
+      "question_text": "<p>En la base <code>pagos_qr_sistema</code>, ¿cuál es el beneficio principal de crear un índice sobre la columna <code>comercio_id</code> en la tabla <code>Pagos_QR</code> para consultas que filtran por comercio?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Permitir que el optimizador lea solo las filas relevantes en lugar de hacer un escaneo completo de la tabla",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! Un índice bien diseñado reduce el número de páginas leídas y acelera las consultas filtradas por comercio_id."
+        },
+        {
+          "answer_text": "Eliminar la necesidad de ejecutar EXPLAIN",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. EXPLAIN sigue siendo útil para analizar el plan de ejecución, incluso con índices."
+        },
+        {
+          "answer_text": "Garantizar automáticamente la integridad referencial",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La integridad referencial se implementa con claves foráneas, no solo con índices."
+        },
+        {
+          "answer_text": "Evitar por completo los bloqueos en la tabla",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Los índices no eliminan los bloqueos; estos dependen del motor de almacenamiento y el aislamiento."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "EXPLAIN en MySQL",
+      "question_text": "<p>Según la presentación de Optimización de Consultas, ¿para qué se utiliza el comando <code>EXPLAIN</code> (o <code>EXPLAIN ANALYZE</code>) en MySQL?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Para ver el plan de ejecución que el optimizador usará para una consulta",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! EXPLAIN muestra cómo el motor piensa ejecutar la consulta, qué índices usará y el tipo de acceso."
+        },
+        {
+          "answer_text": "Para confirmar una transacción de forma manual",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. Las transacciones se confirman con COMMIT, no con EXPLAIN."
+        },
+        {
+          "answer_text": "Para deshabilitar temporalmente todos los índices de la base",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. EXPLAIN no deshabilita índices; solo muestra información sobre el plan."
+        },
+        {
+          "answer_text": "Para crear automáticamente nuevos índices recomendados",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. EXPLAIN ayuda a decidir qué índices crear, pero no los crea por sí solo."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Estadísticas y ANALYZE TABLE",
+      "question_text": "<p>En la Semana 4 se enfatizó la importancia de las <strong>estadísticas</strong>. ¿Por qué es útil ejecutar <code>ANALYZE TABLE</code> sobre tablas con muchos pagos recientes?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Porque actualiza las estadísticas de distribución de datos, ayudando al optimizador a elegir mejores planes de ejecución",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! Con estadísticas actualizadas el optimizador puede estimar mejor la selectividad y escoger índices adecuados."
+        },
+        {
+          "answer_text": "Porque elimina físicamente las filas antiguas de la tabla",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. ANALYZE TABLE no elimina filas; se centra en estadísticas y metadatos."
+        },
+        {
+          "answer_text": "Porque obliga a que todas las consultas futuras sean solo de lectura",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. ANALYZE TABLE no cambia el tipo de operaciones permitidas en la tabla."
+        },
+        {
+          "answer_text": "Porque desactiva temporalmente el logging para mejorar el rendimiento",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. ANALYZE TABLE no desactiva el logging del motor de almacenamiento."
+        }
+      ]
+    }
+  },
+  {
+    "question": {
+      "question_name": "Caso de Uso Pagos QR y ACID",
+      "question_text": "<p>En el caso de estudio de Pagos QR &quot;¡ahorita!&quot;, se mencionó que la confianza del usuario depende de las propiedades ACID. ¿Cuál de las siguientes afirmaciones refleja mejor esta idea?</p>",
+      "question_type": "multiple_choice_question",
+      "points_possible": 0.2666667,
+      "answers": [
+        {
+          "answer_text": "Que cada pago se procesa de forma confiable, consistente y aislada, y sus efectos persisten una vez que la app muestra \"Pago exitoso\"",
+          "answer_weight": 100,
+          "answer_comments": "¡Correcto! En conjunto, las propiedades ACID garantizan un procesamiento confiable de las transacciones de pago."
+        },
+        {
+          "answer_text": "Que el sistema siempre prioriza la velocidad sobre la consistencia de los datos",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. ACID enfatiza la confiabilidad y la consistencia, no solo la velocidad."
+        },
+        {
+          "answer_text": "Que los pagos solo se registran en memoria y no en disco para responder más rápido",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. La durabilidad exige que los cambios confirmados se persistan en almacenamiento estable."
+        },
+        {
+          "answer_text": "Que el sistema nunca bloquea filas ni utiliza mecanismos de concurrencia",
+          "answer_weight": 0,
+          "answer_comments": "Incorrecto. El control de concurrencia (por ejemplo, bloqueos) es clave para mantener aislamiento y consistencia."
+        }
+      ]
+    }
+  }
+]
